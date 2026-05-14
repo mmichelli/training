@@ -365,6 +365,18 @@ PAGE = Template("""<!doctype html>
   <title>Two Oceans 2027 · dashboard</title>
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // HTMX doesn't run <script> tags in swapped HTML. Re-create them so
+    // Plotly (and any other inline JS) actually executes after each swap.
+    document.addEventListener('htmx:afterSwap', (e) => {
+      e.detail.target.querySelectorAll('script').forEach((old) => {
+        const s = document.createElement('script');
+        for (const a of old.attributes) s.setAttribute(a.name, a.value);
+        s.textContent = old.textContent;
+        old.replaceWith(s);
+      });
+    });
+  </script>
   <style>
     body { background: #0a0a0a; color: #e4e4e7; font-family: ui-sans-serif, system-ui; }
     .card { background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 1rem 1.25rem; }
