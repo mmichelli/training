@@ -1,0 +1,107 @@
+"""Authenticated Garmin Connect client.
+
+Bypasses the rate-limited mobile SSO entirely by using a browser session
+captured into .garmin_session.json (see garmin_login.py or paste cookies in).
+
+Why custom HTTP plumbing: Garmin's Cloudflare gate is picky about default
+httpx headers. Passing Cookie as a raw header + Sec-Fetch-* + disabling
+HTTP/2 reliably bypasses it; the default httpx cookie-jar path does not.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+import httpx
+
+ROOT = Path(__file__).parent
+SESSION_PATH = ROOT / ".garmin_session.json"
+BASE = "https://connect.garmin.com"
+
+
+class Garmin:
+    def __init__(self) -> None:
+        if not SESSION_PATH.exists():
+            raise SystemExit("No session yet. Paste a cURL or run garmin_login.py")
+        data = json.loads(SESSION_PATH.read_text())
+        self.user_agent = data["user_agent"]
+        self.csrf = data.get("csrf_token", "")
+        self.cookie_header = "; ".join(f"{c['name']}={c['value']}" for c in data["cookies"])
+        self.client = httpx.Client(http2=False, timeout=30, base_url=BASE)
+
+    def _headers(self) -> dict[str, str]:
+        return {
+            "User-Agent": self.user_agent,
+            "Accept": "*/*",
+            "Accept-Language": "en",
+            "Connect-Csrf-Token": self.csrf,
+            "Cookie": self.cookie_header,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Referer": f"{BASE}/modern/",
+        }
+
+    def get(self, path: str, **params) -> Any:
+        r = self.client.get(path, params=params, headers=self._headers())
+        if r.status_code == 401:
+            raise SystemExit(
+                f"Garmin session expired (401 on {path}). "
+                "Paste a fresh cURL into .garmin_session.json."
+            )
+        if r.status_code == 404:
+            return None
+        if r.status_code in (400, 403):
+            # endpoint-specific failure — return None so caller can try alternates
+            return None
+        r.raise_for_status()
+        if not r.content:
+            return None
+        try:
+            return r.json()
+        except Exception:
+            return r.text
+
+    # ── Specific endpoints ───────────────────────────────────────────────
+
+    def activities(self, limit: int = 50, start: int = 0, start_date: str = "2020-01-01") -> list[dict]:
+        return self.get(
+            "/gc-api/activitylist-service/activities/search/activities",
+            limit=limit, start=start, startDate=start_date,
+        ) or []
+
+    def daily_summary(self, ymd: str) -> dict | None:
+        return self.get(f"/gc-api/usersummary-service/usersummary/daily/{ymd}")
+
+    def sleep(self, ymd: str) -> dict | None:
+        return self.get(f"/gc-api/wellness-service/wellness/dailySleepData", date=ymd)
+
+    def hrv(self, ymd: str) -> dict | None:
+        return self.get(f"/gc-api/hrv-service/hrv/{ymd}")
+
+    def stress(self, ymd: str) -> dict | None:
+        return self.get(f"/gc-api/wellness-service/wellness/dailyStress/{ymd}")
+
+    def body_battery(self, ymd: str) -> dict | None:
+        return self.get(
+            f"/gc-api/wellness-service/wellness/bodyBattery/reports/daily",
+            startDate=ymd, endDate=ymd,
+        )
+
+    def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
+        return self.get(
+            "/gc-api/weight-service/weight/range",
+            startDate=start_ymd, endDate=end_ymd,
+        )
+
+    def training_readiness(self, ymd: str) -> dict | None:
+        return self.get(f"/gc-api/metrics-service/metrics/trainingreadiness/{ymd}")
+
+
+if __name__ == "__main__":
+    g = Garmin()
+    print("activities (first 3):")
+    for a in g.activities(limit=3, start_date="2024-01-01"):
+        print(f"  {a.get('startTimeLocal','')[:10]} {a.get('activityType',{}).get('typeKey','?'):<10} "
+              f"{(a.get('distance') or 0)/1000:5.1f} km  HR avg/max {a.get('averageHR') or '—'}/{a.get('maxHR') or '—'}")
