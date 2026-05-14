@@ -1329,12 +1329,6 @@ PAGE = Template(r"""<!doctype html>
           <span id="sync-spin" class="htmx-indicator">syncing…</span>
           <span id="sync-result"
                 hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
-          <button class="refresh"
-                  hx-get="/api/garmin-auth"
-                  hx-target="body" hx-swap="beforeend"
-                  style="color:var(--oxide);border-color:var(--oxide);">
-            ⚿ authorize garmin
-          </button>
         </div>
       </div>
     </header>
@@ -1689,6 +1683,13 @@ async def index():
     )
 
 
+_AUTH_PROMPT = (
+    ' <a hx-get="/api/garmin-auth" hx-target="body" hx-swap="beforeend"'
+    ' style="color:var(--oxide);border-bottom:1px solid var(--oxide);'
+    ' cursor:pointer;text-decoration:none;margin-left:6px;">⚿ authorize</a>'
+)
+
+
 def _render_sync_chip() -> str:
     last_ok = _SYNC_STATE["last_at"]
     last_status = _SYNC_STATE["last_status"]
@@ -1696,8 +1697,19 @@ def _render_sync_chip() -> str:
     if last_status == "ok":
         return f'<span class="sync-result ok">last sync {last_ok}</span>'
     if last_status == "error":
+        # Auth-flavored errors (401/Unauthorized/no token) → offer re-authorize
+        looks_like_auth = any(
+            kw in last_err.lower()
+            for kw in ("401", "unauthor", "oauth", "no oauth1", "expired", "token")
+        )
         suffix = f"last good: {last_ok}" if last_ok else "no successful sync yet"
-        return f'<span class="sync-result err" title="{last_err[:200]}">sync failed · {suffix}</span>'
+        chip = (
+            f'<span class="sync-result err" title="{last_err[:200]}">'
+            f'sync failed · {suffix}'
+            f'{_AUTH_PROMPT if looks_like_auth else ""}'
+            f'</span>'
+        )
+        return chip
     return '<span class="sync-result idle">never synced this session</span>'
 
 
