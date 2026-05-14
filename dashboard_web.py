@@ -628,15 +628,44 @@ PAGE = Template(r"""<!doctype html>
       margin-bottom: 2px;
     }
     .stamp .meta { display: block; }
+    .sync-row {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+      margin-top: 8px;
+    }
     .refresh {
       background: none; border: none; cursor: pointer;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px; letter-spacing: 0.15em;
       color: var(--ink-soft); text-transform: uppercase;
-      padding: 4px 0; margin-top: 6px;
+      padding: 4px 0;
       border-bottom: 1px solid var(--rule);
     }
     .refresh:hover { color: var(--oxide); border-color: var(--oxide); }
+    .refresh:disabled { opacity: 0.4; cursor: progress; }
+    .htmx-indicator {
+      display: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--oxide);
+    }
+    .htmx-indicator::before {
+      content: '◌';
+      display: inline-block;
+      margin-right: 4px;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    .htmx-request .htmx-indicator,
+    .htmx-request.htmx-indicator { display: inline-block; }
+    .sync-result {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 0.1em;
+      text-transform: lowercase;
+      color: var(--ink-soft);
+    }
+    .sync-result.ok  { color: var(--forest); }
+    .sync-result.err { color: var(--oxide); }
 
     /* Mobile: stack and compress masthead */
     @media (max-width: 720px) {
@@ -1267,10 +1296,20 @@ PAGE = Template(r"""<!doctype html>
       <div class="stamp">
         <span class="big">{{ today_long }}</span>
         <span class="meta">wk {{ plan_week }} / 48 &nbsp;·&nbsp; {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h</span>
-        <button class="refresh" hx-get="/api/today" hx-target="#today" hx-swap="innerHTML"
-                hx-on::after-request="htmx.trigger('#readiness','refresh'); htmx.trigger('#hrv','refresh'); htmx.trigger('#rhr','refresh'); htmx.trigger('#sleep','refresh'); htmx.trigger('#stress','refresh'); htmx.trigger('#volume','refresh')">
-          ↻ refresh
-        </button>
+        <div class="sync-row">
+          <button class="refresh"
+                  hx-post="/api/sync"
+                  hx-target="#sync-result"
+                  hx-swap="innerHTML"
+                  hx-indicator="#sync-spin"
+                  hx-disabled-elt="this"
+                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#hrv','refresh'); htmx.trigger('#rhr','refresh'); htmx.trigger('#sleep','refresh'); htmx.trigger('#stress','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh')">
+            ↻ pull &amp; refresh
+          </button>
+          <span id="sync-spin" class="htmx-indicator">syncing…</span>
+          <span id="sync-result"
+                hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
+        </div>
       </div>
     </header>
 
@@ -1304,7 +1343,7 @@ PAGE = Template(r"""<!doctype html>
           <h2 class="label">Today's session</h2>
           <span class="section-meta">field card</span>
         </div>
-        <div id="today" hx-get="/api/today" hx-trigger="load" hx-swap="innerHTML"></div>
+        <div id="today" hx-get="/api/today" hx-trigger="load,refresh" hx-swap="innerHTML"</div>
       </section>
 
       <section class="section">
@@ -1580,6 +1619,22 @@ async def index():
     )
 
 
+@app.post("/api/sync", response_class=HTMLResponse)
+async def api_sync():
+    summary = _do_sync_blocking()
+    pill = "ok" if summary["ok"] else "err"
+    when = _SYNC_STATE["last_at"]
+    return f'<span class="sync-result {pill}">synced {when} · {summary["ingest"][:90]}</span>'
+
+
+@app.get("/api/sync/status", response_class=HTMLResponse)
+async def api_sync_status():
+    if _SYNC_STATE["last_at"]:
+        pill = "ok" if _SYNC_STATE["last_status"] == "ok" else "err"
+        return f'<span class="sync-result {pill}">last sync {_SYNC_STATE["last_at"]}</span>'
+    return '<span class="sync-result idle">never synced this session</span>'
+
+
 @app.get("/api/today", response_class=HTMLResponse)
 async def api_today():
     today = date.today()
@@ -1698,6 +1753,44 @@ async def api_weight():
         delta=delta_str, delta_dir=delta_dir,
         chart=weight_chart(),
     )
+
+
+_SYNC_STATE = {"last_status": "idle", "last_at": None, "last_summary": ""}
+
+
+def _do_sync_blocking() -> dict:
+    """Refresh cookies then run ingest. Returns summary dict."""
+    import subprocess
+    from datetime import datetime as _dt
+    summary = {"refresh": "", "ingest": "", "ok": True}
+    try:
+        r1 = subprocess.run(
+            ["uv", "run", "python", "refresh_session.py"],
+            cwd=str(ROOT), capture_output=True, text=True, timeout=60,
+        )
+        summary["refresh"] = (r1.stdout + r1.stderr).strip().splitlines()[-1] if r1.stdout or r1.stderr else "(no output)"
+    except Exception as e:
+        summary["refresh"] = f"failed: {e}"
+        summary["ok"] = False
+
+    try:
+        r2 = subprocess.run(
+            ["uv", "run", "python", "ingest.py", "--days", "14"],
+            cwd=str(ROOT), capture_output=True, text=True, timeout=240,
+        )
+        # capture the last few summary lines from ingest output
+        lines = [l for l in r2.stdout.splitlines() if l.strip()]
+        summary["ingest"] = " · ".join(lines[-4:]) if lines else "(no output)"
+        if r2.returncode != 0:
+            summary["ok"] = False
+    except Exception as e:
+        summary["ingest"] = f"failed: {e}"
+        summary["ok"] = False
+
+    _SYNC_STATE["last_status"] = "ok" if summary["ok"] else "error"
+    _SYNC_STATE["last_at"] = _dt.now().strftime("%H:%M:%S")
+    _SYNC_STATE["last_summary"] = f"{summary['refresh']} · {summary['ingest']}"
+    return summary
 
 
 def _build_checkin_view(reopen: bool = False) -> str:
