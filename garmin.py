@@ -10,6 +10,7 @@ HTTP/2 reliably bypasses it; the default httpx cookie-jar path does not.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -26,9 +27,28 @@ class Garmin:
             raise SystemExit("No session yet. Paste a cURL or run garmin_login.py")
         data = json.loads(SESSION_PATH.read_text())
         self.user_agent = data["user_agent"]
-        self.csrf = data.get("csrf_token", "")
+        self.csrf = data.get("csrf_token", "") or ""
         self.cookie_header = "; ".join(f"{c['name']}={c['value']}" for c in data["cookies"])
         self.client = httpx.Client(http2=False, timeout=30, base_url=BASE)
+        if not self.csrf:
+            self._refresh_csrf()
+
+    def _refresh_csrf(self) -> None:
+        """Fetch CSRF token by scraping a modern page."""
+        r = self.client.get("/modern/", headers={
+            "User-Agent": self.user_agent,
+            "Accept": "text/html",
+            "Cookie": self.cookie_header,
+        })
+        # Search for Connect-Csrf-Token or csrf-token-like values in HTML/JS payloads
+        m = re.search(r'"csrf[Tt]oken"\s*:\s*"([0-9a-f-]{36})"', r.text)
+        if not m:
+            m = re.search(r'csrfToken\s*=\s*[\'"]([0-9a-f-]{36})[\'"]', r.text)
+        if m:
+            self.csrf = m.group(1)
+            data = json.loads(SESSION_PATH.read_text())
+            data["csrf_token"] = self.csrf
+            SESSION_PATH.write_text(json.dumps(data, indent=2))
 
     def _headers(self) -> dict[str, str]:
         return {
