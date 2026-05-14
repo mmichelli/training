@@ -44,3 +44,11 @@ daily-auto:
 # Show today's prescribed session
 today:
 	@uv run python plan_lookup.py
+
+# Visual Streamlit dashboard (training-load, HRV, sleep, plan-vs-actual)
+dash:
+	uv run streamlit run dashboard_app.py
+
+# Recompute features.parquet from data/ ingest
+features:
+	uv run python features.py
