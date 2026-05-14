@@ -53,8 +53,12 @@ class Garmin:
     def _headers(self) -> dict[str, str]:
         return {
             "User-Agent": self.user_agent,
-            "Accept": "*/*",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
             "Accept-Language": "en",
+            "NK": "NT",
+            "X-app-ver": "5.24.1.3a",
+            "X-lang": "en-US",
+            "X-Requested-With": "XMLHttpRequest",
             "Connect-Csrf-Token": self.csrf,
             "Cookie": self.cookie_header,
             "Sec-Fetch-Dest": "empty",
@@ -72,8 +76,7 @@ class Garmin:
             )
         if r.status_code == 404:
             return None
-        if r.status_code in (400, 403):
-            # endpoint-specific failure — return None so caller can try alternates
+        if r.status_code in (400, 403, 405):
             return None
         r.raise_for_status()
         if not r.content:
