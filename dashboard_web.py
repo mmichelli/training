@@ -1314,6 +1314,12 @@ PAGE = Template(r"""<!doctype html>
           <span id="sync-spin" class="htmx-indicator">syncing…</span>
           <span id="sync-result"
                 hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
+          <button class="refresh"
+                  hx-get="/api/garmin-auth"
+                  hx-target="#checkin-or-auth" hx-swap="innerHTML"
+                  style="color:var(--oxide);border-color:var(--oxide);">
+            ⚿ authorize garmin
+          </button>
         </div>
       </div>
     </header>
@@ -1364,6 +1370,7 @@ PAGE = Template(r"""<!doctype html>
       </section>
 
       <section class="section span-3">
+        <div id="checkin-or-auth"></div>
         <div class="section-head">
           <span class="roman">II<sup>b</sup>.</span>
           <h2 class="label">Sunday check-in &amp; streak</h2>
@@ -1636,6 +1643,71 @@ def _render_sync_chip() -> str:
         suffix = f"last good: {last_ok}" if last_ok else "no successful sync yet"
         return f'<span class="sync-result err" title="{last_err[:200]}">sync failed · {suffix}</span>'
     return '<span class="sync-result idle">never synced this session</span>'
+
+
+GARMIN_OAUTH_URL = (
+    "https://sso.garmin.com/sso/embed?id=gauth-widget&embedWidget=true"
+    "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso"
+    "&service=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+    "&source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed"
+    "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+    "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+    "&consumeServiceTicket=false&generateExtraServiceTicket=true&generateNoServiceTicket=false"
+)
+
+
+@app.get("/api/garmin-auth", response_class=HTMLResponse)
+async def api_garmin_auth():
+    """Render the one-time OAuth bootstrap helper."""
+    return f"""
+<div style="font-family:'IBM Plex Sans',sans-serif;line-height:1.6;font-size:14px;">
+  <h2 style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:24px;margin:0 0 12px;">Authorize Garmin · one-time</h2>
+  <p style="color:var(--ink-soft);margin:0 0 16px;">Already logged into Garmin Connect in this browser? Tap the link, copy the URL that loads (it'll contain <code>ticket=ST-…</code>), and paste it below. Lasts ~12 months.</p>
+  <ol style="padding-left:20px;margin:0 0 16px;">
+    <li><a href="{GARMIN_OAUTH_URL}" target="_blank" rel="noopener"
+           style="color:var(--oxide);font-weight:500;border-bottom:1px solid var(--oxide);text-decoration:none;">
+        Open Garmin OAuth URL ↗
+      </a>
+      <span style="color:var(--ink-soft);font-size:12px;">(new tab)</span>
+    </li>
+    <li>After it loads, copy the full URL from the address bar.</li>
+    <li>Paste it below and hit submit.</li>
+  </ol>
+  <form hx-post="/api/garmin-auth" hx-target="#checkin-or-auth" hx-swap="innerHTML"
+        style="display:flex;gap:8px;">
+    <input type="text" name="ticket_or_url"
+           placeholder="ST-12345-… or paste full URL"
+           required
+           style="flex:1;padding:10px 12px;background:var(--paper-deep);border:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);">
+    <button type="submit" class="submit"
+            style="background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;">
+      authorize
+    </button>
+  </form>
+</div>
+"""
+
+
+@app.post("/api/garmin-auth", response_class=HTMLResponse)
+async def api_garmin_auth_submit(ticket_or_url: str = Form(...)):
+    import garmin_oauth as G
+    val = ticket_or_url.strip()
+    if val.startswith("http"):
+        from urllib.parse import urlparse, parse_qs
+        q = parse_qs(urlparse(val).query)
+        val = q.get("ticket", [""])[0]
+    if not val.startswith("ST-"):
+        return ('<div class="sync-result err" style="padding:14px;">'
+                f'Not a valid Garmin ticket (must start with ST-): {val[:40]}</div>')
+    try:
+        G.exchange_ticket_for_oauth1(val)
+        G.fetch_oauth2()
+    except Exception as e:
+        return ('<div class="sync-result err" style="padding:14px;">'
+                f'Exchange failed: {str(e)[:200]}</div>')
+    return ('<div class="sync-result ok" style="padding:14px;font-size:14px;">'
+            '✓ Authorized. OAuth tokens saved — good for ~12 months. '
+            'Click <strong>↻ pull &amp; refresh</strong> to test.</div>')
 
 
 @app.post("/api/sync", response_class=HTMLResponse)
