@@ -31,8 +31,23 @@ TOKENS = ROOT / ".tokens"
 OAUTH1_PATH = TOKENS / "oauth1_token.json"
 OAUTH2_PATH = TOKENS / "oauth2_token.json"
 
-CONSUMER_KEY = "fc3e99d2-118c-44b8-8ae3-03370dde24c0"  # public Garmin Connect consumer
-CONSUMER_SECRET = "E08WAR897WEz2FBfeMvRQTUyFp5e9wYdyJ7gw0HUjkj"  # public — used by all clients
+_OAUTH_CONSUMER_URL = "https://thegarth.s3.amazonaws.com/oauth_consumer.json"
+_OAUTH_CONSUMER: dict[str, str] = {}
+
+
+def _consumer() -> tuple[str, str]:
+    """Fetch (and cache) the current Garmin OAuth consumer key/secret.
+
+    Garmin rotates these — garth keeps them in S3 and any client that wants
+    to stay working in 2026+ has to fetch them at runtime.
+    """
+    global _OAUTH_CONSUMER
+    if not _OAUTH_CONSUMER:
+        import httpx
+        r = httpx.get(_OAUTH_CONSUMER_URL, timeout=15)
+        r.raise_for_status()
+        _OAUTH_CONSUMER = r.json()
+    return _OAUTH_CONSUMER["consumer_key"], _OAUTH_CONSUMER["consumer_secret"]
 
 
 def _read_zen_garmin_cookies() -> list[tuple[str, str, str, str]] | None:
@@ -321,45 +336,33 @@ def login_via_browser(email: str | None = None, password: str | None = None,
 # ─── Step 2: SSO ticket → OAuth1 ─────────────────────────────────────────
 
 def exchange_ticket_for_oauth1(ticket: str) -> dict:
-    """Exchange the ST- ticket for an OAuth1 request token. Saves and returns."""
-    import httpx
-    from requests_oauthlib import OAuth1
+    """Exchange the SSO ST- ticket for an OAuth1 request token (garth-style)."""
+    from requests_oauthlib import OAuth1Session
+    from urllib.parse import parse_qs
 
-    auth = OAuth1(CONSUMER_KEY, CONSUMER_SECRET)
-
-    # garth's tested params for this exchange
+    ck, cs = _consumer()
+    sess = OAuth1Session(client_key=ck, client_secret=cs)
+    url = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized"
     params = {
         "ticket": ticket,
         "login-url": "https://sso.garmin.com/sso/embed",
         "accepts-mfa-tokens": "true",
     }
-
-    # Use httpx but sign with OAuth1 (the oauthlib hook for requests works on
-    # PreparedRequest objects — we call into it indirectly via a manual sign).
-    import oauthlib.oauth1
-    client = oauthlib.oauth1.Client(CONSUMER_KEY, client_secret=CONSUMER_SECRET)
-    url = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized"
-    full_url = url + "?" + "&".join(f"{k}={v}" for k, v in params.items())
-    signed_url, headers, _ = client.sign(full_url, http_method="GET")
-
-    with httpx.Client(timeout=30, http2=False) as c:
-        r = c.get(signed_url, headers={
-            "User-Agent": "com.garmin.android.apps.connectmobile",
-            **headers,
-        })
-        if r.status_code != 200:
-            raise SystemExit(f"OAuth1 exchange failed ({r.status_code}): {r.text[:300]}")
-        # Response is form-encoded: oauth_token=...&oauth_token_secret=...
-        from urllib.parse import parse_qs
-        parsed = parse_qs(r.text)
-        token = {
-            "oauth_token": parsed["oauth_token"][0],
-            "oauth_token_secret": parsed["oauth_token_secret"][0],
-            "mfa_token": parsed.get("mfa_token", [""])[0] or None,
-            "mfa_expiration_timestamp": parsed.get("mfa_expiration_timestamp", [""])[0] or None,
-            "domain": "garmin.com",
-        }
-
+    r = sess.get(
+        url, params=params,
+        headers={"User-Agent": "com.garmin.android.apps.connectmobile"},
+        timeout=30,
+    )
+    if r.status_code != 200:
+        raise SystemExit(f"OAuth1 exchange failed ({r.status_code}): {r.text[:500]}")
+    parsed = parse_qs(r.text)
+    token = {
+        "oauth_token": parsed["oauth_token"][0],
+        "oauth_token_secret": parsed["oauth_token_secret"][0],
+        "mfa_token": parsed.get("mfa_token", [""])[0] or None,
+        "mfa_expiration_timestamp": parsed.get("mfa_expiration_timestamp", [""])[0] or None,
+        "domain": "garmin.com",
+    }
     _save(OAUTH1_PATH, token)
     print(f"Saved OAuth1 token to {OAUTH1_PATH}")
     return token
@@ -369,34 +372,29 @@ def exchange_ticket_for_oauth1(ticket: str) -> dict:
 
 def fetch_oauth2(oauth1: dict | None = None) -> dict:
     """Exchange OAuth1 token for a fresh OAuth2 access/refresh token pair."""
-    import httpx
-    import oauthlib.oauth1
+    from requests_oauthlib import OAuth1Session
 
     if oauth1 is None:
         oauth1 = _load(OAUTH1_PATH)
         if not oauth1:
             raise SystemExit("No OAuth1 token. Run login_via_browser() first.")
 
-    client = oauthlib.oauth1.Client(
-        CONSUMER_KEY, client_secret=CONSUMER_SECRET,
+    ck, cs = _consumer()
+    sess = OAuth1Session(
+        client_key=ck, client_secret=cs,
         resource_owner_key=oauth1["oauth_token"],
         resource_owner_secret=oauth1["oauth_token_secret"],
     )
     url = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0"
-    body = "mfa_token=" + (oauth1.get("mfa_token") or "")
-    signed_url, headers, body = client.sign(
-        url, http_method="POST", body=body,
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    data = {"mfa_token": oauth1.get("mfa_token") or ""}
+    r = sess.post(
+        url, data=data,
+        headers={"User-Agent": "com.garmin.android.apps.connectmobile"},
+        timeout=30,
     )
-
-    with httpx.Client(timeout=30, http2=False) as c:
-        r = c.post(signed_url, headers={
-            "User-Agent": "com.garmin.android.apps.connectmobile",
-            **headers,
-        }, content=body)
-        if r.status_code != 200:
-            raise SystemExit(f"OAuth2 exchange failed ({r.status_code}): {r.text[:300]}")
-        token = r.json()
+    if r.status_code != 200:
+        raise SystemExit(f"OAuth2 exchange failed ({r.status_code}): {r.text[:500]}")
+    token = r.json()
 
     # Add absolute expiry timestamps for easy checking
     now = int(time.time())
