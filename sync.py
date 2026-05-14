@@ -1,37 +1,48 @@
-"""Sync Garmin activities into markdown files under activities/."""
+"""Sync Garmin activities into markdown files under activities/.
+
+Uses a session captured by garmin_login.py — bypasses Garmin's rate-limited
+mobile SSO endpoint by reusing a logged-in browser session's cookies against
+the same JSON endpoints the Connect web app calls.
+
+If the session is missing or expired, run `uv run python garmin_login.py`.
+"""
 from __future__ import annotations
 
+import json
 import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-import garth
+import httpx
 
 ROOT = Path(__file__).parent
-TOKEN_DIR = ROOT / ".garth"
+SESSION_PATH = ROOT / ".garmin_session.json"
 ACTIVITIES_DIR = ROOT / "activities"
+API_BASE = "https://connect.garmin.com"
 
 
-def load_secrets() -> tuple[str, str]:
-    path = ROOT / ".secrets"
-    env: dict[str, str] = {}
-    for line in path.read_text().splitlines():
-        if "=" in line and not line.startswith("#"):
-            k, v = line.split("=", 1)
-            env[k.strip()] = v.strip()
-    return env["GARMIN_EMAIL"], env["GARMIN_PASSWORD"]
-
-
-def login() -> None:
-    TOKEN_DIR.mkdir(exist_ok=True)
-    try:
-        garth.resume(str(TOKEN_DIR))
-        garth.client.username  # forces a token check
-    except Exception:
-        email, password = load_secrets()
-        garth.login(email, password, prompt_mfa=lambda: input("Garmin MFA code: ").strip())
-        garth.save(str(TOKEN_DIR))
+def load_session() -> httpx.Client:
+    if not SESSION_PATH.exists():
+        sys.exit("No session yet. Run: uv run python garmin_login.py")
+    data = json.loads(SESSION_PATH.read_text())
+    jar = httpx.Cookies()
+    for c in data["cookies"]:
+        jar.set(c["name"], c["value"], domain=c.get("domain", ".garmin.com"), path=c.get("path", "/"))
+    client = httpx.Client(
+        base_url=API_BASE,
+        cookies=jar,
+        headers={
+            "User-Agent": data["user_agent"],
+            "NK": "NT",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Referer": f"{API_BASE}/modern/",
+        },
+        timeout=30,
+        follow_redirects=False,
+    )
+    return client
 
 
 def fmt_duration(seconds: float | None) -> str:
@@ -70,10 +81,9 @@ def activity_to_markdown(a: dict) -> tuple[str, str]:
     max_hr = a.get("maxHR")
     elev_gain = a.get("elevationGain")
     calories = a.get("calories")
-    avg_speed = a.get("averageSpeed")  # m/s
+    avg_speed = a.get("averageSpeed")
 
     fname = f"{date}-{slugify(atype)}-{aid}.md"
-
     fm = [
         "---",
         f"activity_id: {aid}",
@@ -113,44 +123,58 @@ def activity_to_markdown(a: dict) -> tuple[str, str]:
     return fname, "\n".join(fm)
 
 
-def sync(days: int = 90) -> int:
-    login()
-    ACTIVITIES_DIR.mkdir(exist_ok=True)
+def fetch_activities(client: httpx.Client, days: int) -> list[dict]:
     start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
-
-    written = 0
-    skipped = 0
+    all_acts: list[dict] = []
     start = 0
     limit = 50
     while True:
-        batch = garth.connectapi(
-            "/activitylist-service/activities/search/activities",
+        r = client.get(
+            "/proxy/activitylist-service/activities/search/activities",
             params={"limit": limit, "start": start, "startDate": start_date},
         )
+        if r.status_code in (301, 302, 401, 403):
+            sys.exit(
+                f"Garmin session rejected ({r.status_code}). "
+                f"Re-run: uv run python garmin_login.py"
+            )
+        r.raise_for_status()
+        batch = r.json()
         if not batch:
             break
-        for a in batch:
-            fname, content = activity_to_markdown(a)
-            path = ACTIVITIES_DIR / fname
-            if path.exists() and path.read_text().split("## Notes")[0] == content.split("## Notes")[0]:
-                skipped += 1
-                continue
-            # preserve user notes if file exists
-            if path.exists():
-                existing = path.read_text()
-                if "## Notes" in existing:
-                    user_notes = existing.split("## Notes", 1)[1]
-                    content = content.split("## Notes")[0] + "## Notes" + user_notes
-            path.write_text(content)
-            written += 1
+        all_acts.extend(batch)
         if len(batch) < limit:
             break
         start += limit
+    return all_acts
 
-    print(f"synced: {written} new/updated, {skipped} unchanged")
+
+def sync(days: int = 90) -> int:
+    client = load_session()
+    ACTIVITIES_DIR.mkdir(exist_ok=True)
+    activities = fetch_activities(client, days)
+
+    written = 0
+    skipped = 0
+    for a in activities:
+        fname, content = activity_to_markdown(a)
+        path = ACTIVITIES_DIR / fname
+        head = content.split("## Notes")[0]
+        if path.exists():
+            existing = path.read_text()
+            if existing.split("## Notes")[0] == head:
+                skipped += 1
+                continue
+            # Preserve user / auto-filled notes on update
+            if "## Notes" in existing:
+                user_notes = existing.split("## Notes", 1)[1]
+                content = head + "## Notes" + user_notes
+        path.write_text(content)
+        written += 1
+    print(f"synced: {written} new/updated, {skipped} unchanged ({len(activities)} total)")
     return written
 
 
 if __name__ == "__main__":
-    days = int(sys.argv[1]) if len(sys.argv) > 1 else 90
+    days = int(sys.argv[1]) if len(sys.argv) > 1 else 30
     sync(days)

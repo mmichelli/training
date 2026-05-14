@@ -72,20 +72,19 @@ def build() -> str:
         for day_idx in range(7):
             d = PLAN_START + timedelta(weeks=week_idx, days=day_idx)
             p = prescription_for(d)
-            if "Rest" in p.session or "Recovery" in p.session and p.plan_week in {41, 48}:
-                # still emit rest as all-day reminder? skip for now to reduce noise
-                if p.session.strip() == "Rest":
-                    continue
+            # Skip rest days — they clutter the calendar
+            if p.title.strip() == "Rest":
+                continue
             t, dur = DEFAULT_TIMES[p.weekday]
             start = datetime.combine(d, t)
             wd = WEEKDAYS[day_idx]
-            summary = f"W{p.plan_week} {wd}: {p.session.split(' OR ')[0][:60]}"
+            summary = f"W{p.plan_week} {wd} · {p.title}"
             description = (
-                f"Plan week {p.plan_week} · {p.weekday}\n"
-                f"Phase: {p.phase}\n"
-                f"Session: {p.session}\n"
+                f"Plan week {p.plan_week} · {p.weekday}  ({p.phase})\n"
                 f"Purpose: {p.purpose}\n"
-                f"Weekly target: {p.target_hours:.1f}h"
+                f"Weekly target: {p.target_hours:.1f}h\n"
+                "\n"
+                f"{p.description}"
             )
             uid = f"to27-w{p.plan_week:02d}-{wd.lower()}@training"
             lines.extend(event(uid, start, dur, summary, description))

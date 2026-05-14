@@ -24,7 +24,6 @@ from typing import Any
 import garth
 
 from plan_lookup import PLAN_START
-from sync import login
 
 # HR zone IDs in Garmin: 1=Z1 ... 5=Z5. We target zone 3 ceiling for sub-threshold.
 ZONE_SUBTHRESHOLD = 3
@@ -218,7 +217,10 @@ def schedule_for_week(week: int) -> dict[str, Workout]:
 def push_all(start_week: int = 1, end_week: int = 48, dry_run: bool = False) -> int:
     """Upload all quality workouts and schedule them on Garmin's calendar."""
     if not dry_run:
-        login()
+        raise NotImplementedError(
+            "workouts.py needs to be reworked for the cookie-session auth — "
+            "the old garth.login() path is gone. Use --dry-run for now."
+        )
     pushed = 0
     for week in range(start_week, end_week + 1):
         sched = schedule_for_week(week)

@@ -68,34 +68,39 @@ HRmax test in week 3: 10 min easy w/u → 3 × 3 min uphill all-out, 2 min jog r
 
 ### Months 1-2 (Weeks 1-8): Reconditioning + base intro
 
-No NSA work yet. Just running consistency and gym onboarding.
+Starting from couch. No NSA work yet. No CrossFit. The goal of these 8 weeks is to **show up consistently without breaking anything** — build the habit, wake the legs up gradually, and arrive at week 9 ready to start real training.
 
-**Weekly structure:**
-- Mon: Gym A + 20-40 min run-walk
-- Tue: 30-50 min Z2
-- Wed: Rest or 30 min easy + CrossFit (introduce gradually)
-- Thu: Gym B + 30-50 min Z2
-- Fri: Rest
-- Sat: Long run, build 45 min → 90 min (Z2, 9:1 run-walk)
-- Sun: 30-45 min Z1 or hike
+**The progression:**
 
-| Wk | Sat long | Total |
-|---|---|---|
-| 1 | 25 min RW | ~2:00 |
-| 2 | 30 min RW | ~2:30 |
-| 3 | 35 min RW | ~3:00 |
-| 4 (down) | 30 min | ~2:30 |
-| 5 | 45 min | ~3:30 |
-| 6 | 60 min | ~4:00 |
-| 7 | 75 min | ~4:30 |
-| 8 (down) | 60 min | ~3:30 |
+- **Weeks 1–2 — walking + run-walk intro, no gym.** Three to four short sessions per week, mostly walking with a little jogging. Total 1.5–2h.
+- **Weeks 3–4 — add Gym A (one session/week). Down-week in week 4.**
+- **Weeks 5–6 — add Gym B (second session). First continuous easy run in week 6.**
+- **Weeks 7–8 — both gyms running, easy runs replacing walk-jogs. Week 8 is a down-week before NSA introduction in week 9.**
+
+**Why this is slower than the original draft:** a deconditioned 33-year-old with a wonky knee needs a real ramp. Two gym sessions + four runs in week 1 is how people get hurt. Walking is doing real work in weeks 1–2 — aerobic base, soft-tissue prep, getting the joints used to load again. The gym shows up in week 3, second gym in week 5, CrossFit not until month 3+ at the earliest.
+
+| Wk | Sat session | Weekly target | Notes |
+|---|---|---|---|
+| 1 | 25-min walk-jog (60s/120s) | ~1.5h | All walking + first run-walks. No gym yet. |
+| 2 | 30-min walk-jog (60s/90s) | ~2.0h | Same shape, slightly more. |
+| 3 | 35-min walk-jog (60s/60s) | ~2.5h | Gym A introduced (Mon). |
+| 4 (down) | 30-min walk-jog | ~2.0h | First down-week — body absorbs week 3. |
+| 5 | 40-min walk-jog (90s/60s) | ~3.0h | Gym B added (Thu). |
+| 6 | 30–40 min easy run | ~3.5h | First continuous run. Walk Wednesday introduced. |
+| 7 | 50-min easy long run | ~4.0h | Both gyms + 3 easy runs. |
+| 8 (down) | 40-min easy long run | ~3.5h | Down-week before NSA introduction. |
+
+**Each calendar event has a full plain-language description** — when in doubt, open the event on your phone and the workout is spelled out (intervals, effort, how long, what to do if knee acts up).
+
+**Walk-jog intervals decoded:** "60s/120s" means jog 60 seconds, walk 120 seconds, repeat for the duration. The jog should be conversational — if you're breathing hard, slow it down. The ratio gets more jog-heavy as the weeks progress.
 
 **Tasks for these 8 weeks:**
-- Get gym membership (SATS / Family Sports / Stamina)
-- One trainer session for barbell form
-- HRmax test in week 3
-- 5K parkrun benchmark in week 7-8 to anchor sub-threshold pace
-- Buy studded shoes, headlamp, reflective gear before Norwegian winter
+- Get gym membership (SATS / Family Sports / Stamina) — but you don't need it until week 3
+- One trainer session for barbell form before your first Gym A — non-negotiable
+- Take 3-morning HRrest baseline this week (wake up, lie still, watch reading)
+- HRmax test in week 3 (10 min easy w/u, 3 × 3 min uphill all-out, 2 min jog between — highest reading in rep 3 ≈ true max)
+- 5K parkrun benchmark in week 7–8 to anchor sub-threshold pace for NSA
+- Buy studded shoes, headlamp, reflective gear before Norwegian winter (you have time)
 
 ### Months 3-5 (Weeks 9-20): NSA introduction
 

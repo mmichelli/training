@@ -6,6 +6,8 @@ requires-python = ">=3.11"
 dependencies = [
     "garminconnect>=0.3.2",
     "garth>=0.5.0",
+    "httpx>=0.28.1",
+    "playwright>=1.59.0",
 ]
 
 [tool.uv]
