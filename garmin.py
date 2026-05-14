@@ -30,8 +30,16 @@ class Garmin:
         self.csrf = data.get("csrf_token", "") or ""
         self.cookie_header = "; ".join(f"{c['name']}={c['value']}" for c in data["cookies"])
         self.client = httpx.Client(http2=False, timeout=30, base_url=BASE)
+        self._display_name: str | None = None
         if not self.csrf:
             self._refresh_csrf()
+
+    @property
+    def display_name(self) -> str:
+        if self._display_name is None:
+            r = self.get("/gc-api/userprofile-service/socialProfile")
+            self._display_name = r["displayName"] if r else ""
+        return self._display_name
 
     def _refresh_csrf(self) -> None:
         """Fetch CSRF token by scraping a modern page."""

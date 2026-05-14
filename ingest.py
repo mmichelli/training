@@ -147,29 +147,24 @@ def ingest_daily_streams(g: Garmin, days: int, force: bool) -> dict[str, int]:
         if force or not (DATA / "stress" / f"{ymd}.json").exists():
             if write_json("stress", d, g.get(f"/gc-api/wellness-service/wellness/dailyStress/{ymd}")):
                 counts["stress"] += 1
-        # Sleep — try a few patterns
+        # Sleep — displayName in path + nonSleepBufferMinutes is required
         if force or not (DATA / "sleep" / f"{ymd}.json").exists():
-            for path in [
-                f"/gc-api/sleep-service/dailySleepData/{ymd}",
-                f"/gc-api/wellness-service/wellness/dailySleepData/{ymd}",
-                f"/gc-api/sleep-service/sleep/dailySleepData/{ymd}",
-            ]:
-                r = g.get(path)
-                if r:
-                    write_json("sleep", d, r)
-                    counts["sleep"] += 1
-                    break
-        # Daily summary
+            r = g.get(
+                f"/gc-api/wellness-service/wellness/dailySleepData/{g.display_name}",
+                date=ymd, nonSleepBufferMinutes=60,
+            )
+            if r:
+                write_json("sleep", d, r)
+                counts["sleep"] += 1
+        # Daily summary — displayName + calendarDate query
         if force or not (DATA / "daily" / f"{ymd}.json").exists():
-            for path in [
-                f"/gc-api/usersummary-service/usersummary/daily/{ymd}",
-                f"/gc-api/wellness-service/wellness/dailySummary/{ymd}",
-            ]:
-                r = g.get(path)
-                if r:
-                    write_json("daily", d, r)
-                    counts["daily"] += 1
-                    break
+            r = g.get(
+                f"/gc-api/usersummary-service/usersummary/daily/{g.display_name}",
+                calendarDate=ymd,
+            )
+            if r:
+                write_json("daily", d, r)
+                counts["daily"] += 1
     return counts
 
 
