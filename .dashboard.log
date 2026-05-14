@@ -1,7 +1,0 @@
-INFO:     Will watch for changes in these directories: ['/home/mario/code/training']
-INFO:     Uvicorn running on http://0.0.0.0:8765 (Press CTRL+C to quit)
-INFO:     Started reloader process [132473] using StatReload
-INFO:     Started server process [132475]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     100.64.0.12:60268 - "GET / HTTP/1.1" 200 OK
