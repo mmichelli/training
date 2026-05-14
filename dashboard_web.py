@@ -1760,31 +1760,40 @@ _SYNC_STATE = {"last_status": "idle", "last_at": None, "last_summary": ""}
 
 def _do_sync_blocking() -> dict:
     """Refresh cookies then run ingest. Returns summary dict."""
-    import subprocess
+    import subprocess, sys
     from datetime import datetime as _dt
     summary = {"refresh": "", "ingest": "", "ok": True}
-    try:
-        r1 = subprocess.run(
-            ["uv", "run", "python", "refresh_session.py"],
-            cwd=str(ROOT), capture_output=True, text=True, timeout=60,
-        )
-        summary["refresh"] = (r1.stdout + r1.stderr).strip().splitlines()[-1] if r1.stdout or r1.stderr else "(no output)"
-    except Exception as e:
-        summary["refresh"] = f"failed: {e}"
+
+    # Use the *same* interpreter the uvicorn process is running under — avoids
+    # nested `uv run` confusion and PATH-inheritance issues.
+    py = sys.executable
+
+    def run(script: str, *args: str, timeout: int = 240) -> tuple[int, str]:
+        try:
+            r = subprocess.run(
+                [py, script, *args],
+                cwd=str(ROOT), capture_output=True, text=True, timeout=timeout,
+            )
+            output = (r.stdout or "") + (r.stderr or "")
+            return r.returncode, output.strip()
+        except Exception as e:
+            return -1, f"failed: {e}"
+
+    rc, out = run("refresh_session.py", timeout=60)
+    if out:
+        summary["refresh"] = out.splitlines()[-1]
+    else:
+        summary["refresh"] = "(no output)"
+    if rc != 0:
         summary["ok"] = False
 
-    try:
-        r2 = subprocess.run(
-            ["uv", "run", "python", "ingest.py", "--days", "14"],
-            cwd=str(ROOT), capture_output=True, text=True, timeout=240,
-        )
-        # capture the last few summary lines from ingest output
-        lines = [l for l in r2.stdout.splitlines() if l.strip()]
-        summary["ingest"] = " · ".join(lines[-4:]) if lines else "(no output)"
-        if r2.returncode != 0:
-            summary["ok"] = False
-    except Exception as e:
-        summary["ingest"] = f"failed: {e}"
+    rc, out = run("ingest.py", "--days", "14", timeout=240)
+    if out:
+        lines = [l for l in out.splitlines() if l.strip()]
+        summary["ingest"] = " · ".join(lines[-4:])
+    else:
+        summary["ingest"] = "(no output)"
+    if rc != 0:
         summary["ok"] = False
 
     _SYNC_STATE["last_status"] = "ok" if summary["ok"] else "error"
