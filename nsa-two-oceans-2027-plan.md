@@ -362,6 +362,12 @@ Garmin sync + dashboard live in this repo. Everything is plain markdown — no D
 
 **Per-activity notes:** open the activity file and fill the HTML comments — `<!-- felt: -->`, `<!-- knee: -->`, `<!-- sub-threshold controlled? -->`. These survive re-syncs. Future you (and future LLM context) will thank you.
 
+**Calendar (Google Calendar subscription):**
+- `uv run python publish_calendar.py` — regenerates `plan.ics` and pushes to a secret gist that Google Calendar subscribes to.
+- Subscribe URL: `https://gist.githubusercontent.com/mmichelli/6ec7c4771ee58d0870b05a925bb54f43/raw/plan.ics`
+- In Google Calendar: Settings → Add calendar → From URL → paste. Re-publishing the gist auto-updates events (Google refreshes ~daily).
+- The Fenix doesn't surface generic calendar events, so structured Garmin workouts are TODO once daily sync is unblocked.
+
 ---
 
 ## Trust the structure
