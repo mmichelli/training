@@ -1037,7 +1037,7 @@ PAGE = Template(r"""<!doctype html>
     <header class="masthead">
       <div>
         <div class="brand">Two&nbsp;Oceans <em>&nbsp;·&nbsp;a&nbsp;log</em></div>
-        <div class="tagline">Norwegian Singles · Cape Town · 03 April 2027</div>
+        <div class="tagline">Porsgrunn &nbsp;&rarr;&nbsp; Cape Town &nbsp;·&nbsp; 56 K</div>
       </div>
       <div class="stamp">
         <span class="big">{{ today_long }}</span>
