@@ -135,6 +135,19 @@ def ingest_activities(g: Garmin, days: int, force: bool) -> int:
     return written
 
 
+def ingest_weight(g: Garmin) -> int:
+    """Pull all weigh-ins to date as a single file (small dataset)."""
+    end = date.today()
+    start = end - timedelta(days=5 * 365)
+    r = g.weight(start.isoformat(), end.isoformat())
+    if not r:
+        return 0
+    out = DATA / "weight"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "all.json").write_text(json.dumps(r, indent=2))
+    return len(r.get("dailyWeightSummaries") or [])
+
+
 def ingest_daily_streams(g: Garmin, days: int, force: bool) -> dict[str, int]:
     counts = {"hrv": 0, "stress": 0, "sleep": 0, "daily": 0}
     for d in daterange(days):
@@ -179,6 +192,9 @@ def main() -> int:
 
     n_act = ingest_activities(g, args.days, args.force)
     print(f"activities: {n_act} files written/updated")
+
+    n_w = ingest_weight(g)
+    print(f"weight: {n_w} weigh-ins")
 
     counts = ingest_daily_streams(g, args.days, args.force)
     for k, v in counts.items():

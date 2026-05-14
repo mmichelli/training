@@ -128,6 +128,31 @@ def load_daily_summaries() -> pd.DataFrame:
     return df
 
 
+def load_weight() -> pd.DataFrame:
+    p = DATA / "weight" / "all.json"
+    if not p.exists():
+        return pd.DataFrame()
+    try:
+        obj = json.loads(p.read_text())
+    except Exception:
+        return pd.DataFrame()
+    rows = []
+    for s in obj.get("dailyWeightSummaries") or []:
+        lw = s.get("latestWeight") or {}
+        if lw.get("weight") is None:
+            continue
+        rows.append({
+            "date": s["summaryDate"],
+            "kg": lw["weight"] / 1000.0,   # API returns grams
+            "source": lw.get("sourceType", ""),
+        })
+    df = pd.DataFrame(rows)
+    if df.empty:
+        return df
+    df["date"] = pd.to_datetime(df["date"])
+    return df.sort_values("date").reset_index(drop=True)
+
+
 def load_stress_summaries() -> pd.DataFrame:
     rows = []
     if not (DATA / "stress").exists():
@@ -221,6 +246,18 @@ def readiness_verdict() -> tuple[str, list[str]]:
                 red(f"RHR {int(last['rhr'])} · {delta:+.0f} vs baseline")
             elif delta > 3:
                 amber(f"RHR {int(last['rhr'])} · {delta:+.0f} vs baseline")
+
+    weight = load_weight()
+    if not weight.empty and len(weight) >= 2:
+        last = weight.iloc[-1]
+        for window_days, threshold, label in [(14, 2.0, "14d"), (30, 3.0, "30d")]:
+            cutoff = last["date"] - pd.Timedelta(days=window_days)
+            prior = weight[weight["date"] >= cutoff]
+            if len(prior) >= 2:
+                drop = prior["kg"].max() - last["kg"]
+                if drop >= threshold:
+                    amber(f"weight {last['kg']:.1f} kg · -{drop:.1f} kg in {label} (watch recovery)")
+                    break
 
     if not reasons:
         reasons.append("autonomic markers nominal · proceed as written")
@@ -325,6 +362,61 @@ def stress_chart() -> str:
     fig.update_layout(**chart_layout())
     fig.update_yaxes(title=dict(text="stress · 0-100", font=dict(size=10, color=INK_SOFT)))
     return chart_html(fig, "stress-chart")
+
+
+WEIGHT_GOAL_KG = 75.0
+
+
+def weight_chart() -> str:
+    df = load_weight()
+    if df.empty:
+        return "<div class='empty'>no weigh-ins yet</div>"
+    # Resample to daily, forward-fill, take 30-day rolling mean
+    s = df.set_index("date")["kg"].asfreq("D").ffill()
+    rolling = s.rolling(window=30, min_periods=3).mean()
+    # Overlay weekly training volume (h) on secondary axis if available
+    vol = weekly_volume()
+    fig = go.Figure()
+    fig.add_hrect(y0=WEIGHT_GOAL_KG - 0.5, y1=WEIGHT_GOAL_KG + 0.5,
+                  fillcolor="rgba(74,107,71,0.06)", line=dict(width=0),
+                  layer="below")
+    fig.add_hline(y=WEIGHT_GOAL_KG, line=dict(color=FOREST, width=1.2, dash="dash"),
+                  annotation_text=f"goal {WEIGHT_GOAL_KG:.0f} kg",
+                  annotation_position="bottom right",
+                  annotation=dict(font=dict(family="'IBM Plex Mono', monospace",
+                                            size=10, color=FOREST)))
+    fig.add_trace(go.Scatter(
+        x=df["date"], y=df["kg"], mode="markers",
+        marker=dict(size=6, color=INK, line=dict(color=PAPER, width=1)),
+        name="weigh-in",
+    ))
+    fig.add_trace(go.Scatter(
+        x=rolling.index, y=rolling.values, mode="lines",
+        line=dict(color=INK_SOFT, width=1.4),
+        name="30-d rolling",
+    ))
+    if not vol.empty:
+        fig.add_trace(go.Bar(
+            x=pd.to_datetime(vol["week"]), y=vol["actual_h"],
+            yaxis="y2", marker_color="rgba(28,31,42,0.10)",
+            marker_line=dict(width=0),
+            name="weekly volume",
+        ))
+    layout = chart_layout(height=280)
+    layout.update(
+        yaxis=dict(
+            **layout["yaxis"],
+            title=dict(text="kg", font=dict(size=10, color=INK_SOFT)),
+        ),
+        yaxis2=dict(
+            overlaying="y", side="right", showgrid=False,
+            tickfont=dict(size=10, color=INK_SOFT),
+            title=dict(text="h/wk", font=dict(size=10, color=INK_SOFT)),
+            linecolor="rgba(0,0,0,0)",
+        ),
+    )
+    fig.update_layout(**layout)
+    return chart_html(fig, "weight-chart")
 
 
 def volume_chart() -> str:
@@ -899,10 +991,19 @@ PAGE = Template(r"""<!doctype html>
         <div id="stress" hx-get="/api/stress" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
-      <section class="section span-3 data-card">
+      <section class="section span-2 data-card">
         <div class="section-head">
           <span class="roman">VII.</span>
-          <h2 class="label">Weekly volume · actual vs. prescribed</h2>
+          <h2 class="label">Weight · journey to 75 kg</h2>
+          <span class="section-meta">all-time</span>
+        </div>
+        <div id="weight" hx-get="/api/weight" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
+      <section class="section data-card">
+        <div class="section-head">
+          <span class="roman">VIII.</span>
+          <h2 class="label">Weekly volume</h2>
           <span class="section-meta">12 wk</span>
         </div>
         <div id="volume" hx-get="/api/volume" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
@@ -1081,6 +1182,30 @@ async def api_stress():
         stat_big=int(last["avg_stress"]), stat_unit="avg today",
         delta=f"peak {int(last['max_stress'])}" if pd.notna(last["max_stress"]) else "",
         delta_dir="flat", chart=stress_chart(),
+    )
+
+
+@app.get("/api/weight", response_class=HTMLResponse)
+async def api_weight():
+    df = load_weight()
+    if df.empty:
+        return CARD_WITH_STAT.render(stat_big="—", stat_unit="kg", chart=weight_chart())
+    last = df.iloc[-1]
+    to_goal = last["kg"] - WEIGHT_GOAL_KG
+    # Trend vs 90d
+    cutoff = last["date"] - pd.Timedelta(days=90)
+    prior90 = df[df["date"] >= cutoff]
+    delta_str = ""
+    delta_dir = "flat"
+    if len(prior90) >= 2:
+        d90 = last["kg"] - prior90.iloc[0]["kg"]
+        delta_dir = "down" if d90 <= 0 else "up"  # losing weight is good toward goal
+        delta_str = f"{d90:+.1f} kg / 90d"
+    return CARD_WITH_STAT.render(
+        stat_big=f"{last['kg']:.1f}",
+        stat_unit=f"kg · {to_goal:+.1f} kg to goal",
+        delta=delta_str, delta_dir=delta_dir,
+        chart=weight_chart(),
     )
 
 

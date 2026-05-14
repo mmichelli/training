@@ -121,10 +121,8 @@ class Garmin:
         )
 
     def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
-        return self.get(
-            "/gc-api/weight-service/weight/range",
-            startDate=start_ymd, endDate=end_ymd,
-        )
+        # Path-templated, not query — and the only weight endpoint that responds.
+        return self.get(f"/gc-api/weight-service/weight/range/{start_ymd}/{end_ymd}")
 
     def training_readiness(self, ymd: str) -> dict | None:
         return self.get(f"/gc-api/metrics-service/metrics/trainingreadiness/{ymd}")
