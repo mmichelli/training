@@ -5,7 +5,7 @@
 Out: Parry's phase structure with dedicated hill weeks and intensity blocks.
 In: NSA — sub-threshold quality 3× per week, every week, year-round.
 
-NSA is what Kristoffer Ingebrigtsen used to go from overweight 33-year-old to 1:15 half marathon in 18 months. His profile mirrors yours: full-time job, two young kids, renovating, history of getting hurt when he ran hard. The structure protects you from yourself.
+NSA is what Kristoffer Ingebrigtsen used to go from overweight 33-year-old to 1:15 half marathon in 18 months. Your situation rhymes with his — full-time job, kids, renovating, history of getting hurt when running hard — and you're doing it 14 years older than he was, so the case for never crossing into Z4 is even stronger for you than it was for him. The structure protects you from yourself.
 
 **Core rule of NSA: you never go hard.** Sub-threshold = top of Z3, never Z4. Every rep ends feeling like you could do another. Heart rate ceiling, treadmill pace ceiling, watch discipline. Going harder doesn't get you fitter; it gets you injured.
 
@@ -77,7 +77,7 @@ Starting from couch. No NSA work yet. No CrossFit. The goal of these 8 weeks is 
 - **Weeks 5–6 — add Gym B (second session). First continuous easy run in week 6.**
 - **Weeks 7–8 — both gyms running, easy runs replacing walk-jogs. Week 8 is a down-week before NSA introduction in week 9.**
 
-**Why this is slower than the original draft:** a deconditioned 33-year-old with a wonky knee needs a real ramp. Two gym sessions + four runs in week 1 is how people get hurt. Walking is doing real work in weeks 1–2 — aerobic base, soft-tissue prep, getting the joints used to load again. The gym shows up in week 3, second gym in week 5, CrossFit not until month 3+ at the earliest.
+**Why this is slower than the original draft:** a deconditioned 47-year-old with a wonky knee needs a real ramp. Two gym sessions + four runs in week 1 is how people get hurt. At 47, tendons take longer to remodel under new load, so the first two weeks are deliberately almost all walking — aerobic base, soft-tissue prep, joints relearning load. The gym shows up in week 3, second gym in week 5, CrossFit not until month 3+ at the earliest.
 
 | Wk | Sat session | Weekly target | Notes |
 |---|---|---|---|

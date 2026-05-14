@@ -6,7 +6,9 @@ This is the load-bearing doc. The plan, the dashboard, and the coach all derive 
 
 ## 1. The bet
 
-The bet is small and specific: **a deconditioned 33-year-old with a wonky knee, a full-time job, two young kids, and a renovation, can run a sub-7-hour Two Oceans Ultra in April 2027 by training year-round at sub-threshold intensity — never harder — and never missing more than one session in any seven-day window.**
+The bet is small and specific: **a deconditioned 47-year-old with a wonky knee, three kids, a full-time job, and a renovation in progress, can run a sub-7-hour Two Oceans Ultra in April 2027 by training year-round at sub-threshold intensity — never harder — and never missing more than one session in any seven-day window.**
+
+The age matters. Most "couch to ultra" plans were written for athletes in their 20s and 30s with intact tendons, a full night's sleep, and a calendar they own. None of that applies here. The Norwegian Singles Approach happens to be *better suited* to a 47-year-old than the periodized alternatives are — that's the argument that follows.
 
 Everything downstream is in service of that one bet.
 
@@ -23,7 +25,7 @@ What happens biologically at that intensity:
 - **Mitochondrial density and capillarization increase** without significant inflammatory cost. The body builds aerobic plumbing.
 - **Lactate clearance improves**. You're producing enough lactate to recruit the clearance machinery, but not enough to crush the legs.
 - **Fast-twitch fibers stay metabolically engaged**. They're recruited at LT1+ but not flogged.
-- **Recovery between sessions takes 24–36 hours, not 48–72**. This is what makes three quality sessions per week sustainable indefinitely.
+- **Recovery between sessions takes 24–36 hours, not 48–72**. This is what makes three quality sessions per week sustainable indefinitely — and at 47, the 48–72 hour recovery from threshold work would push you to one quality session per week, not three. The cumulative-adaptation math gets *worse* with age for periodized plans, *better* for NSA.
 
 Compare that to threshold (Z4) work, the traditional "tempo" zone:
 
@@ -131,10 +133,11 @@ This is the safety valve for everything the daily traffic-light misses. Cumulati
 
 These are facts about your life. The plan is designed around them, not against them.
 
+- **Age 47**: tendons regenerate slower than they used to. Recovery from any single hard session takes longer. The principle this drives: **never two consecutive hard days, ever**. The plan never schedules them. The amber/red traffic light catches when even one hard day shouldn't have been hard. At 47 the cost of one missed Sunday rule is bigger than it was at 33.
 - **Knee history**: every plan decision prefers caution over heroics. Hill work is dosed (every 3rd Saturday in build phases, not a full hill block). Treadmill is preferred over downhills in winter. Eccentric step-downs every gym session. Cadence target ≥170 spm — [the single highest-leverage intervention for knee load][4]; 5–10% above spontaneous cadence drops peak knee load by ~20%.
-- **Full-time job, 2 kids, renovation**: total weekly volume tops out at ~12 hours in peak weeks. Most weeks 6–10 hours. Sessions are 45–90 minutes except the Sunday long run. Quality is on weekdays, the long run is Sunday morning.
+- **Full-time job, three kids, renovation**: total weekly volume tops out at ~12 hours in peak weeks. Most weeks 6–10 hours. Sessions are 45–90 minutes except the Sunday long run. Quality is on weekdays, the long run is Sunday morning. Three kids means sleep continuity is fragile — the rolling 7-day sleep average is more honest than any single night, and the Sunday rule's first question (slept 7+ hours per night on average?) is doing more work than you'd think.
 - **Norwegian winter**: sub-threshold sessions can be 100% treadmill — pace control is the whole point of NSA, and the treadmill is *better* for that than icy outdoor work. Long runs go outdoor when conditions allow.
-- **Age 33, weight 86 → 75 kg**: gradual weight loss is part of the plan, not separate from it. Lose ~0.25 kg/wk for 44 weeks. Don't fuel below the work — under-fueling tanks HRV within days.
+- **Weight 86 → 75 kg**: gradual weight loss is part of the plan, not separate from it. Lose ~0.25 kg/wk for 44 weeks. Don't fuel below the work — under-fueling tanks HRV within days, and at 47 it tanks tendon repair too.
 
 ---
 
@@ -205,6 +208,6 @@ If something here looks like bro-science to you, the test is: can I find a peer-
 
 The principles I'm *least confident in*, and where I'd be glad to be corrected:
 
-- The HRV-guided literature is mostly trained cyclists and runners. Generalization to a 33-year-old reconditioning from couch is inference, not direct evidence.
+- The HRV-guided literature is mostly trained cyclists and runners in their 20s–30s. Generalization to a 47-year-old reconditioning from couch is inference, not direct evidence. The direction probably holds — autonomic signaling doesn't fundamentally change with age — but the specific thresholds (-3 ms weekly trend, etc.) were calibrated on younger cohorts.
 - The 0.25–0.5 kg/week weight-loss guideline for endurance athletes is consensus but not deeply RCT-validated.
 - Cadence work is well-supported, but my 170 spm floor is arbitrary within the "natural ±5%" window — your spontaneous cadence might be 165, in which case 170 is fine; if it's 180 the floor should be higher.
