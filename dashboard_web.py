@@ -289,7 +289,9 @@ def chart_layout(title: str | None = None, height: int = 240) -> dict:
 
 
 def chart_html(fig: go.Figure, div_id: str) -> str:
-    return fig.to_html(include_plotlyjs="cdn", div_id=div_id, full_html=False,
+    # Plotly is loaded once in the page <head>; don't bundle per-card or we
+    # race the CDN load against the inline newPlot call after HTMX swap.
+    return fig.to_html(include_plotlyjs=False, div_id=div_id, full_html=False,
                        config={"displayModeBar": False, "responsive": True})
 
 
@@ -445,10 +447,14 @@ PAGE = Template(r"""<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-3.5.0.min.js"></script>
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <script>
+    // HTMX strips <script> tags from swapped HTML — re-create them so
+    // Plotly.newPlot(...) inline scripts actually execute.
     document.addEventListener('htmx:afterSwap', (e) => {
       e.detail.target.querySelectorAll('script').forEach((old) => {
+        if (old.src && old.src.includes('plotly')) return; // already loaded in head
         const s = document.createElement('script');
         for (const a of old.attributes) s.setAttribute(a.name, a.value);
         s.textContent = old.textContent;
