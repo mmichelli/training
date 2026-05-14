@@ -5,7 +5,7 @@
 Out: Parry's phase structure with dedicated hill weeks and intensity blocks.
 In: NSA — sub-threshold quality 3× per week, every week, year-round.
 
-NSA is what Kristoffer Ingebrigtsen used to go from overweight 33-year-old to 1:15 half marathon in 18 months. Your situation rhymes with his — full-time job, kids, renovating, history of getting hurt when running hard — and you're doing it 14 years older than he was, so the case for never crossing into Z4 is even stronger for you than it was for him. The structure protects you from yourself.
+NSA is what Kristoffer Ingebrigtsen used to go from overweight 33-year-old to 1:15 half marathon in 18 months. Your situation rhymes with his — full-time job, kids, history of getting hurt when running hard — and you're doing it 14 years older than he was, so the case for never crossing into Z4 is even stronger for you than it was for him. The structure protects you from yourself.
 
 **Core rule of NSA: you never go hard.** Sub-threshold = top of Z3, never Z4. Every rep ends feeling like you could do another. Heart rate ceiling, treadmill pace ceiling, watch discipline. Going harder doesn't get you fitter; it gets you injured.
 
