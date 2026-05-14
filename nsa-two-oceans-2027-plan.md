@@ -349,6 +349,21 @@ The Parry tradition isn't wrong — it's just optimised for athletes who don't h
 
 ---
 
+## Tracking
+
+Garmin sync + dashboard live in this repo. Everything is plain markdown — no DB — so the data is readable by both you and any LLM you point at it.
+
+**Daily/weekly workflow:**
+1. After a run, watch syncs to Garmin Connect.
+2. `uv run python sync.py` — pulls new activities into `activities/YYYY-MM-DD-<type>-<id>.md`. Re-runs are idempotent and preserve any hand-written notes under the `## Notes` heading of each file.
+3. `uv run python dashboard.py` — regenerates `dashboard.md` with this-week vs. plan, an 8-week rolling volume table, recent quality sessions (with a flag if HR drifted above ~88% of observed max — i.e., you crossed into Z4), and the Sunday check-in scaffold.
+
+**Plan anchor:** `PLAN_START` in `dashboard.py` is the Monday of plan week 1. Update it once you commit to a start date; the dashboard derives the current plan week from there.
+
+**Per-activity notes:** open the activity file and fill the HTML comments — `<!-- felt: -->`, `<!-- knee: -->`, `<!-- sub-threshold controlled? -->`. These survive re-syncs. Future you (and future LLM context) will thank you.
+
+---
+
 ## Trust the structure
 
 If you find yourself, six months from now, feeling unsporty during the Tuesday session because it's "not hard enough" — that's the plan working. The hard sessions show up as more reps and longer reps, not as faster reps. Your race day pace is determined by the work you do on Sundays and Thursdays, not by how hard you breathed last Tuesday.

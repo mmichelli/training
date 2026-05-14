@@ -1,0 +1,11 @@
+[project]
+name = "training"
+version = "0.1.0"
+description = "Garmin sync + dashboard for NSA Two Oceans 2027 plan"
+requires-python = ">=3.11"
+dependencies = [
+    "garth>=0.5.0",
+]
+
+[tool.uv]
+package = false
