@@ -1343,7 +1343,9 @@ PAGE = Template(r"""<!doctype html>
           <h2 class="label">Today's session</h2>
           <span class="section-meta">field card</span>
         </div>
-        <div id="today" hx-get="/api/today" hx-trigger="load,refresh" hx-swap="innerHTML"</div>
+        <div id="today" hx-get="/api/today" hx-trigger="load,refresh" hx-swap="innerHTML">
+          <div class="text-zinc-500">loading…</div>
+        </div>
       </section>
 
       <section class="section">
