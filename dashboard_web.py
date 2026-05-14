@@ -13,10 +13,11 @@ from pathlib import Path
 
 import pandas as pd
 import plotly.graph_objects as go
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 from jinja2 import Template
 
+import checkin as C
 import features as F
 from plan_lookup import PLAN_START, WEEKLY_TOTAL, prescription_for
 
@@ -186,6 +187,38 @@ def weekly_volume() -> pd.DataFrame:
 
 
 # ─── Verdict ──────────────────────────────────────────────────────────────
+
+def signals_text() -> str:
+    """Compact text dump of latest signals — passed to coach.evaluate()."""
+    out = []
+    light, reasons = "—", []  # set below
+    light, reasons = readiness_verdict()
+    out.append(f"Readiness: {light.upper()}")
+    for r in reasons:
+        out.append(f"  · {r}")
+
+    hrv = load_hrv_summaries()
+    if not hrv.empty:
+        l = hrv.iloc[-1]
+        out.append(f"HRV last night {l['last_night_avg']:.0f} ms · 7d {l['weekly_avg']:.0f} ms · status {l['status']}")
+
+    rhr = load_daily_summaries()
+    if not rhr.empty:
+        l = rhr.iloc[-1]
+        out.append(f"RHR today {l['rhr']:.0f} · 7d {l['rhr_7d']:.0f}")
+
+    sleep = load_sleep_summaries()
+    if not sleep.empty:
+        wk = sleep.tail(7)["total_h"].mean()
+        out.append(f"Sleep last night {sleep.iloc[-1]['total_h']:.1f}h · 7d avg {wk:.1f}h")
+
+    weight = load_weight()
+    if not weight.empty:
+        l = weight.iloc[-1]
+        out.append(f"Weight {l['kg']:.1f} kg · to 75 kg: {l['kg']-75:+.1f} kg")
+
+    return "\n".join(out)
+
 
 def readiness_verdict() -> tuple[str, list[str]]:
     hrv = load_hrv_summaries()
@@ -1004,6 +1037,179 @@ PAGE = Template(r"""<!doctype html>
     }
     .milestone.a-race .m-countdown { color: var(--oxide); }
 
+    /* Check-in panel */
+    .checkin-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 36px;
+    }
+    @media (max-width: 880px) { .checkin-wrap { grid-template-columns: 1fr; gap: 24px; } }
+
+    .streak-tile {
+      background: var(--paper-deep);
+      border: 1px solid var(--ink);
+      padding: 22px 24px;
+      position: relative;
+    }
+    .streak-tile::before {
+      content: ''; position: absolute; top: -1px; left: -1px;
+      width: 14px; height: 14px; border: 1px solid var(--ink);
+      border-right: none; border-bottom: none; background: var(--paper);
+    }
+    .streak-num {
+      font-family: 'Fraunces', serif;
+      font-variation-settings: "opsz" 144;
+      font-weight: 600;
+      font-size: 72px;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .streak-num .green { color: var(--forest); }
+    .streak-label {
+      margin-top: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .streak-sub {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px dotted var(--rule);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-soft);
+    }
+    .streak-sub b {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .streak-checks {
+      margin-top: 14px;
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .streak-checks .week {
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      border: 1px solid var(--rule);
+      color: var(--ink-soft);
+    }
+    .streak-checks .week.green {
+      background: var(--forest); color: var(--paper); border-color: var(--forest);
+    }
+    .streak-checks .week.amber {
+      background: var(--ochre); color: var(--paper); border-color: var(--ochre);
+    }
+    .streak-checks .week.miss {
+      background: repeating-linear-gradient(135deg,
+        var(--paper) 0 3px, var(--rule) 3px 4px);
+    }
+
+    /* Form */
+    .checkin-form .q {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px dotted var(--rule);
+      font-size: 14px;
+    }
+    .checkin-form .toggles {
+      display: inline-flex; gap: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .checkin-form .toggles label {
+      cursor: pointer;
+      padding: 6px 14px;
+      border: 1px solid var(--rule);
+      border-right: none;
+      background: var(--paper);
+      color: var(--ink-soft);
+      user-select: none;
+    }
+    .checkin-form .toggles label:last-of-type { border-right: 1px solid var(--rule); }
+    .checkin-form .toggles input { display: none; }
+    .checkin-form .toggles input[value="yes"]:checked + label,
+    .checkin-form .toggles label:has(input[value="yes"]:checked) {
+      background: var(--forest); color: var(--paper); border-color: var(--forest);
+    }
+    .checkin-form .toggles input[value="no"]:checked + label,
+    .checkin-form .toggles label:has(input[value="no"]:checked) {
+      background: var(--oxide); color: var(--paper); border-color: var(--oxide);
+    }
+    .checkin-form textarea {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: var(--paper-deep);
+      border: 1px solid var(--rule);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 70px;
+    }
+    .checkin-form textarea:focus { outline: none; border-color: var(--ink); }
+    .checkin-form button.submit {
+      margin-top: 14px;
+      padding: 12px 24px;
+      background: var(--ink);
+      color: var(--paper);
+      border: 1px solid var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .checkin-form button.submit:hover { background: var(--oxide); border-color: var(--oxide); }
+    .checkin-form button.submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Verdict (after submit) */
+    .verdict-block {
+      padding: 18px 22px;
+      background: var(--paper-deep);
+      border-left: 3px solid var(--forest);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .verdict-block.down-week { border-left-color: var(--oxide); }
+    .verdict-block .head {
+      display: flex; gap: 12px; align-items: baseline;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dotted var(--rule);
+    }
+    .verdict-block .call {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .verdict-block .yes-count {
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
     /* Footer rule with coordinates */
     footer.coords {
       margin-top: 56px;
@@ -1090,6 +1296,16 @@ PAGE = Template(r"""<!doctype html>
         </div>
         <div id="readiness"
              hx-get="/api/readiness" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
+      <section class="section span-3">
+        <div class="section-head">
+          <span class="roman">II<sup>b</sup>.</span>
+          <h2 class="label">Sunday check-in &amp; streak</h2>
+          <span class="section-meta">principles §6</span>
+        </div>
+        <div id="checkin" hx-get="/api/checkin" hx-trigger="load,refresh"
+             hx-swap="innerHTML"></div>
       </section>
 
       <section class="section data-card">
@@ -1187,6 +1403,62 @@ READINESS_PARTIAL = Template("""
   <ul class="reasons">
     {% for r in reasons %}<li><span>{{ r }}</span></li>{% endfor %}
   </ul>
+</div>
+""")
+
+
+CHECKIN_PARTIAL = Template(r"""
+<div class="checkin-wrap">
+  <aside class="streak-tile">
+    <div class="streak-num"><span class="green">{{ green_streak }}</span></div>
+    <div class="streak-label">green weeks · in a row</div>
+    <div class="streak-checks">
+      {% for w in weeks_strip %}
+      <span class="week {{ w.cls }}" title="{{ w.title }}">{{ w.glyph }}</span>
+      {% endfor %}
+    </div>
+    <div class="streak-sub">
+      <span>submitted<br><b>{{ checkin_streak }} wk</b></span>
+      <span>this year<br><b>{{ total_green }} / {{ total_checkins }}</b></span>
+    </div>
+  </aside>
+  <div>
+    {% if today_record %}
+      <div class="verdict-block {% if today_record.result == 'down-week' %}down-week{% endif %}">
+        <div class="head">
+          <span class="call">
+            {% if today_record.result == 'down-week' %}Down-week ahead.
+            {% else %}Continue as written.{% endif %}
+          </span>
+          <span class="yes-count">{{ today_record.yes_count }} / 5 yes · week ending {{ today_record.week_ending }}</span>
+        </div>
+        <div>{{ today_record.ai_verdict }}</div>
+        <div style="margin-top:14px;">
+          <button class="submit"
+                  hx-get="/api/checkin?reopen=1"
+                  hx-target="#checkin" hx-swap="innerHTML">
+            ↻ revise
+          </button>
+        </div>
+      </div>
+    {% else %}
+      <form class="checkin-form"
+            hx-post="/api/checkin" hx-target="#checkin" hx-swap="innerHTML">
+        <input type="hidden" name="week_ending" value="{{ week_ending }}">
+        {% for key, q in questions %}
+        <div class="q">
+          <span>{{ q }}</span>
+          <span class="toggles">
+            <label><input type="radio" name="{{ key }}" value="yes" required>yes</label>
+            <label><input type="radio" name="{{ key }}" value="no">no</label>
+          </span>
+        </div>
+        {% endfor %}
+        <textarea name="notes" placeholder="anything else worth logging — knee, life stress, sleep nights, gut feel"></textarea>
+        <button class="submit" type="submit">submit · evaluate</button>
+      </form>
+    {% endif %}
+  </div>
 </div>
 """)
 
@@ -1407,6 +1679,67 @@ async def api_weight():
         delta=delta_str, delta_dir=delta_dir,
         chart=weight_chart(),
     )
+
+
+def _build_checkin_view(reopen: bool = False) -> str:
+    today = date.today()
+    week_ending = C.sunday_of(today)
+    if week_ending > today:
+        week_ending = C.previous_sunday(week_ending)
+    existing = C.load(week_ending)
+    s = C.streaks(today)
+
+    # Build 12-week strip visualization, oldest left, newest right
+    strip = []
+    cursor = week_ending
+    for _ in range(12):
+        rec = C.load(cursor)
+        if rec:
+            if rec.get("yes_count", 0) >= 3:
+                strip.append({"cls": "green", "glyph": "✓", "title": f"{cursor} · {rec['yes_count']}/5"})
+            else:
+                strip.append({"cls": "amber", "glyph": "△", "title": f"{cursor} · {rec['yes_count']}/5 → down-week"})
+        else:
+            strip.append({"cls": "miss", "glyph": " ", "title": f"{cursor} · no check-in"})
+        cursor = C.previous_sunday(cursor)
+    strip.reverse()
+
+    return CHECKIN_PARTIAL.render(
+        green_streak=s.green_streak,
+        checkin_streak=s.checkin_streak,
+        total_green=s.total_green,
+        total_checkins=s.total_checkins,
+        weeks_strip=strip,
+        today_record=existing if not reopen else None,
+        week_ending=week_ending.isoformat(),
+        questions=C.QUESTIONS,
+    )
+
+
+@app.get("/api/checkin", response_class=HTMLResponse)
+async def api_checkin_get(reopen: int = 0):
+    return _build_checkin_view(reopen=bool(reopen))
+
+
+@app.post("/api/checkin", response_class=HTMLResponse)
+async def api_checkin_post(
+    week_ending: str = Form(...),
+    sleep_7h: str = Form("no"),
+    knee_ok: str = Form("no"),
+    long_run_room: str = Form("no"),
+    both_gym_sessions: str = Form("no"),
+    subthreshold_controlled: str = Form("no"),
+    notes: str = Form(""),
+):
+    answers = {
+        "sleep_7h": sleep_7h == "yes",
+        "knee_ok": knee_ok == "yes",
+        "long_run_room": long_run_room == "yes",
+        "both_gym_sessions": both_gym_sessions == "yes",
+        "subthreshold_controlled": subthreshold_controlled == "yes",
+    }
+    C.submit(date.fromisoformat(week_ending), answers, notes, signals_text())
+    return _build_checkin_view()
 
 
 @app.get("/api/volume", response_class=HTMLResponse)
