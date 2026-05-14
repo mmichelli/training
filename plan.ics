@@ -1,0 +1,3321 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//training//NSA Two Oceans 2027//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:NSA Two Oceans 2027
+X-WR-TIMEZONE:Europe/Oslo
+BEGIN:VEVENT
+UID:to27-w01-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260511T173000
+DTEND:20260511T184500
+SUMMARY:W1 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 1 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 2.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w01-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260512T173000
+DTEND:20260512T184500
+SUMMARY:W1 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 1 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 2
+ .0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w01-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260513T120000
+DTEND:20260513T130000
+SUMMARY:W1 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 1 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 2.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w01-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260514T173000
+DTEND:20260514T184500
+SUMMARY:W1 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 1 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 2.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w01-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260516T090000
+DTEND:20260516T110000
+SUMMARY:W1 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 1 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 2.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w01-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260517T090000
+DTEND:20260517T130000
+SUMMARY:W1 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 1 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 2.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260518T173000
+DTEND:20260518T184500
+SUMMARY:W2 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 2 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260519T173000
+DTEND:20260519T184500
+SUMMARY:W2 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 2 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 2
+ .5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260520T120000
+DTEND:20260520T130000
+SUMMARY:W2 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 2 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260521T173000
+DTEND:20260521T184500
+SUMMARY:W2 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 2 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260523T090000
+DTEND:20260523T110000
+SUMMARY:W2 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 2 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w02-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260524T090000
+DTEND:20260524T130000
+SUMMARY:W2 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 2 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260525T173000
+DTEND:20260525T184500
+SUMMARY:W3 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 3 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 3.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260526T173000
+DTEND:20260526T184500
+SUMMARY:W3 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 3 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 3
+ .0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260527T120000
+DTEND:20260527T130000
+SUMMARY:W3 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 3 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 3.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260528T173000
+DTEND:20260528T184500
+SUMMARY:W3 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 3 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 3.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260530T090000
+DTEND:20260530T110000
+SUMMARY:W3 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 3 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 3.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w03-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260531T090000
+DTEND:20260531T130000
+SUMMARY:W3 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 3 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 3.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260601T173000
+DTEND:20260601T184500
+SUMMARY:W4 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 4 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260602T173000
+DTEND:20260602T184500
+SUMMARY:W4 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 4 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 2
+ .5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260603T120000
+DTEND:20260603T130000
+SUMMARY:W4 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 4 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260604T173000
+DTEND:20260604T184500
+SUMMARY:W4 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 4 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260606T090000
+DTEND:20260606T110000
+SUMMARY:W4 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 4 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w04-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260607T090000
+DTEND:20260607T130000
+SUMMARY:W4 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 4 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 2.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260608T173000
+DTEND:20260608T184500
+SUMMARY:W5 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 5 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260609T173000
+DTEND:20260609T184500
+SUMMARY:W5 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 5 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 3
+ .5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260610T120000
+DTEND:20260610T130000
+SUMMARY:W5 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 5 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260611T173000
+DTEND:20260611T184500
+SUMMARY:W5 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 5 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260613T090000
+DTEND:20260613T110000
+SUMMARY:W5 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 5 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w05-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260614T090000
+DTEND:20260614T130000
+SUMMARY:W5 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 5 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260615T173000
+DTEND:20260615T184500
+SUMMARY:W6 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 6 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 4.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260616T173000
+DTEND:20260616T184500
+SUMMARY:W6 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 6 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 4
+ .0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260617T120000
+DTEND:20260617T130000
+SUMMARY:W6 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 6 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 4.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260618T173000
+DTEND:20260618T184500
+SUMMARY:W6 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 6 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 4.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260620T090000
+DTEND:20260620T110000
+SUMMARY:W6 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 6 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 4.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w06-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260621T090000
+DTEND:20260621T130000
+SUMMARY:W6 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 6 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 4.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260622T173000
+DTEND:20260622T184500
+SUMMARY:W7 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 7 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 4.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260623T173000
+DTEND:20260623T184500
+SUMMARY:W7 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 7 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 4
+ .5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260624T120000
+DTEND:20260624T130000
+SUMMARY:W7 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 7 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 4.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260625T173000
+DTEND:20260625T184500
+SUMMARY:W7 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 7 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 4.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260627T090000
+DTEND:20260627T110000
+SUMMARY:W7 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 7 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 4.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w07-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260628T090000
+DTEND:20260628T130000
+SUMMARY:W7 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 7 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 4.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260629T173000
+DTEND:20260629T184500
+SUMMARY:W8 Mon: Gym A + 20–40 min run-walk
+DESCRIPTION:Plan week 8 · Mon\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym A + 20–40 min run-walk\nPurpose: Strength + 
+ easy aerobic\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260630T173000
+DTEND:20260630T184500
+SUMMARY:W8 Tue: 30–50 min Z2
+DESCRIPTION:Plan week 8 · Tue\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–50 min Z2\nPurpose: Aerobic\nWeekly target: 3
+ .5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260701T120000
+DTEND:20260701T130000
+SUMMARY:W8 Wed: Rest\, or 30 min easy + CrossFit (scaled)
+DESCRIPTION:Plan week 8 · Wed\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Rest\, or 30 min easy + CrossFit (scaled)\nPurpo
+ se: Recovery / cross-train\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260702T173000
+DTEND:20260702T184500
+SUMMARY:W8 Thu: Gym B + 30–50 min Z2
+DESCRIPTION:Plan week 8 · Thu\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Gym B + 30–50 min Z2\nPurpose: Strength + aerobi
+ c\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260704T090000
+DTEND:20260704T110000
+SUMMARY:W8 Sat: Long run-walk (Z2\, 9:1)
+DESCRIPTION:Plan week 8 · Sat\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: Long run-walk (Z2\, 9:1)\nPurpose: Endurance bas
+ e\nWeekly target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w08-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260705T090000
+DTEND:20260705T130000
+SUMMARY:W8 Sun: 30–45 min Z1 or hike
+DESCRIPTION:Plan week 8 · Sun\nPhase: Months 1–2 · weeks 1-8 · Reconditioni
+ ng + base intro\nSession: 30–45 min Z1 or hike\nPurpose: Recovery\nWeekly 
+ target: 3.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260706T173000
+DTEND:20260706T184500
+SUMMARY:W9 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 9 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeek
+ ly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260707T173000
+DTEND:20260707T184500
+SUMMARY:W9 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 9 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeek
+ ly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260708T120000
+DTEND:20260708T130000
+SUMMARY:W9 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 9 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose:
+  Aerobic + cross-train\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260709T173000
+DTEND:20260709T184500
+SUMMARY:W9 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 9 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose:
+  Threshold development\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260710T173000
+DTEND:20260710T184500
+SUMMARY:W9 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 9 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic 
+ + strength\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260711T090000
+DTEND:20260711T110000
+SUMMARY:W9 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 9 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aero
+ bic\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w09-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260712T090000
+DTEND:20260712T130000
+SUMMARY:W9 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 9 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introdu
+ ction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: End
+ urance\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260713T173000
+DTEND:20260713T184500
+SUMMARY:W10 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 10 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260714T173000
+DTEND:20260714T184500
+SUMMARY:W10 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 10 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260715T120000
+DTEND:20260715T130000
+SUMMARY:W10 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 10 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260716T173000
+DTEND:20260716T184500
+SUMMARY:W10 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 10 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260717T173000
+DTEND:20260717T184500
+SUMMARY:W10 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 10 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260718T090000
+DTEND:20260718T110000
+SUMMARY:W10 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 10 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w10-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260719T090000
+DTEND:20260719T130000
+SUMMARY:W10 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 10 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260720T173000
+DTEND:20260720T184500
+SUMMARY:W11 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 11 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260721T173000
+DTEND:20260721T184500
+SUMMARY:W11 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 11 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260722T120000
+DTEND:20260722T130000
+SUMMARY:W11 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 11 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260723T173000
+DTEND:20260723T184500
+SUMMARY:W11 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 11 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260724T173000
+DTEND:20260724T184500
+SUMMARY:W11 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 11 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260725T090000
+DTEND:20260725T110000
+SUMMARY:W11 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 11 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w11-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260726T090000
+DTEND:20260726T130000
+SUMMARY:W11 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 11 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260727T173000
+DTEND:20260727T184500
+SUMMARY:W12 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 12 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260728T173000
+DTEND:20260728T184500
+SUMMARY:W12 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 12 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260729T120000
+DTEND:20260729T130000
+SUMMARY:W12 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 12 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260730T173000
+DTEND:20260730T184500
+SUMMARY:W12 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 12 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260731T173000
+DTEND:20260731T184500
+SUMMARY:W12 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 12 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260801T090000
+DTEND:20260801T110000
+SUMMARY:W12 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 12 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w12-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260802T090000
+DTEND:20260802T130000
+SUMMARY:W12 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 12 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260803T173000
+DTEND:20260803T184500
+SUMMARY:W13 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 13 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260804T173000
+DTEND:20260804T184500
+SUMMARY:W13 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 13 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260805T120000
+DTEND:20260805T130000
+SUMMARY:W13 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 13 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260806T173000
+DTEND:20260806T184500
+SUMMARY:W13 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 13 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260807T173000
+DTEND:20260807T184500
+SUMMARY:W13 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 13 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260808T090000
+DTEND:20260808T110000
+SUMMARY:W13 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 13 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w13-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260809T090000
+DTEND:20260809T130000
+SUMMARY:W13 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 13 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260810T173000
+DTEND:20260810T184500
+SUMMARY:W14 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 14 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260811T173000
+DTEND:20260811T184500
+SUMMARY:W14 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 14 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260812T120000
+DTEND:20260812T130000
+SUMMARY:W14 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 14 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260813T173000
+DTEND:20260813T184500
+SUMMARY:W14 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 14 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260814T173000
+DTEND:20260814T184500
+SUMMARY:W14 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 14 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260815T090000
+DTEND:20260815T110000
+SUMMARY:W14 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 14 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w14-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260816T090000
+DTEND:20260816T130000
+SUMMARY:W14 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 14 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260817T173000
+DTEND:20260817T184500
+SUMMARY:W15 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 15 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260818T173000
+DTEND:20260818T184500
+SUMMARY:W15 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 15 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260819T120000
+DTEND:20260819T130000
+SUMMARY:W15 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 15 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260820T173000
+DTEND:20260820T184500
+SUMMARY:W15 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 15 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260821T173000
+DTEND:20260821T184500
+SUMMARY:W15 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 15 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260822T090000
+DTEND:20260822T110000
+SUMMARY:W15 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 15 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w15-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260823T090000
+DTEND:20260823T130000
+SUMMARY:W15 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 15 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260824T173000
+DTEND:20260824T184500
+SUMMARY:W16 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 16 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260825T173000
+DTEND:20260825T184500
+SUMMARY:W16 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 16 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260826T120000
+DTEND:20260826T130000
+SUMMARY:W16 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 16 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260827T173000
+DTEND:20260827T184500
+SUMMARY:W16 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 16 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260828T173000
+DTEND:20260828T184500
+SUMMARY:W16 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 16 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260829T090000
+DTEND:20260829T110000
+SUMMARY:W16 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 16 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w16-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260830T090000
+DTEND:20260830T130000
+SUMMARY:W16 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 16 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 5.8h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260831T173000
+DTEND:20260831T184500
+SUMMARY:W17 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 17 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260901T173000
+DTEND:20260901T184500
+SUMMARY:W17 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 17 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260902T120000
+DTEND:20260902T130000
+SUMMARY:W17 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 17 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260903T173000
+DTEND:20260903T184500
+SUMMARY:W17 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 17 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260904T173000
+DTEND:20260904T184500
+SUMMARY:W17 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 17 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260905T090000
+DTEND:20260905T110000
+SUMMARY:W17 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 17 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w17-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260906T090000
+DTEND:20260906T130000
+SUMMARY:W17 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 17 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260907T173000
+DTEND:20260907T184500
+SUMMARY:W18 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 18 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260908T173000
+DTEND:20260908T184500
+SUMMARY:W18 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 18 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260909T120000
+DTEND:20260909T130000
+SUMMARY:W18 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 18 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260910T173000
+DTEND:20260910T184500
+SUMMARY:W18 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 18 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260911T173000
+DTEND:20260911T184500
+SUMMARY:W18 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 18 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260912T090000
+DTEND:20260912T110000
+SUMMARY:W18 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 18 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w18-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260913T090000
+DTEND:20260913T130000
+SUMMARY:W18 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 18 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260914T173000
+DTEND:20260914T184500
+SUMMARY:W19 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 19 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260915T173000
+DTEND:20260915T184500
+SUMMARY:W19 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 19 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260916T120000
+DTEND:20260916T130000
+SUMMARY:W19 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 19 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260917T173000
+DTEND:20260917T184500
+SUMMARY:W19 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 19 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260918T173000
+DTEND:20260918T184500
+SUMMARY:W19 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 19 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260919T090000
+DTEND:20260919T110000
+SUMMARY:W19 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 19 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w19-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260920T090000
+DTEND:20260920T130000
+SUMMARY:W19 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 19 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260921T173000
+DTEND:20260921T184500
+SUMMARY:W20 Mon: Easy 50–60 min Z2
+DESCRIPTION:Plan week 20 · Mon\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260922T173000
+DTEND:20260922T184500
+SUMMARY:W20 Tue: Easy 50–60 min Z2
+DESCRIPTION:Plan week 20 · Tue\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWee
+ kly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260923T120000
+DTEND:20260923T130000
+SUMMARY:W20 Wed: Easy 40 min + CrossFit (scaled)
+DESCRIPTION:Plan week 20 · Wed\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40 min + CrossFit (scaled)\nPurpose
+ : Aerobic + cross-train\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260924T173000
+DTEND:20260924T184500
+SUMMARY:W20 Thu: SUB-THRESHOLD intervals + Gym B
+DESCRIPTION:Plan week 20 · Thu\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: SUB-THRESHOLD intervals + Gym B\nPurpose
+ : Threshold development\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260925T173000
+DTEND:20260925T184500
+SUMMARY:W20 Fri: Easy 40–50 min + Gym A
+DESCRIPTION:Plan week 20 · Fri\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 40–50 min + Gym A\nPurpose: Aerobic
+  + strength\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260926T090000
+DTEND:20260926T110000
+SUMMARY:W20 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 20 · Sat\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Easy 60–75 min OR long run\nPurpose: Aer
+ obic\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w20-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260927T090000
+DTEND:20260927T130000
+SUMMARY:W20 Sun: Long run Z2 (75 min → 2:30)
+DESCRIPTION:Plan week 20 · Sun\nPhase: Months 3–5 · weeks 9-20 · NSA introd
+ uction (1 quality / wk)\nSession: Long run Z2 (75 min → 2:30)\nPurpose: En
+ durance\nWeekly target: 6.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260928T173000
+DTEND:20260928T184500
+SUMMARY:W21 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 21 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260929T173000
+DTEND:20260929T184500
+SUMMARY:W21 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 21 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20260930T120000
+DTEND:20260930T130000
+SUMMARY:W21 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 21 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261001T173000
+DTEND:20261001T184500
+SUMMARY:W21 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 21 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261002T173000
+DTEND:20261002T184500
+SUMMARY:W21 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 21 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261003T090000
+DTEND:20261003T110000
+SUMMARY:W21 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 21 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w21-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261004T090000
+DTEND:20261004T130000
+SUMMARY:W21 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 21 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261005T173000
+DTEND:20261005T184500
+SUMMARY:W22 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 22 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261006T173000
+DTEND:20261006T184500
+SUMMARY:W22 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 22 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261007T120000
+DTEND:20261007T130000
+SUMMARY:W22 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 22 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261008T173000
+DTEND:20261008T184500
+SUMMARY:W22 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 22 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261009T173000
+DTEND:20261009T184500
+SUMMARY:W22 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 22 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261010T090000
+DTEND:20261010T110000
+SUMMARY:W22 Sat: HILL session (10×90s)
+DESCRIPTION:Plan week 22 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: HILL session (10×90s)\nPurpose: Quad insurance\
+ nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w22-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261011T090000
+DTEND:20261011T130000
+SUMMARY:W22 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 22 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261012T173000
+DTEND:20261012T184500
+SUMMARY:W23 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 23 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261013T173000
+DTEND:20261013T184500
+SUMMARY:W23 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 23 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261014T120000
+DTEND:20261014T130000
+SUMMARY:W23 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 23 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261015T173000
+DTEND:20261015T184500
+SUMMARY:W23 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 23 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261016T173000
+DTEND:20261016T184500
+SUMMARY:W23 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 23 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261017T090000
+DTEND:20261017T110000
+SUMMARY:W23 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 23 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w23-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261018T090000
+DTEND:20261018T130000
+SUMMARY:W23 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 23 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 8.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261019T173000
+DTEND:20261019T184500
+SUMMARY:W24 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 24 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261020T173000
+DTEND:20261020T184500
+SUMMARY:W24 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 24 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261021T120000
+DTEND:20261021T130000
+SUMMARY:W24 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 24 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261022T173000
+DTEND:20261022T184500
+SUMMARY:W24 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 24 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261023T173000
+DTEND:20261023T184500
+SUMMARY:W24 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 24 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261024T090000
+DTEND:20261024T110000
+SUMMARY:W24 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 24 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w24-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261025T090000
+DTEND:20261025T130000
+SUMMARY:W24 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 24 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 6.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261026T173000
+DTEND:20261026T184500
+SUMMARY:W25 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 25 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261027T173000
+DTEND:20261027T184500
+SUMMARY:W25 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 25 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261028T120000
+DTEND:20261028T130000
+SUMMARY:W25 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 25 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261029T173000
+DTEND:20261029T184500
+SUMMARY:W25 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 25 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261030T173000
+DTEND:20261030T184500
+SUMMARY:W25 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 25 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261031T090000
+DTEND:20261031T110000
+SUMMARY:W25 Sat: HILL session (10×90s)
+DESCRIPTION:Plan week 25 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: HILL session (10×90s)\nPurpose: Quad insurance\
+ nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w25-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261101T090000
+DTEND:20261101T130000
+SUMMARY:W25 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 25 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261102T173000
+DTEND:20261102T184500
+SUMMARY:W26 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 26 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261103T173000
+DTEND:20261103T184500
+SUMMARY:W26 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 26 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261104T120000
+DTEND:20261104T130000
+SUMMARY:W26 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 26 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261105T173000
+DTEND:20261105T184500
+SUMMARY:W26 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 26 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261106T173000
+DTEND:20261106T184500
+SUMMARY:W26 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 26 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261107T090000
+DTEND:20261107T110000
+SUMMARY:W26 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 26 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w26-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261108T090000
+DTEND:20261108T130000
+SUMMARY:W26 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 26 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261109T173000
+DTEND:20261109T184500
+SUMMARY:W27 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 27 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261110T173000
+DTEND:20261110T184500
+SUMMARY:W27 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 27 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261111T120000
+DTEND:20261111T130000
+SUMMARY:W27 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 27 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261112T173000
+DTEND:20261112T184500
+SUMMARY:W27 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 27 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261113T173000
+DTEND:20261113T184500
+SUMMARY:W27 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 27 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261114T090000
+DTEND:20261114T110000
+SUMMARY:W27 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 27 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w27-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261115T090000
+DTEND:20261115T130000
+SUMMARY:W27 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 27 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 9.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261116T173000
+DTEND:20261116T184500
+SUMMARY:W28 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 28 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261117T173000
+DTEND:20261117T184500
+SUMMARY:W28 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 28 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261118T120000
+DTEND:20261118T130000
+SUMMARY:W28 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 28 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261119T173000
+DTEND:20261119T184500
+SUMMARY:W28 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 28 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261120T173000
+DTEND:20261120T184500
+SUMMARY:W28 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 28 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261121T090000
+DTEND:20261121T110000
+SUMMARY:W28 Sat: HILL session (10×90s)
+DESCRIPTION:Plan week 28 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: HILL session (10×90s)\nPurpose: Quad insurance\
+ nWeekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w28-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261122T090000
+DTEND:20261122T130000
+SUMMARY:W28 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 28 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 7.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261123T173000
+DTEND:20261123T184500
+SUMMARY:W29 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 29 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261124T173000
+DTEND:20261124T184500
+SUMMARY:W29 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 29 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261125T120000
+DTEND:20261125T130000
+SUMMARY:W29 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 29 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261126T173000
+DTEND:20261126T184500
+SUMMARY:W29 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 29 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261127T173000
+DTEND:20261127T184500
+SUMMARY:W29 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 29 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261128T090000
+DTEND:20261128T110000
+SUMMARY:W29 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 29 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w29-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261129T090000
+DTEND:20261129T130000
+SUMMARY:W29 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 29 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261130T173000
+DTEND:20261130T184500
+SUMMARY:W30 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 30 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261201T173000
+DTEND:20261201T184500
+SUMMARY:W30 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 30 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261202T120000
+DTEND:20261202T130000
+SUMMARY:W30 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 30 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261203T173000
+DTEND:20261203T184500
+SUMMARY:W30 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 30 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261204T173000
+DTEND:20261204T184500
+SUMMARY:W30 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 30 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261205T090000
+DTEND:20261205T110000
+SUMMARY:W30 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 30 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w30-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261206T090000
+DTEND:20261206T130000
+SUMMARY:W30 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 30 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261207T173000
+DTEND:20261207T184500
+SUMMARY:W31 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 31 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261208T173000
+DTEND:20261208T184500
+SUMMARY:W31 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 31 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261209T120000
+DTEND:20261209T130000
+SUMMARY:W31 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 31 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261210T173000
+DTEND:20261210T184500
+SUMMARY:W31 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 31 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261211T173000
+DTEND:20261211T184500
+SUMMARY:W31 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 31 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261212T090000
+DTEND:20261212T110000
+SUMMARY:W31 Sat: HILL session (10×90s)
+DESCRIPTION:Plan week 31 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: HILL session (10×90s)\nPurpose: Quad insurance\
+ nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w31-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261213T090000
+DTEND:20261213T130000
+SUMMARY:W31 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 31 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261214T173000
+DTEND:20261214T184500
+SUMMARY:W32 Mon: Easy 60 min Z2
+DESCRIPTION:Plan week 32 · Mon\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60 min Z2\nPurpose: Aerobic\nWeekly target
+ : 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261215T173000
+DTEND:20261215T184500
+SUMMARY:W32 Tue: SUB-THRESHOLD short reps + Gym A
+DESCRIPTION:Plan week 32 · Tue\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD short reps + Gym A\nPurpose: Thre
+ shold (short)\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261216T120000
+DTEND:20261216T130000
+SUMMARY:W32 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 32 · Wed\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic + cross-train\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261217T173000
+DTEND:20261217T184500
+SUMMARY:W32 Thu: SUB-THRESHOLD medium reps + Gym B
+DESCRIPTION:Plan week 32 · Thu\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: SUB-THRESHOLD medium reps + Gym B\nPurpose: Thr
+ eshold (medium)\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261218T173000
+DTEND:20261218T184500
+SUMMARY:W32 Fri: Easy 50–60 min Z2
+DESCRIPTION:Plan week 32 · Fri\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 50–60 min Z2\nPurpose: Aerobic\nWeekly tar
+ get: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261219T090000
+DTEND:20261219T110000
+SUMMARY:W32 Sat: Easy 60–75 min
+DESCRIPTION:Plan week 32 · Sat\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Easy 60–75 min\nPurpose: Aerobic\nWeekly target
+ : 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w32-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261220T090000
+DTEND:20261220T130000
+SUMMARY:W32 Sun: Long run Z2 (2:30 → 3:30)
+DESCRIPTION:Plan week 32 · Sun\nPhase: Months 6–8 · weeks 21-32 · Full NSA 
+ + hill insurance\nSession: Long run Z2 (2:30 → 3:30)\nPurpose: Endurance\n
+ Weekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261221T173000
+DTEND:20261221T184500
+SUMMARY:W33 Mon: Easy 60 min
+DESCRIPTION:Plan week 33 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 1
+ 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261222T173000
+DTEND:20261222T184500
+SUMMARY:W33 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 33 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261223T120000
+DTEND:20261223T130000
+SUMMARY:W33 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 33 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261224T173000
+DTEND:20261224T184500
+SUMMARY:W33 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 33 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261225T173000
+DTEND:20261225T184500
+SUMMARY:W33 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 33 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261226T090000
+DTEND:20261226T110000
+SUMMARY:W33 Sat: Long run
+DESCRIPTION:Plan week 33 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w33-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261227T090000
+DTEND:20261227T130000
+SUMMARY:W33 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 33 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 10.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261228T173000
+DTEND:20261228T184500
+SUMMARY:W34 Mon: Easy 60 min
+DESCRIPTION:Plan week 34 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 1
+ 0.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261229T173000
+DTEND:20261229T184500
+SUMMARY:W34 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 34 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261230T120000
+DTEND:20261230T130000
+SUMMARY:W34 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 34 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20261231T173000
+DTEND:20261231T184500
+SUMMARY:W34 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 34 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270101T173000
+DTEND:20270101T184500
+SUMMARY:W34 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 34 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270102T090000
+DTEND:20270102T110000
+SUMMARY:W34 Sat: Long run
+DESCRIPTION:Plan week 34 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w34-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270103T090000
+DTEND:20270103T130000
+SUMMARY:W34 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 34 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270104T173000
+DTEND:20270104T184500
+SUMMARY:W35 Mon: Easy 60 min
+DESCRIPTION:Plan week 35 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 1
+ 0.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270105T173000
+DTEND:20270105T184500
+SUMMARY:W35 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 35 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270106T120000
+DTEND:20270106T130000
+SUMMARY:W35 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 35 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270107T173000
+DTEND:20270107T184500
+SUMMARY:W35 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 35 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270108T173000
+DTEND:20270108T184500
+SUMMARY:W35 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 35 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270109T090000
+DTEND:20270109T110000
+SUMMARY:W35 Sat: Long run
+DESCRIPTION:Plan week 35 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w35-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270110T090000
+DTEND:20270110T130000
+SUMMARY:W35 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 35 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 10.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270111T173000
+DTEND:20270111T184500
+SUMMARY:W36 Mon: Easy 60 min
+DESCRIPTION:Plan week 36 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 8
+ .0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270112T173000
+DTEND:20270112T184500
+SUMMARY:W36 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 36 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270113T120000
+DTEND:20270113T130000
+SUMMARY:W36 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 36 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270114T173000
+DTEND:20270114T184500
+SUMMARY:W36 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 36 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270115T173000
+DTEND:20270115T184500
+SUMMARY:W36 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 36 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270116T090000
+DTEND:20270116T110000
+SUMMARY:W36 Sat: Long run
+DESCRIPTION:Plan week 36 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w36-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270117T090000
+DTEND:20270117T130000
+SUMMARY:W36 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 36 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270118T173000
+DTEND:20270118T184500
+SUMMARY:W37 Mon: Easy 60 min
+DESCRIPTION:Plan week 37 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 1
+ 1.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270119T173000
+DTEND:20270119T184500
+SUMMARY:W37 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 37 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270120T120000
+DTEND:20270120T130000
+SUMMARY:W37 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 37 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270121T173000
+DTEND:20270121T184500
+SUMMARY:W37 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 37 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270122T173000
+DTEND:20270122T184500
+SUMMARY:W37 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 37 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270123T090000
+DTEND:20270123T110000
+SUMMARY:W37 Sat: Long run
+DESCRIPTION:Plan week 37 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w37-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270124T090000
+DTEND:20270124T130000
+SUMMARY:W37 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 37 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270125T173000
+DTEND:20270125T184500
+SUMMARY:W38 Mon: Easy 60 min
+DESCRIPTION:Plan week 38 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 1
+ 1.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270126T173000
+DTEND:20270126T184500
+SUMMARY:W38 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 38 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270127T120000
+DTEND:20270127T130000
+SUMMARY:W38 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 38 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270128T173000
+DTEND:20270128T184500
+SUMMARY:W38 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 38 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270129T173000
+DTEND:20270129T184500
+SUMMARY:W38 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 38 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270130T090000
+DTEND:20270130T110000
+SUMMARY:W38 Sat: Long run
+DESCRIPTION:Plan week 38 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w38-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270131T090000
+DTEND:20270131T130000
+SUMMARY:W38 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 38 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 11.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270201T173000
+DTEND:20270201T184500
+SUMMARY:W39 Mon: Easy 60 min
+DESCRIPTION:Plan week 39 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target: 8
+ .0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270202T173000
+DTEND:20270202T184500
+SUMMARY:W39 Tue: SUB-THRESHOLD long reps (2000–3000m)
+DESCRIPTION:Plan week 39 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD long reps (2000–3000m)\nPurpose: 
+ Threshold (long)\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270203T120000
+DTEND:20270203T130000
+SUMMARY:W39 Wed: Easy 50 min + CrossFit (scaled)
+DESCRIPTION:Plan week 39 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50 min + CrossFit (scaled)\nPurpose: Aerob
+ ic\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270204T173000
+DTEND:20270204T184500
+SUMMARY:W39 Thu: SUB-THRESHOLD continuous tempo (10→40 min)
+DESCRIPTION:Plan week 39 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SUB-THRESHOLD continuous tempo (10→40 min)\nPur
+ pose: Marathon-specific\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270205T173000
+DTEND:20270205T184500
+SUMMARY:W39 Fri: Easy 50–60 min + Gym
+DESCRIPTION:Plan week 39 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Easy 50–60 min + Gym\nPurpose: Aerobic + streng
+ th\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270206T090000
+DTEND:20270206T110000
+SUMMARY:W39 Sat: Long run
+DESCRIPTION:Plan week 39 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run OR hill session (every 3rd wk)\nPurpos
+ e: Endurance / quads\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w39-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270207T090000
+DTEND:20270207T130000
+SUMMARY:W39 Sun: Long run Z2 (3:30 → 4:00)
+DESCRIPTION:Plan week 39 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: Long run Z2 (3:30 → 4:00)\nPurpose: Endurance\n
+ Weekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270208T173000
+DTEND:20270208T184500
+SUMMARY:W40 Mon: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Mon\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270209T173000
+DTEND:20270209T184500
+SUMMARY:W40 Tue: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Tue\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270210T120000
+DTEND:20270210T130000
+SUMMARY:W40 Wed: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Wed\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270211T173000
+DTEND:20270211T184500
+SUMMARY:W40 Thu: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Thu\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270212T173000
+DTEND:20270212T184500
+SUMMARY:W40 Fri: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Fri\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270213T090000
+DTEND:20270213T110000
+SUMMARY:W40 Sat: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Sat\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w40-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270214T090000
+DTEND:20270214T130000
+SUMMARY:W40 Sun: SEVILLA MARATHON week — taper + race Sun
+DESCRIPTION:Plan week 40 · Sun\nPhase: Months 9–10 · weeks 33-40 · Marathon
+  build → Sevilla\nSession: SEVILLA MARATHON week — taper + race Sun\nPurpo
+ se: Qualifier\nWeekly target: 0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270215T173000
+DTEND:20270215T184500
+SUMMARY:W41 Mon: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Mon\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270216T173000
+DTEND:20270216T184500
+SUMMARY:W41 Tue: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Tue\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270217T120000
+DTEND:20270217T130000
+SUMMARY:W41 Wed: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Wed\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270218T173000
+DTEND:20270218T184500
+SUMMARY:W41 Thu: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Thu\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270219T173000
+DTEND:20270219T184500
+SUMMARY:W41 Fri: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Fri\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270220T090000
+DTEND:20270220T110000
+SUMMARY:W41 Sat: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Sat\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w41-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270221T090000
+DTEND:20270221T130000
+SUMMARY:W41 Sun: Recovery week — walk\, mobility\, light gym
+DESCRIPTION:Plan week 41 · Sun\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Recovery week — walk\, mobility\, ligh
+ t gym\nPurpose: Post-marathon recovery\nWeekly target: 5.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270222T173000
+DTEND:20270222T184500
+SUMMARY:W42 Mon: Easy 60 min
+DESCRIPTION:Plan week 42 · Mon\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly 
+ target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270223T173000
+DTEND:20270223T184500
+SUMMARY:W42 Tue: SUB-THRESHOLD medium reps
+DESCRIPTION:Plan week 42 · Tue\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: SUB-THRESHOLD medium reps\nPurpose: Th
+ reshold\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270224T120000
+DTEND:20270224T130000
+SUMMARY:W42 Wed: Easy 60 min + CrossFit (no leg killers)
+DESCRIPTION:Plan week 42 · Wed\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + CrossFit (no leg killers
+ )\nPurpose: Aerobic\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270225T173000
+DTEND:20270225T184500
+SUMMARY:W42 Thu: HILL session — Constantia simulation
+DESCRIPTION:Plan week 42 · Thu\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: HILL session — Constantia simulation\n
+ Purpose: Climbing-specific\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270226T173000
+DTEND:20270226T184500
+SUMMARY:W42 Fri: Easy 60 min + Gym (lighter)
+DESCRIPTION:Plan week 42 · Fri\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + Gym (lighter)\nPurpose: 
+ Aerobic + strength\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270227T090000
+DTEND:20270227T110000
+SUMMARY:W42 Sat: Long run (3:00 → 4:00)
+DESCRIPTION:Plan week 42 · Sat\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Long run (3:00 → 4:00)\nPurpose: Endur
+ ance\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w42-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270228T090000
+DTEND:20270228T130000
+SUMMARY:W42 Sun: B2B medium-long (1:30 → 2:30)
+DESCRIPTION:Plan week 42 · Sun\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: B2B medium-long (1:30 → 2:30)\nPurpose
+ : Back-to-back endurance\nWeekly target: 8.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270301T173000
+DTEND:20270301T184500
+SUMMARY:W43 Mon: Easy 60 min
+DESCRIPTION:Plan week 43 · Mon\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly 
+ target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270302T173000
+DTEND:20270302T184500
+SUMMARY:W43 Tue: SUB-THRESHOLD medium reps
+DESCRIPTION:Plan week 43 · Tue\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: SUB-THRESHOLD medium reps\nPurpose: Th
+ reshold\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270303T120000
+DTEND:20270303T130000
+SUMMARY:W43 Wed: Easy 60 min + CrossFit (no leg killers)
+DESCRIPTION:Plan week 43 · Wed\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + CrossFit (no leg killers
+ )\nPurpose: Aerobic\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270304T173000
+DTEND:20270304T184500
+SUMMARY:W43 Thu: HILL session — Constantia simulation
+DESCRIPTION:Plan week 43 · Thu\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: HILL session — Constantia simulation\n
+ Purpose: Climbing-specific\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270305T173000
+DTEND:20270305T184500
+SUMMARY:W43 Fri: Easy 60 min + Gym (lighter)
+DESCRIPTION:Plan week 43 · Fri\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + Gym (lighter)\nPurpose: 
+ Aerobic + strength\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270306T090000
+DTEND:20270306T110000
+SUMMARY:W43 Sat: Long run (3:00 → 4:00)
+DESCRIPTION:Plan week 43 · Sat\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Long run (3:00 → 4:00)\nPurpose: Endur
+ ance\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w43-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270307T090000
+DTEND:20270307T130000
+SUMMARY:W43 Sun: B2B medium-long (1:30 → 2:30)
+DESCRIPTION:Plan week 43 · Sun\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: B2B medium-long (1:30 → 2:30)\nPurpose
+ : Back-to-back endurance\nWeekly target: 9.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270308T173000
+DTEND:20270308T184500
+SUMMARY:W44 Mon: Easy 60 min
+DESCRIPTION:Plan week 44 · Mon\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly 
+ target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270309T173000
+DTEND:20270309T184500
+SUMMARY:W44 Tue: SUB-THRESHOLD medium reps
+DESCRIPTION:Plan week 44 · Tue\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: SUB-THRESHOLD medium reps\nPurpose: Th
+ reshold\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270310T120000
+DTEND:20270310T130000
+SUMMARY:W44 Wed: Easy 60 min + CrossFit (no leg killers)
+DESCRIPTION:Plan week 44 · Wed\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + CrossFit (no leg killers
+ )\nPurpose: Aerobic\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270311T173000
+DTEND:20270311T184500
+SUMMARY:W44 Thu: HILL session — Constantia simulation
+DESCRIPTION:Plan week 44 · Thu\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: HILL session — Constantia simulation\n
+ Purpose: Climbing-specific\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270312T173000
+DTEND:20270312T184500
+SUMMARY:W44 Fri: Easy 60 min + Gym (lighter)
+DESCRIPTION:Plan week 44 · Fri\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Easy 60 min + Gym (lighter)\nPurpose: 
+ Aerobic + strength\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270313T090000
+DTEND:20270313T110000
+SUMMARY:W44 Sat: Long run (3:00 → 4:00)
+DESCRIPTION:Plan week 44 · Sat\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: Long run (3:00 → 4:00)\nPurpose: Endur
+ ance\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w44-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270314T090000
+DTEND:20270314T130000
+SUMMARY:W44 Sun: B2B medium-long (1:30 → 2:30)
+DESCRIPTION:Plan week 44 · Sun\nPhase: Months 11–11 · weeks 41-44 · Recover
+ y + ultra-specific bridge\nSession: B2B medium-long (1:30 → 2:30)\nPurpose
+ : Back-to-back endurance\nWeekly target: 11.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270315T173000
+DTEND:20270315T184500
+SUMMARY:W45 Mon: Easy 60 min
+DESCRIPTION:Plan week 45 · Mon\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 60 min\nPurpose: Aerobic\nWeekly target
+ : 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270316T173000
+DTEND:20270316T184500
+SUMMARY:W45 Tue: 4×1500m sub-threshold
+DESCRIPTION:Plan week 45 · Tue\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 4×1500m sub-threshold\nPurpose: Peak thresho
+ ld\nWeekly target: 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270317T120000
+DTEND:20270317T130000
+SUMMARY:W45 Wed: Easy + CrossFit (scaled)
+DESCRIPTION:Plan week 45 · Wed\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy + CrossFit (scaled)\nPurpose: Aerobic\n
+ Weekly target: 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270318T173000
+DTEND:20270318T184500
+SUMMARY:W45 Thu: HILL: 4×1km uphill
+DESCRIPTION:Plan week 45 · Thu\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: HILL: 4×1km uphill\nPurpose: Climbing\nWeekl
+ y target: 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270319T173000
+DTEND:20270319T184500
+SUMMARY:W45 Fri: Easy 50 min
+DESCRIPTION:Plan week 45 · Fri\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 50 min\nPurpose: Aerobic\nWeekly target
+ : 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270320T090000
+DTEND:20270320T110000
+SUMMARY:W45 Sat: 4:30 long\, last 45 min @ race effort
+DESCRIPTION:Plan week 45 · Sat\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 4:30 long\, last 45 min @ race effort\nPurpo
+ se: Race-specific peak\nWeekly target: 12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w45-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270321T090000
+DTEND:20270321T130000
+SUMMARY:W45 Sun: 2:30 B2B
+DESCRIPTION:Plan week 45 · Sun\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 2:30 B2B\nPurpose: Endurance\nWeekly target:
+  12.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270322T173000
+DTEND:20270322T184500
+SUMMARY:W46 Mon: Easy 45 min
+DESCRIPTION:Plan week 46 · Mon\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 45 min\nPurpose: Taper\nWeekly target: 
+ 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270323T173000
+DTEND:20270323T184500
+SUMMARY:W46 Tue: Sub-threshold light
+DESCRIPTION:Plan week 46 · Tue\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Sub-threshold light\nPurpose: Maintenance\nW
+ eekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270324T120000
+DTEND:20270324T130000
+SUMMARY:W46 Wed: Easy + sauna 25–30 min
+DESCRIPTION:Plan week 46 · Wed\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy + sauna 25–30 min\nPurpose: Heat adapta
+ tion start\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270325T173000
+DTEND:20270325T184500
+SUMMARY:W46 Thu: Easy + sauna
+DESCRIPTION:Plan week 46 · Thu\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy + sauna\nPurpose: Heat\nWeekly target: 
+ 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270326T173000
+DTEND:20270326T184500
+SUMMARY:W46 Fri: Easy + sauna
+DESCRIPTION:Plan week 46 · Fri\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy + sauna\nPurpose: Heat\nWeekly target: 
+ 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270327T090000
+DTEND:20270327T110000
+SUMMARY:W46 Sat: 2:30\, 45 min @ TO goal pace (7:00–7:15/km)
+DESCRIPTION:Plan week 46 · Sat\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 2:30\, 45 min @ TO goal pace (7:00–7:15/km)\
+ nPurpose: Goal-pace rehearsal\nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w46-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270328T090000
+DTEND:20270328T130000
+SUMMARY:W46 Sun: 1:30 easy + sauna
+DESCRIPTION:Plan week 46 · Sun\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 1:30 easy + sauna\nPurpose: Endurance + heat
+ \nWeekly target: 7.5h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270329T173000
+DTEND:20270329T184500
+SUMMARY:W47 Mon: Easy 45 min + sauna
+DESCRIPTION:Plan week 47 · Mon\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 45 min + sauna\nPurpose: Travel taper\n
+ Weekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270330T173000
+DTEND:20270330T184500
+SUMMARY:W47 Tue: 4×1km @ TO goal pace + sauna
+DESCRIPTION:Plan week 47 · Tue\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: 4×1km @ TO goal pace + sauna\nPurpose: Pace 
+ rehearsal\nWeekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270331T120000
+DTEND:20270331T130000
+SUMMARY:W47 Wed: Easy 30 min\, TRAVEL TO CAPE TOWN
+DESCRIPTION:Plan week 47 · Wed\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 30 min\, TRAVEL TO CAPE TOWN\nPurpose: 
+ Travel\nWeekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270401T173000
+DTEND:20270401T184500
+SUMMARY:W47 Thu: Easy 30 min Newlands + 4×100m strides
+DESCRIPTION:Plan week 47 · Thu\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 30 min Newlands + 4×100m strides\nPurpo
+ se: Shake out\nWeekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270402T173000
+DTEND:20270402T184500
+SUMMARY:W47 Fri: Easy 20 min\, expo\, bib pickup
+DESCRIPTION:Plan week 47 · Fri\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Easy 20 min\, expo\, bib pickup\nPurpose: Pr
+ e-race\nWeekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270403T090000
+DTEND:20270403T110000
+SUMMARY:W47 Sat: RACE — TWO OCEANS ULTRA 56K
+DESCRIPTION:Plan week 47 · Sat\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: RACE — TWO OCEANS ULTRA 56K\nPurpose: A-RACE
+ \nWeekly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w47-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270404T090000
+DTEND:20270404T130000
+SUMMARY:W47 Sun: Recovery walk\, beer
+DESCRIPTION:Plan week 47 · Sun\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery walk\, beer\nPurpose: Recovery\nWee
+ kly target: 5.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-mon@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270405T173000
+DTEND:20270405T184500
+SUMMARY:W48 Mon: Recovery
+DESCRIPTION:Plan week 48 · Mon\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-tue@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270406T173000
+DTEND:20270406T184500
+SUMMARY:W48 Tue: Recovery
+DESCRIPTION:Plan week 48 · Tue\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-wed@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270407T120000
+DTEND:20270407T130000
+SUMMARY:W48 Wed: Recovery
+DESCRIPTION:Plan week 48 · Wed\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-thu@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270408T173000
+DTEND:20270408T184500
+SUMMARY:W48 Thu: Recovery
+DESCRIPTION:Plan week 48 · Thu\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-fri@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270409T173000
+DTEND:20270409T184500
+SUMMARY:W48 Fri: Recovery
+DESCRIPTION:Plan week 48 · Fri\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-sat@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270410T090000
+DTEND:20270410T110000
+SUMMARY:W48 Sat: Recovery
+DESCRIPTION:Plan week 48 · Sat\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-w48-sun@training
+DTSTAMP:20260514T090748Z
+DTSTART:20270411T090000
+DTEND:20270411T130000
+SUMMARY:W48 Sun: Recovery
+DESCRIPTION:Plan week 48 · Sun\nPhase: Months 12–12 · weeks 45-48 · Peak\, 
+ taper\, heat\, race\nSession: Recovery\nPurpose: Post-race\nWeekly target:
+  0.0h
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-race-2026-07-12@training
+DTSTAMP:20260514T090748Z
+DTSTART;VALUE=DATE:20260712
+DTEND;VALUE=DATE:20260713
+SUMMARY:🏁 Porsgrunn parkrun 5K — benchmark
+DESCRIPTION:Set HR zones from this.
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-race-2026-09-12@training
+DTSTAMP:20260514T090748Z
+DTSTART;VALUE=DATE:20260912
+DTEND;VALUE=DATE:20260913
+SUMMARY:🏁 Oslo Half Marathon 21K — fitness check
+DESCRIPTION:Sub-threshold effort\, NOT race pace. Target 2:10–2:15.
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-race-2027-02-14@training
+DTSTAMP:20260514T090748Z
+DTSTART;VALUE=DATE:20270214
+DTEND;VALUE=DATE:20270215
+SUMMARY:🏁 Sevilla Marathon — qualifier
+DESCRIPTION:Target 4:30–4:45. Sub-5:00 cushion.
+END:VEVENT
+BEGIN:VEVENT
+UID:to27-race-2027-04-03@training
+DTSTAMP:20260514T090748Z
+DTSTART;VALUE=DATE:20270403
+DTEND;VALUE=DATE:20270404
+SUMMARY:🏁 TWO OCEANS ULTRA 56K — A-RACE
+DESCRIPTION:Blue medal target sub-7:00. Race plan in nsa-two-oceans-2027-pl
+ an.md.
+END:VEVENT
+END:VCALENDAR
