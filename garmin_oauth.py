@@ -35,6 +35,110 @@ CONSUMER_KEY = "fc3e99d2-118c-44b8-8ae3-03370dde24c0"  # public Garmin Connect c
 CONSUMER_SECRET = "E08WAR897WEz2FBfeMvRQTUyFp5e9wYdyJ7gw0HUjkj"  # public — used by all clients
 
 
+def _read_zen_garmin_cookies() -> list[tuple[str, str, str, str]] | None:
+    """Pull Garmin cookies from a local Firefox-family (Zen / Firefox) profile."""
+    import glob, os, shutil, sqlite3, tempfile
+    patterns = [
+        os.path.expanduser("~/.zen/*/cookies.sqlite"),
+        os.path.expanduser("~/.mozilla/firefox/*/cookies.sqlite"),
+    ]
+    db = None
+    for pat in patterns:
+        matches = sorted(glob.glob(pat), key=os.path.getmtime, reverse=True)
+        if matches:
+            db = matches[0]
+            break
+    if not db:
+        return None
+    with tempfile.NamedTemporaryFile(suffix=".sqlite", delete=False) as tmp:
+        shutil.copy(db, tmp.name)
+        tmp_path = tmp.name
+    try:
+        con = sqlite3.connect(tmp_path)
+        rows = con.execute(
+            "SELECT name, value, host, path FROM moz_cookies "
+            "WHERE host LIKE '%garmin.com' OR host LIKE '%.garmin.com'"
+        ).fetchall()
+        con.close()
+    finally:
+        os.unlink(tmp_path)
+    return rows
+
+
+def bootstrap_via_zen_session() -> dict:
+    """Mint OAuth1 token using cookies from the local Zen/Firefox browser.
+
+    Strategy: we hit Garmin's SSO 'generate-extra-service-ticket' endpoint
+    with curl_cffi (Chrome TLS fingerprint to bypass Cloudflare) and the
+    Zen browser cookies. The endpoint, if our session is authenticated,
+    redirects to a URL containing `?ticket=ST-...`. We capture that ticket
+    and exchange it for OAuth1/OAuth2.
+
+    Zero login UI: the user is already logged into Garmin in Zen, we
+    piggyback on that. Works once, OAuth1 then lasts ~1 year.
+    """
+    from curl_cffi import requests as cc
+    from urllib.parse import urlparse, parse_qs
+
+    rows = _read_zen_garmin_cookies()
+    if not rows:
+        raise SystemExit(
+            "No Zen/Firefox cookies for garmin.com found. Log into "
+            "https://connect.garmin.com in your browser, then retry."
+        )
+    cookies = {n: v for (n, v, _h, _p) in rows}
+    if "JWT_WEB" not in cookies or "session" not in cookies:
+        raise SystemExit(
+            "Found Garmin cookies but no authenticated session. Log into "
+            "https://connect.garmin.com in your browser, then retry."
+        )
+
+    # SSO embed URL that, for an authenticated session, redirects to
+    # connectapi.../preauthorized?ticket=ST-...
+    embed_url = (
+        "https://sso.garmin.com/sso/embed"
+        "?id=gauth-widget&embedWidget=true"
+        "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso"
+        "&service=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed"
+        "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&consumeServiceTicket=false"
+        "&generateExtraServiceTicket=true"
+        "&generateNoServiceTicket=false"
+    )
+
+    session = cc.Session(impersonate="chrome131")
+    # Apply Zen cookies on the relevant domains
+    for n, v, host, path in rows:
+        session.cookies.set(n, v, domain=host.lstrip("."), path=path or "/")
+
+    r = session.get(embed_url, allow_redirects=True, timeout=30)
+    # The final URL or any URL in the chain should contain ticket=ST-...
+    candidate_urls = [r.url] + [h.url for h in r.history]
+    ticket = None
+    for u in candidate_urls:
+        q = parse_qs(urlparse(u).query)
+        t = q.get("ticket", [""])[0]
+        if t.startswith("ST-"):
+            ticket = t
+            break
+    if not ticket:
+        # Some Garmin flows render the ticket as JSON
+        if "ticket" in r.text:
+            import re as _re
+            m = _re.search(r'"ticket"\s*:\s*"(ST-[^"]+)"', r.text)
+            if m:
+                ticket = m.group(1)
+    if not ticket:
+        raise SystemExit(
+            "Could not mint an SSO ticket from your Zen session. "
+            f"Final URL: {r.url}\nResponse start: {r.text[:300]}"
+        )
+    print(f"Captured SSO ticket {ticket[:24]}…")
+    return exchange_ticket_for_oauth1(ticket)
+
+
 def _has_valid_oauth1() -> bool:
     if not OAUTH1_PATH.exists():
         return False
@@ -64,72 +168,131 @@ def _save(path: Path, data: dict) -> None:
 
 # ─── Step 1: Playwright login (one-time) ─────────────────────────────────
 
-def login_via_browser(email: str | None = None, headless: bool = False) -> dict:
-    """Open a real Chromium, let the user log in, and harvest the SSO ticket
-    that's redirected to after auth. Returns the OAuth1 token dict after
-    exchanging the ticket. Saves to .tokens/oauth1_token.json."""
-    from playwright.sync_api import sync_playwright
+def _read_secrets() -> tuple[str | None, str | None]:
+    """Read GARMIN_EMAIL / GARMIN_PASSWORD from .secrets so we can autofill."""
+    p = ROOT / ".secrets"
+    if not p.exists():
+        return None, None
+    env = {}
+    for line in p.read_text().splitlines():
+        if "=" in line and not line.lstrip().startswith("#"):
+            k, v = line.split("=", 1)
+            env[k.strip()] = v.strip()
+    return env.get("GARMIN_EMAIL"), env.get("GARMIN_PASSWORD")
 
-    # The SSO embed URL the modern app redirects to once authenticated. It
-    # ends with a service ticket we can intercept.
-    SIGNIN_URL = (
-        "https://sso.garmin.com/sso/signin"
-        "?service=https://connectapi.garmin.com/oauth-service/oauth/preauthorized"
-        "&webhost=https://connectapi.garmin.com/oauth-service/oauth/"
-        "&source=https://sso.garmin.com/sso/signin"
-        "&redirectAfterAccountLoginUrl=https://connectapi.garmin.com/oauth-service/oauth/preauthorized"
-        "&redirectAfterAccountCreationUrl=https://connectapi.garmin.com/oauth-service/oauth/preauthorized"
-        "&gauthHost=https://sso.garmin.com/sso"
-        "&locale=en_US&id=gauth-widget&cssUrl=https://connect.garmin.com/gauth-custom-v3.2-min.css"
-        "&privacyStatementUrl=//www.garmin.com/en-US/privacy/connect/"
-        "&clientId=GarminConnect&rememberMeShown=true&rememberMeChecked=false"
-        "&createAccountShown=true&openCreateAccount=false&displayNameShown=false"
-        "&consumeServiceTicket=false&initialFocus=true&embedWidget=false&generateExtraServiceTicket=true"
-        "&generateTwoExtraServiceTickets=false&generateNoServiceTicket=false"
-        "&globalOptInShown=true&globalOptInChecked=false&mobile=false"
-        "&connectLegalTerms=true&showTermsOfUse=false&showPrivacyPolicy=false&showConnectLegalAge=false"
-        "&locationPromptShown=true&showPassword=true&useCustomHeader=false&mfaRequired=false"
-        "&performMFACheck=false&rememberMyBrowserShown=false&rememberMyBrowserChecked=false"
+
+def login_via_browser(email: str | None = None, password: str | None = None,
+                      headless: bool = False) -> dict:
+    """Drive a Chromium login. Defaults to headless=False because Cloudflare's
+    bot gate blocks headless Chromium before the login form even renders.
+    With credentials present we still autofill+submit so it's hands-free."""
+    from playwright.sync_api import sync_playwright
+    from urllib.parse import urlparse, parse_qs
+
+    if email is None or password is None:
+        em, pw = _read_secrets()
+        email = email or em
+        password = password or pw
+    can_autofill = bool(email and password)
+
+    SIGNIN_URL = "https://connect.garmin.com/signin/"
+    PREAUTH_TRIGGER = (
+        "https://sso.garmin.com/sso/embed"
+        "?id=gauth-widget&embedWidget=true"
+        "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso"
+        "&service=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed"
+        "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+        "&consumeServiceTicket=false"
+        "&generateExtraServiceTicket=true"
+        "&generateNoServiceTicket=false"
     )
 
     captured_ticket: list[str] = []
+    seen_urls: list[str] = []
+
+    def extract_ticket(url: str) -> str | None:
+        if "ticket=ST-" not in url:
+            return None
+        q = parse_qs(urlparse(url).query)
+        t = q.get("ticket", [""])[0]
+        return t if t.startswith("ST-") else None
 
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=headless)
         ctx = browser.new_context()
         page = ctx.new_page()
 
-        # Intercept any redirect to .../preauthorized?ticket=... — that's our SSO ticket.
         def handle_response(resp):
             url = resp.url
-            if "ticket=ST-" in url and not captured_ticket:
-                # Extract ticket from query string
-                from urllib.parse import urlparse, parse_qs
-                q = parse_qs(urlparse(url).query)
-                t = q.get("ticket", [""])[0]
-                if t.startswith("ST-"):
-                    captured_ticket.append(t)
+            seen_urls.append(url)
+            t = extract_ticket(url)
+            if t and not captured_ticket:
+                captured_ticket.append(t)
 
         page.on("response", handle_response)
 
-        print(f"Opening Garmin login page. After you log in, the script will close automatically.")
+        print(f"Opening Garmin Connect signin (headless={headless}, autofill={can_autofill})…")
         page.goto(SIGNIN_URL)
-        if email:
+        if can_autofill:
             try:
+                page.wait_for_selector('input[name="username"]', timeout=15000)
                 page.fill('input[name="username"]', email)
-            except Exception:
-                pass
+                page.fill('input[name="password"]', password)
+                # Submit — the form button text/role varies, try a few selectors.
+                for selector in [
+                    'button[type="submit"]',
+                    'button:has-text("Sign In")',
+                    'button:has-text("Log In")',
+                    'input[type="submit"]',
+                ]:
+                    try:
+                        page.click(selector, timeout=2000)
+                        break
+                    except Exception:
+                        continue
+                print("Submitted credentials. Waiting for authentication…")
+            except Exception as e:
+                print(f"Auto-fill failed ({e}); falling back to manual login.")
+                can_autofill = False
 
-        # Wait up to 5 minutes for the user to authenticate. We're done once we
-        # see the ST- ticket in a response URL.
-        deadline = time.time() + 300
-        while time.time() < deadline and not captured_ticket:
+        # Wait until authenticated (URL contains /modern or JWT_WEB cookie exists)
+        if not can_autofill:
+            print("Waiting for authentication…")
+        deadline = time.time() + (60 if can_autofill else 300)
+        authenticated = False
+        while time.time() < deadline and not authenticated:
+            cookies = {c["name"] for c in ctx.cookies()}
+            if "JWT_WEB" in cookies or "/modern" in page.url:
+                authenticated = True
+                break
             page.wait_for_timeout(500)
 
-        browser.close()
+        if not authenticated:
+            print("Login window timed out before authentication.")
+            print("Last few URLs seen:")
+            for u in seen_urls[-8:]:
+                print(f"  {u}")
+            browser.close()
+            raise SystemExit("Login not completed in 5 minutes.")
 
-    if not captured_ticket:
-        raise SystemExit("Did not capture an SSO ticket within 5 minutes. Try again.")
+        print("Authenticated. Fetching OAuth ticket…")
+        # Trigger the SSO embed preauth flow in the same authenticated context.
+        # It redirects to connectapi.garmin.com/.../preauthorized?ticket=ST-...
+        page.goto(PREAUTH_TRIGGER, wait_until="domcontentloaded", timeout=15000)
+        # Give redirects a moment to settle
+        page.wait_for_timeout(2000)
+
+        if not captured_ticket:
+            # Last-ditch: log what we saw to debug
+            print("Did not see a ticket. URLs touched after auth:")
+            for u in seen_urls[-20:]:
+                print(f"  {u}")
+            browser.close()
+            raise SystemExit("Could not capture SSO ticket — see URL trace above.")
+
+        browser.close()
 
     ticket = captured_ticket[0]
     print(f"Captured SSO ticket {ticket[:24]}…")
@@ -236,11 +399,15 @@ def current_access_token() -> str:
 # ─── CLI ──────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "login":
+    if len(sys.argv) > 1 and sys.argv[1] == "bootstrap":
+        bootstrap_via_zen_session()
+        fetch_oauth2()
+        print("All set. Tokens saved to .tokens/.")
+    elif len(sys.argv) > 1 and sys.argv[1] == "login":
         email = sys.argv[2] if len(sys.argv) > 2 else None
         login_via_browser(email=email)
         fetch_oauth2()
-        print("All set. Tokens saved to .tokens/. Try: uv run python -c 'from garmin_oauth import current_access_token; print(current_access_token()[:40])'")
+        print("All set. Tokens saved to .tokens/.")
     elif len(sys.argv) > 1 and sys.argv[1] == "refresh":
         token = fetch_oauth2()
         print(f"Refreshed OAuth2. Access token expires in {(token['expires_at'] - int(time.time()))//60} min.")
