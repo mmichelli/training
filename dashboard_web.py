@@ -538,36 +538,7 @@ PAGE = Template(r"""<!doctype html>
       position: relative;
       letter-spacing: 0.005em;
     }
-    /* Topographic contour pattern */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        radial-gradient(ellipse 80% 60% at 18% 30%,
-          transparent 35%, rgba(28,31,42,0.018) 35%, rgba(28,31,42,0.018) 36%, transparent 36%,
-          transparent 45%, rgba(28,31,42,0.022) 45%, rgba(28,31,42,0.022) 46%, transparent 46%,
-          transparent 55%, rgba(28,31,42,0.026) 55%, rgba(28,31,42,0.026) 56%, transparent 56%,
-          transparent 65%, rgba(28,31,42,0.020) 65%, rgba(28,31,42,0.020) 66%, transparent 66%,
-          transparent 75%, rgba(28,31,42,0.016) 75%, rgba(28,31,42,0.016) 76%, transparent 76%),
-        radial-gradient(ellipse 60% 50% at 82% 70%,
-          transparent 30%, rgba(28,31,42,0.020) 30%, rgba(28,31,42,0.020) 31%, transparent 31%,
-          transparent 42%, rgba(28,31,42,0.024) 42%, rgba(28,31,42,0.024) 43%, transparent 43%,
-          transparent 56%, rgba(28,31,42,0.028) 56%, rgba(28,31,42,0.028) 57%, transparent 57%,
-          transparent 70%, rgba(28,31,42,0.020) 70%, rgba(28,31,42,0.020) 71%, transparent 71%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* Subtle paper grain */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, transparent 0 31px, rgba(28,31,42,0.015) 31px 32px),
-        repeating-linear-gradient(90deg, transparent 0 31px, rgba(28,31,42,0.012) 31px 32px);
-      pointer-events: none;
-      z-index: 0;
-      mix-blend-mode: multiply;
-    }
+    /* Background is just clean paper — no patterns. */
     .shell {
       position: relative; z-index: 1;
       max-width: 1180px;
