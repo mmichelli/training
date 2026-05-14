@@ -240,6 +240,25 @@ def readiness_verdict() -> tuple[str, list[str]]:
         reasons.append(r)
         light = "red"
 
+    # Data-freshness check — if the watch hasn't synced recently, say so plainly
+    # instead of inferring "all clear" from absent signals.
+    today = pd.Timestamp.now().normalize()
+    sources_stale = []
+    for name, df, date_col in [
+        ("HRV", hrv, "date"),
+        ("sleep", sleep, "date"),
+        ("RHR", daily, "date"),
+    ]:
+        if df.empty:
+            sources_stale.append(f"{name} (no data)")
+            continue
+        last = df[date_col].max()
+        days_old = (today - last).days
+        if days_old >= 2:
+            sources_stale.append(f"{name} ({days_old}d old)")
+    if sources_stale:
+        amber("watch data stale: " + ", ".join(sources_stale) + " — sync / charge before trusting")
+
     if not hrv.empty:
         last = hrv.iloc[-1]
         status = last["status"]
