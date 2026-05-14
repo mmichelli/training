@@ -363,10 +363,20 @@ Garmin sync + dashboard live in this repo. Everything is plain markdown — no D
 **Per-activity notes:** open the activity file and fill the HTML comments — `<!-- felt: -->`, `<!-- knee: -->`, `<!-- sub-threshold controlled? -->`. These survive re-syncs. Future you (and future LLM context) will thank you.
 
 **Calendar (Google Calendar subscription):**
-- `uv run python publish_calendar.py` — regenerates `plan.ics` and pushes to a secret gist that Google Calendar subscribes to.
-- Subscribe URL: `https://gist.githubusercontent.com/mmichelli/6ec7c4771ee58d0870b05a925bb54f43/raw/plan.ics`
-- In Google Calendar: Settings → Add calendar → From URL → paste. Re-publishing the gist auto-updates events (Google refreshes ~daily).
-- The Fenix doesn't surface generic calendar events, so structured Garmin workouts are TODO once daily sync is unblocked.
+- `make publish` (or `uv run python publish_calendar.py`) — regenerates `plan.ics` and pushes to the public repo.
+- Subscribe URL: `https://raw.githubusercontent.com/mmichelli/training/main/plan.ics`
+- In Google Calendar: Settings → Add calendar → From URL → paste. Re-publishing auto-updates events (Google refreshes ~daily).
+
+**Garmin Fenix structured workouts** (`workouts.py`):
+- Once Garmin auth is working, `make workouts` pushes the quality sessions (sub-threshold, hills, Constantia sims, tempos) as structured workouts onto the watch calendar. Easy days stay open.
+- The Fenix doesn't surface generic Google Calendar events, hence this separate path.
+
+**AI coach** (`coach.py`):
+- `make coach` — Claude reads the plan, dashboard, and recent activity notes, writes a weekly check-in to `coach.md`. Verdict on volume, quality, recovery, and the call for the next week.
+- `make ask Q="should I skip Tuesday?"` — ad-hoc coaching question.
+- Uses the `claude` CLI under the hood, so no extra API key is needed.
+
+**One-shot daily routine:** `make daily` → sync + dashboard + coach.
 
 ---
 
