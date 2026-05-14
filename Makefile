@@ -34,9 +34,10 @@ auto-notes:
 # Daily flow: pull activities, fill notes, regenerate dashboard, ask coach
 daily: sync auto-notes dashboard coach
 
-# Same as daily but tolerates sync failures (so a Garmin 429 doesn't kill the whole run)
+# Same as daily but tolerates failures (so a stale session doesn't kill the whole run)
 daily-auto:
-	-uv run python sync.py 7
+	-uv run python refresh_session.py
+	-uv run python ingest.py --days 14
 	-uv run python auto_notes.py
 	uv run python dashboard.py
 	uv run python coach.py
@@ -49,9 +50,13 @@ today:
 dash:
 	uv run uvicorn dashboard_web:app --reload --port 8000
 
+# Refresh Garmin session cookies from your browser's local SQLite store
+refresh:
+	uv run python refresh_session.py
+
 # Pull all daily streams from Garmin (HRV, stress, activities, etc.)
-pull:
-	uv run python ingest.py --days 90
+pull: refresh
+	uv run python ingest.py --days 30
 
 # Recompute features.parquet from data/ ingest
 features:
