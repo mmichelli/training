@@ -1349,7 +1349,7 @@ PAGE = Template(r"""<!doctype html>
         <circle cx="{{ journey_pct }}" cy="{{ today_cy }}" r="1.6" fill="var(--oxide)"/>
       </svg>
       <div class="journey-curve-labels">
-        <span class="lo">{{ volume_min }}h/wk</span>
+        <span class="lo">now {{ volume_now }}h/wk</span>
         <span class="hi">peak {{ volume_max }}h/wk</span>
       </div>
     </div>
@@ -1676,7 +1676,7 @@ async def index():
         volume_path_outline=full_path,
         volume_path_done=done_path,
         today_cy=f"{today_y:.2f}",
-        volume_min=f"{vmin:.0f}",
+        volume_now=f"{WEEKLY_TOTAL.get(cur_week, 0):.1f}",
         volume_max=f"{vmax:.0f}",
         PAPER=PAPER, PAPER_DEEP=PAPER_DEEP, INK=INK, INK_SOFT=INK_SOFT,
         RULE=RULE, OXIDE=OXIDE, FOREST=FOREST, OCHRE=OCHRE,
