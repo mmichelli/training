@@ -692,6 +692,81 @@ PAGE = Template(r"""<!doctype html>
     .field-card .description::-webkit-scrollbar { width: 4px; }
     .field-card .description::-webkit-scrollbar-thumb { background: var(--rule); }
 
+    /* Field maxim — italic margin note */
+    .maxim {
+      margin: 22px 0 0;
+      padding: 18px 4px 4px;
+      border-top: 1px dotted var(--rule);
+      font-family: 'Fraunces', serif;
+      font-variation-settings: "opsz" 24;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 14px;
+    }
+    .maxim-mark {
+      font-family: 'Fraunces', serif;
+      font-style: normal;
+      font-size: 22px;
+      color: var(--oxide);
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .maxim cite {
+      grid-column: 2;
+      display: block;
+      margin-top: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    /* Journey progress — the expedition line */
+    .journey {
+      position: relative;
+      margin: 28px 0 36px;
+      padding: 0 4px;
+      height: 36px;
+    }
+    .journey-line {
+      position: absolute; left: 0; right: 0; top: 17px;
+      height: 1px; background: var(--rule);
+    }
+    .journey-fill {
+      position: absolute; left: 0; top: 16px;
+      height: 3px; background: var(--ink);
+    }
+    .journey-tick {
+      position: absolute; top: 12px;
+      width: 1px; height: 11px;
+      background: var(--ink);
+    }
+    .journey-tick.race { background: var(--oxide); height: 15px; top: 10px; width: 2px; }
+    .journey-tick.today {
+      background: var(--oxide); height: 19px; top: 8px; width: 2px;
+      box-shadow: 0 0 0 4px rgba(200,54,45,0.10);
+    }
+    .journey-label {
+      position: absolute;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      transform: translateX(-50%);
+      top: 28px;
+      white-space: nowrap;
+    }
+    .journey-label.today { color: var(--oxide); font-weight: 500; }
+
     /* Readiness verdict */
     .verdict {
       display: flex; flex-direction: column; gap: 14px;
@@ -927,6 +1002,15 @@ PAGE = Template(r"""<!doctype html>
       </div>
     </header>
 
+    <div class="journey">
+      <div class="journey-line"></div>
+      <div class="journey-fill" style="width: {{ journey_pct }}%"></div>
+      {% for m in journey_markers %}
+      <div class="journey-tick {{ m.kind }}" style="left: {{ m.pct }}%"></div>
+      <div class="journey-label {{ m.kind }}" style="left: {{ m.pct }}%">{{ m.label }}</div>
+      {% endfor %}
+    </div>
+
     <nav class="milestones">
       {% for m in milestones %}
       <a class="milestone {% if m.done %}done{% endif %} {% if m.a_race %}a-race{% endif %}">
@@ -1032,6 +1116,11 @@ TODAY_PARTIAL = Template("""
   <div class="purpose">{{ weekday }} · {{ purpose }}</div>
   <h3 class="title">{{ title }}</h3>
   <div class="description">{{ description }}</div>
+  <blockquote class="maxim">
+    <span class="maxim-mark">¶</span>
+    <span class="maxim-text">{{ maxim_text }}</span>
+    <cite>— {{ maxim_attr }}</cite>
+  </blockquote>
 </div>
 """)
 
@@ -1065,6 +1154,40 @@ CARD_WITH_STAT = Template("""
 VERDICT_WORDS = {"green": "Proceed", "amber": "Restrain", "red": "Stand&nbsp;down"}
 
 
+FIELD_MAXIMS = [
+    ("You don't get more by doing more — you get more by doing the right amount.",
+     "Kristoffer Ingebrigtsen"),
+    ("Trust the structure. The hard sessions show up as more reps, not faster reps.",
+     "the plan"),
+    ("The mountain decides.",
+     "Kilian Jornet"),
+    ("Every rep should end like you could have done another.",
+     "NSA rule"),
+    ("Discipline equals freedom.",
+     "Jocko Willink"),
+    ("Run by feel, train by numbers.",
+     "Joe Friel"),
+    ("If it scares you, walk.",
+     "ultra adage"),
+    ("The plan is the plan.",
+     "the plan"),
+    ("The best ability is availability.",
+     "training-room cliché, true"),
+    ("Walk with pride on the climbs. Run with intention on the rest.",
+     "Constantia Nek strategy"),
+    ("You are not training for a 56K race. You are training to be the kind of person who shows up consistently for a year.",
+     "the plan"),
+    ("Slow is smooth. Smooth is fast.",
+     "old saying, still true"),
+    ("There is no podium in week 4. Only consistency.",
+     "the plan"),
+]
+
+
+def maxim_for_day(d: date) -> tuple[str, str]:
+    return FIELD_MAXIMS[d.toordinal() % len(FIELD_MAXIMS)]
+
+
 RACES = [
     (date(2026, 7, 12), "i.",   "Porsgrunn parkrun",  "5 K benchmark", False),
     (date(2026, 9, 12), "ii.",  "Oslo Half",          "21 K · fitness check", False),
@@ -1087,12 +1210,28 @@ async def index():
             "done": days < 0,
             "a_race": a_race,
         })
+    # Journey: from PLAN_START → race day (Two Oceans). Tick each race + today.
+    journey_start = PLAN_START
+    journey_end = RACES[-1][0]
+    journey_total = max((journey_end - journey_start).days, 1)
+    elapsed = (today - journey_start).days
+    journey_pct = max(0, min(100, elapsed / journey_total * 100))
+    journey_markers = []
+    for d, rank, name, when, a_race in RACES:
+        pct = max(0, min(100, (d - journey_start).days / journey_total * 100))
+        journey_markers.append({
+            "pct": pct, "kind": "race",
+            "label": name.split()[0] if not a_race else "Cape Town",
+        })
+    journey_markers.append({"pct": journey_pct, "kind": "today", "label": "today"})
     return PAGE.render(
         today_long=today.strftime("%A %d %b %Y").lower(),
         plan_week=p.plan_week,
         phase_short=phase_short.split(" + ")[0],
         target_h=f"{p.target_hours:.1f}",
         milestones=milestones,
+        journey_pct=journey_pct,
+        journey_markers=journey_markers,
         PAPER=PAPER, PAPER_DEEP=PAPER_DEEP, INK=INK, INK_SOFT=INK_SOFT,
         RULE=RULE, OXIDE=OXIDE, FOREST=FOREST, OCHRE=OCHRE,
     )
@@ -1100,9 +1239,12 @@ async def index():
 
 @app.get("/api/today", response_class=HTMLResponse)
 async def api_today():
-    p = prescription_for(date.today())
+    today = date.today()
+    p = prescription_for(today)
+    text, attr = maxim_for_day(today)
     return TODAY_PARTIAL.render(
         weekday=p.weekday, title=p.title, purpose=p.purpose, description=p.description,
+        maxim_text=text, maxim_attr=attr,
     )
 
 
