@@ -1,90 +1,55 @@
-"""Authenticated Garmin Connect client.
+"""Authenticated Garmin Connect client — OAuth2 against connectapi.garmin.com.
 
-Bypasses the rate-limited mobile SSO entirely by using a browser session
-captured into .garmin_session.json (see garmin_login.py or paste cookies in).
+The auth model:
+1. First time only, run `uv run python garmin_oauth.py login` — opens a real
+   Chromium, you log in, OAuth1+OAuth2 tokens are saved to `.tokens/`.
+2. After that, every API call uses the OAuth2 Bearer token. On 401, the token
+   is silently refreshed via the OAuth1 → OAuth2 exchange. No browser needed.
+3. The OAuth1 token lasts ~1 year; only then do you need to re-run the login.
 
-Why custom HTTP plumbing: Garmin's Cloudflare gate is picky about default
-httpx headers. Passing Cookie as a raw header + Sec-Fetch-* + disabling
-HTTP/2 reliably bypasses it; the default httpx cookie-jar path does not.
+Why we switched from cookie scraping (2026-05-14): cookies/CSRF rotate on a
+fraction-of-a-day cadence and require constant manual refresh. OAuth2 against
+`connectapi.garmin.com` is the API path Garmin's official mobile app uses;
+it's stable and self-refreshing.
 """
 from __future__ import annotations
 
-import json
 import re
-from pathlib import Path
 from typing import Any
 
 import httpx
 
-ROOT = Path(__file__).parent
-SESSION_PATH = ROOT / ".garmin_session.json"
-BASE = "https://connect.garmin.com"
+from garmin_oauth import current_access_token, fetch_oauth2
+
+API_BASE = "https://connectapi.garmin.com"
+USER_AGENT = "com.garmin.android.apps.connectmobile"
 
 
 class Garmin:
     def __init__(self) -> None:
-        if not SESSION_PATH.exists():
-            raise SystemExit("No session yet. Paste a cURL or run garmin_login.py")
-        data = json.loads(SESSION_PATH.read_text())
-        self.user_agent = data["user_agent"]
-        self.csrf = data.get("csrf_token", "") or ""
-        self.cookie_header = "; ".join(f"{c['name']}={c['value']}" for c in data["cookies"])
-        self.client = httpx.Client(http2=False, timeout=30, base_url=BASE)
+        self.client = httpx.Client(http2=False, timeout=30, base_url=API_BASE)
         self._display_name: str | None = None
-        if not self.csrf:
-            self._refresh_csrf()
-
-    @property
-    def display_name(self) -> str:
-        if self._display_name is None:
-            r = self.get("/gc-api/userprofile-service/socialProfile")
-            self._display_name = r["displayName"] if r else ""
-        return self._display_name
-
-    def _refresh_csrf(self) -> None:
-        """Fetch CSRF token by scraping a modern page."""
-        r = self.client.get("/modern/", headers={
-            "User-Agent": self.user_agent,
-            "Accept": "text/html",
-            "Cookie": self.cookie_header,
-        })
-        # Search for Connect-Csrf-Token or csrf-token-like values in HTML/JS payloads
-        m = re.search(r'"csrf[Tt]oken"\s*:\s*"([0-9a-f-]{36})"', r.text)
-        if not m:
-            m = re.search(r'csrfToken\s*=\s*[\'"]([0-9a-f-]{36})[\'"]', r.text)
-        if m:
-            self.csrf = m.group(1)
-            data = json.loads(SESSION_PATH.read_text())
-            data["csrf_token"] = self.csrf
-            SESSION_PATH.write_text(json.dumps(data, indent=2))
 
     def _headers(self) -> dict[str, str]:
         return {
-            "User-Agent": self.user_agent,
-            "Accept": "application/json, text/javascript, */*; q=0.01",
-            "Accept-Language": "en",
+            "Authorization": f"Bearer {current_access_token()}",
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json",
             "NK": "NT",
-            "X-app-ver": "5.24.1.3a",
-            "X-lang": "en-US",
-            "X-Requested-With": "XMLHttpRequest",
-            "Connect-Csrf-Token": self.csrf,
-            "Cookie": self.cookie_header,
-            "Sec-Fetch-Dest": "empty",
-            "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "same-origin",
-            "Referer": f"{BASE}/modern/",
         }
 
     def get(self, path: str, **params) -> Any:
-        r = self.client.get(path, params=params, headers=self._headers())
+        # Strip the /gc-api/ prefix if the caller still uses it — the
+        # connectapi host does NOT use that prefix.
+        api_path = re.sub(r"^/gc-api", "", path)
+
+        r = self.client.get(api_path, params=params, headers=self._headers())
         if r.status_code == 401:
-            raise SystemExit(
-                f"Garmin session expired (401 on {path}). "
-                "Paste a fresh cURL into .garmin_session.json."
-            )
-        if r.status_code == 404:
-            return None
-        if r.status_code in (400, 403, 405):
+            # Token may have expired between current_access_token()'s check
+            # and the actual request. Force a refresh and retry once.
+            fetch_oauth2()
+            r = self.client.get(api_path, params=params, headers=self._headers())
+        if r.status_code in (400, 403, 404, 405):
             return None
         r.raise_for_status()
         if not r.content:
@@ -94,43 +59,49 @@ class Garmin:
         except Exception:
             return r.text
 
-    # ── Specific endpoints ───────────────────────────────────────────────
+    @property
+    def display_name(self) -> str:
+        if self._display_name is None:
+            r = self.get("/userprofile-service/socialProfile")
+            self._display_name = r["displayName"] if r else ""
+        return self._display_name or ""
+
+    # ── Specific endpoints ────────────────────────────────────────────────
 
     def activities(self, limit: int = 50, start: int = 0, start_date: str = "2020-01-01") -> list[dict]:
         return self.get(
-            "/gc-api/activitylist-service/activities/search/activities",
+            "/activitylist-service/activities/search/activities",
             limit=limit, start=start, startDate=start_date,
         ) or []
 
     def daily_summary(self, ymd: str) -> dict | None:
-        return self.get(f"/gc-api/usersummary-service/usersummary/daily/{ymd}")
-
-    def sleep(self, ymd: str) -> dict | None:
-        return self.get(f"/gc-api/wellness-service/wellness/dailySleepData", date=ymd)
-
-    def hrv(self, ymd: str) -> dict | None:
-        return self.get(f"/gc-api/hrv-service/hrv/{ymd}")
-
-    def stress(self, ymd: str) -> dict | None:
-        return self.get(f"/gc-api/wellness-service/wellness/dailyStress/{ymd}")
-
-    def body_battery(self, ymd: str) -> dict | None:
         return self.get(
-            f"/gc-api/wellness-service/wellness/bodyBattery/reports/daily",
-            startDate=ymd, endDate=ymd,
+            f"/usersummary-service/usersummary/daily/{self.display_name}",
+            calendarDate=ymd,
         )
 
-    def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
-        # Path-templated, not query — and the only weight endpoint that responds.
-        return self.get(f"/gc-api/weight-service/weight/range/{start_ymd}/{end_ymd}")
+    def sleep(self, ymd: str) -> dict | None:
+        return self.get(
+            f"/wellness-service/wellness/dailySleepData/{self.display_name}",
+            date=ymd, nonSleepBufferMinutes=60,
+        )
 
-    def training_readiness(self, ymd: str) -> dict | None:
-        return self.get(f"/gc-api/metrics-service/metrics/trainingreadiness/{ymd}")
+    def hrv(self, ymd: str) -> dict | None:
+        return self.get(f"/hrv-service/hrv/{ymd}")
+
+    def stress(self, ymd: str) -> dict | None:
+        return self.get(f"/wellness-service/wellness/dailyStress/{ymd}")
+
+    def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
+        return self.get(f"/weight-service/weight/range/{start_ymd}/{end_ymd}")
 
 
 if __name__ == "__main__":
     g = Garmin()
-    print("activities (first 3):")
+    print(f"signed in as: {g.display_name}")
+    print("recent activities:")
     for a in g.activities(limit=3, start_date="2024-01-01"):
-        print(f"  {a.get('startTimeLocal','')[:10]} {a.get('activityType',{}).get('typeKey','?'):<10} "
-              f"{(a.get('distance') or 0)/1000:5.1f} km  HR avg/max {a.get('averageHR') or '—'}/{a.get('maxHR') or '—'}")
+        date_ = a.get("startTimeLocal", "")[:10]
+        kind = a.get("activityType", {}).get("typeKey", "?")
+        dist = (a.get("distance") or 0) / 1000
+        print(f"  {date_}  {kind:<14} {dist:5.1f} km")

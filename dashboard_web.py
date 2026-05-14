@@ -1621,20 +1621,27 @@ async def index():
     )
 
 
+def _render_sync_chip() -> str:
+    last_ok = _SYNC_STATE["last_at"]
+    last_status = _SYNC_STATE["last_status"]
+    last_err = _SYNC_STATE.get("last_error", "")
+    if last_status == "ok":
+        return f'<span class="sync-result ok">last sync {last_ok}</span>'
+    if last_status == "error":
+        suffix = f"last good: {last_ok}" if last_ok else "no successful sync yet"
+        return f'<span class="sync-result err" title="{last_err[:200]}">sync failed · {suffix}</span>'
+    return '<span class="sync-result idle">never synced this session</span>'
+
+
 @app.post("/api/sync", response_class=HTMLResponse)
 async def api_sync():
-    summary = _do_sync_blocking()
-    pill = "ok" if summary["ok"] else "err"
-    when = _SYNC_STATE["last_at"]
-    return f'<span class="sync-result {pill}">synced {when} · {summary["ingest"][:90]}</span>'
+    _do_sync_blocking()
+    return _render_sync_chip()
 
 
 @app.get("/api/sync/status", response_class=HTMLResponse)
 async def api_sync_status():
-    if _SYNC_STATE["last_at"]:
-        pill = "ok" if _SYNC_STATE["last_status"] == "ok" else "err"
-        return f'<span class="sync-result {pill}">last sync {_SYNC_STATE["last_at"]}</span>'
-    return '<span class="sync-result idle">never synced this session</span>'
+    return _render_sync_chip()
 
 
 @app.get("/api/today", response_class=HTMLResponse)
@@ -1757,7 +1764,13 @@ async def api_weight():
     )
 
 
-_SYNC_STATE = {"last_status": "idle", "last_at": None, "last_summary": ""}
+_SYNC_STATE = {
+    "last_status": "idle",
+    "last_at": None,
+    "last_attempt_at": None,
+    "last_error": "",
+    "last_summary": "",
+}
 
 
 def _do_sync_blocking() -> dict:
@@ -1798,8 +1811,15 @@ def _do_sync_blocking() -> dict:
     if rc != 0:
         summary["ok"] = False
 
-    _SYNC_STATE["last_status"] = "ok" if summary["ok"] else "error"
-    _SYNC_STATE["last_at"] = _dt.now().strftime("%H:%M:%S")
+    now = _dt.now().strftime("%H:%M:%S")
+    _SYNC_STATE["last_attempt_at"] = now
+    if summary["ok"]:
+        _SYNC_STATE["last_status"] = "ok"
+        _SYNC_STATE["last_at"] = now
+    else:
+        _SYNC_STATE["last_status"] = "error"
+        _SYNC_STATE["last_error"] = summary.get("ingest") or summary.get("refresh") or "unknown"
+        # do NOT touch last_at — keep the last *successful* sync time
     _SYNC_STATE["last_summary"] = f"{summary['refresh']} · {summary['ingest']}"
     return summary
 

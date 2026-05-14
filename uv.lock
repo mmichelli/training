@@ -1685,9 +1685,11 @@ dependencies = [
     { name = "garth" },
     { name = "httpx" },
     { name = "jinja2" },
+    { name = "oauthlib" },
     { name = "pandas" },
     { name = "playwright" },
     { name = "plotly" },
+    { name = "requests-oauthlib" },
     { name = "streamlit" },
     { name = "uvicorn" },
 ]
@@ -1700,9 +1702,11 @@ requires-dist = [
     { name = "garth", specifier = ">=0.5.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "jinja2", specifier = ">=3.1.6" },
+    { name = "oauthlib", specifier = ">=3.3.1" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "playwright", specifier = ">=1.59.0" },
     { name = "plotly", specifier = ">=6.7.0" },
+    { name = "requests-oauthlib", specifier = ">=2.0.0" },
     { name = "streamlit", specifier = ">=1.57.0" },
     { name = "uvicorn", specifier = ">=0.46.0" },
 ]
