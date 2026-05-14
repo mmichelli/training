@@ -64,8 +64,8 @@ def load_activities() -> list[dict]:
             "distance_km": float(fm.get("distance_km") or 0),
             "duration_s": int(fm.get("duration_s") or 0),
             "moving_s": int(fm.get("moving_s") or 0),
-            "avg_hr": int(fm["avg_hr"]) if fm.get("avg_hr") else None,
-            "max_hr": int(fm["max_hr"]) if fm.get("max_hr") else None,
+            "avg_hr": int(float(fm["avg_hr"])) if fm.get("avg_hr") else None,
+            "max_hr": int(float(fm["max_hr"])) if fm.get("max_hr") else None,
             "elev_gain_m": float(fm["elev_gain_m"]) if fm.get("elev_gain_m") else None,
         })
     return out

@@ -69,7 +69,7 @@ def process(force: bool = False) -> int:
         except ValueError:
             continue
         p = prescription_for(d)
-        prescribed = f"Plan week {p.plan_week} {p.weekday}: {p.session} (purpose: {p.purpose})"
+        prescribed = f"Plan week {p.plan_week} {p.weekday}: {p.title} (purpose: {p.purpose})"
         print(f"→ {path.name}")
         try:
             note = ask_claude(text, prescribed)
