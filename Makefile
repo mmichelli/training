@@ -27,8 +27,19 @@ workouts-dry:
 workouts:
 	uv run python workouts.py
 
-# Daily flow: pull activities, regenerate dashboard, ask coach
-daily: sync dashboard coach
+# Auto-fill the Notes section of activities that don't have notes yet
+auto-notes:
+	uv run python auto_notes.py
+
+# Daily flow: pull activities, fill notes, regenerate dashboard, ask coach
+daily: sync auto-notes dashboard coach
+
+# Same as daily but tolerates sync failures (so a Garmin 429 doesn't kill the whole run)
+daily-auto:
+	-uv run python sync.py 7
+	-uv run python auto_notes.py
+	uv run python dashboard.py
+	uv run python coach.py
 
 # Show today's prescribed session
 today:

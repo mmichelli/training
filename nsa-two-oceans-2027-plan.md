@@ -376,7 +376,16 @@ Garmin sync + dashboard live in this repo. Everything is plain markdown — no D
 - `make ask Q="should I skip Tuesday?"` — ad-hoc coaching question.
 - Uses the `claude` CLI under the hood, so no extra API key is needed.
 
-**One-shot daily routine:** `make daily` → sync + dashboard + coach.
+**Auto-filled notes** (`auto_notes.py`):
+- After each sync, `auto_notes.py` reads any activity files that still have the empty HTML-comment scaffold and asks Claude to classify the session, judge HR discipline against the sub-threshold ceiling, and flag anything notable. Output is structured Markdown bullets including a grep-friendly tag like `quality/Z3-clean` or `easy/Z2-controlled`.
+- Idempotent — already-filled notes are skipped. `uv run python auto_notes.py --force` rewrites them.
+
+**One-shot daily routine:** `make daily` → sync + auto-notes + dashboard + coach.
+
+**Fully automated:** a systemd user timer (`~/.config/systemd/user/training-daily.timer`) runs `make daily-auto` every morning at 07:30 with a 15-min jitter. Output goes to `.daily.log`. Sync failures (e.g., Garmin 429) don't break the rest of the pipeline. Manage via:
+- `systemctl --user status training-daily.timer`
+- `systemctl --user disable --now training-daily.timer` to stop the automation
+- `journalctl --user -u training-daily.service` for run history
 
 ---
 
