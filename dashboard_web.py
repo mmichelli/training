@@ -1646,7 +1646,10 @@ def _render_sync_chip() -> str:
 
 
 GARMIN_OAUTH_URL = (
-    "https://sso.garmin.com/sso/embed?id=gauth-widget&embedWidget=true"
+    "https://sso.garmin.com/sso/embed"
+    "?clientId=GarminConnect"
+    "&locale=en"
+    "&id=gauth-widget&embedWidget=true"
     "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso"
     "&service=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
     "&source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed"
