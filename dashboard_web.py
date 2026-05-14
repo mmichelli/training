@@ -527,17 +527,18 @@ PAGE = Template(r"""<!doctype html>
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: end;
+      gap: 8px 24px;
       padding-bottom: 18px;
       border-bottom: 1px solid var(--rule);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     .brand {
       font-family: 'Fraunces', serif;
       font-optical-sizing: auto;
       font-variation-settings: "opsz" 144, "SOFT" 100;
       font-weight: 600;
-      font-size: clamp(40px, 6vw, 64px);
-      line-height: 0.92;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 0.95;
       letter-spacing: -0.025em;
       color: var(--ink);
     }
@@ -545,12 +546,13 @@ PAGE = Template(r"""<!doctype html>
       font-style: italic;
       font-variation-settings: "opsz" 144, "SOFT" 100;
       color: var(--oxide);
+      white-space: nowrap;
     }
     .tagline {
       margin-top: 8px;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--ink-soft);
     }
@@ -566,13 +568,14 @@ PAGE = Template(r"""<!doctype html>
       font-family: 'Fraunces', serif;
       font-style: italic;
       font-weight: 400;
-      font-size: 22px;
+      font-size: clamp(18px, 3vw, 22px);
       letter-spacing: -0.01em;
       color: var(--ink);
       text-transform: none;
       display: block;
       margin-bottom: 2px;
     }
+    .stamp .meta { display: block; }
     .refresh {
       background: none; border: none; cursor: pointer;
       font-family: 'IBM Plex Mono', monospace;
@@ -582,6 +585,37 @@ PAGE = Template(r"""<!doctype html>
       border-bottom: 1px solid var(--rule);
     }
     .refresh:hover { color: var(--oxide); border-color: var(--oxide); }
+
+    /* Mobile: stack and compress masthead */
+    @media (max-width: 720px) {
+      header.masthead {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 4px;
+        margin-bottom: 22px;
+      }
+      .brand { font-size: clamp(34px, 11vw, 48px); }
+      .brand em { display: inline; }
+      .tagline { margin-top: 4px; font-size: 10px; letter-spacing: 0.14em; }
+      .stamp {
+        text-align: left;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px dotted var(--rule);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 4px 16px;
+        line-height: 1.45;
+      }
+      .stamp .big {
+        grid-column: 1 / span 2;
+        margin-bottom: 4px;
+        font-size: 18px;
+      }
+      .stamp .meta { font-size: 10px; }
+      .refresh { margin-top: 0; align-self: end; }
+    }
 
     /* Card grid */
     .grid {
@@ -1007,11 +1041,10 @@ PAGE = Template(r"""<!doctype html>
       </div>
       <div class="stamp">
         <span class="big">{{ today_long }}</span>
-        wk {{ plan_week }} / 48 &nbsp;·&nbsp; phase: {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h
-        <br>
+        <span class="meta">wk {{ plan_week }} / 48 &nbsp;·&nbsp; {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h</span>
         <button class="refresh" hx-get="/api/today" hx-target="#today" hx-swap="innerHTML"
                 hx-on::after-request="htmx.trigger('#readiness','refresh'); htmx.trigger('#hrv','refresh'); htmx.trigger('#rhr','refresh'); htmx.trigger('#sleep','refresh'); htmx.trigger('#stress','refresh'); htmx.trigger('#volume','refresh')">
-          ↻ refresh log
+          ↻ refresh
         </button>
       </div>
     </header>
