@@ -1316,7 +1316,7 @@ PAGE = Template(r"""<!doctype html>
                 hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
           <button class="refresh"
                   hx-get="/api/garmin-auth"
-                  hx-target="#checkin-or-auth" hx-swap="innerHTML"
+                  hx-target="body" hx-swap="beforeend"
                   style="color:var(--oxide);border-color:var(--oxide);">
             ⚿ authorize garmin
           </button>
@@ -1656,36 +1656,62 @@ GARMIN_OAUTH_URL = (
 )
 
 
-@app.get("/api/garmin-auth", response_class=HTMLResponse)
-async def api_garmin_auth():
-    """Render the one-time OAuth bootstrap helper."""
+def _auth_modal(inner_html: str) -> str:
+    """Wrap a piece of HTML in a centered modal overlay."""
     return f"""
-<div style="font-family:'IBM Plex Sans',sans-serif;line-height:1.6;font-size:14px;">
-  <h2 style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:24px;margin:0 0 12px;">Authorize Garmin · one-time</h2>
-  <p style="color:var(--ink-soft);margin:0 0 16px;">Already logged into Garmin Connect in this browser? Tap the link, copy the URL that loads (it'll contain <code>ticket=ST-…</code>), and paste it below. Lasts ~12 months.</p>
-  <ol style="padding-left:20px;margin:0 0 16px;">
-    <li><a href="{GARMIN_OAUTH_URL}" target="_blank" rel="noopener"
-           style="color:var(--oxide);font-weight:500;border-bottom:1px solid var(--oxide);text-decoration:none;">
-        Open Garmin OAuth URL ↗
-      </a>
-      <span style="color:var(--ink-soft);font-size:12px;">(new tab)</span>
-    </li>
-    <li>After it loads, copy the full URL from the address bar.</li>
-    <li>Paste it below and hit submit.</li>
-  </ol>
-  <form hx-post="/api/garmin-auth" hx-target="#checkin-or-auth" hx-swap="innerHTML"
-        style="display:flex;gap:8px;">
-    <input type="text" name="ticket_or_url"
-           placeholder="ST-12345-… or paste full URL"
-           required
-           style="flex:1;padding:10px 12px;background:var(--paper-deep);border:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);">
-    <button type="submit" class="submit"
-            style="background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;">
-      authorize
-    </button>
-  </form>
+<div id="auth-modal-bg"
+     style="position:fixed;inset:0;background:rgba(28,31,42,0.55);z-index:1000;
+            display:flex;align-items:flex-start;justify-content:center;padding:8vh 16px;"
+     onclick="if(event.target===this){{document.getElementById('auth-modal-bg').remove();}}">
+  <div style="background:var(--paper);max-width:560px;width:100%;border:1px solid var(--ink);
+              padding:28px 28px 24px;position:relative;box-shadow:0 30px 60px rgba(0,0,0,0.25);
+              max-height:84vh;overflow-y:auto;">
+    <button onclick="document.getElementById('auth-modal-bg').remove();"
+            style="position:absolute;top:8px;right:12px;background:none;border:none;
+                   font-size:22px;color:var(--ink-soft);cursor:pointer;line-height:1;">×</button>
+    {inner_html}
+  </div>
 </div>
 """
+
+
+@app.get("/api/garmin-auth", response_class=HTMLResponse)
+async def api_garmin_auth():
+    """Render the one-time OAuth bootstrap helper as a modal."""
+    body = f"""
+<h2 style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:24px;margin:0 0 8px;">Authorize Garmin <span style='font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:0.16em;'>· ONE TIME</span></h2>
+<p style="color:var(--ink-soft);margin:0 0 18px;font-size:13px;line-height:1.55;">
+  Already logged into Garmin Connect in this browser? Tap the link below in a
+  new tab, then copy the URL the tab lands on (it contains <code>ticket=ST-…</code>)
+  and paste it back here.
+</p>
+<ol style="padding-left:20px;margin:0 0 18px;font-size:14px;line-height:1.7;">
+  <li>
+    <a href="{GARMIN_OAUTH_URL}" target="_blank" rel="noopener"
+       style="color:var(--oxide);font-weight:500;border-bottom:1px solid var(--oxide);text-decoration:none;">
+      Open Garmin OAuth URL ↗
+    </a>
+  </li>
+  <li>After it loads, copy the full URL from the address bar.</li>
+  <li>Paste it below and submit.</li>
+</ol>
+<form hx-post="/api/garmin-auth"
+      hx-target="#auth-modal-bg" hx-swap="outerHTML"
+      style="display:flex;gap:8px;">
+  <input type="text" name="ticket_or_url" autofocus
+         placeholder="paste ST-… or full URL"
+         required
+         style="flex:1;padding:10px 12px;background:var(--paper-deep);border:1px solid var(--rule);
+                font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);">
+  <button type="submit"
+          style="background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+                 padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+                 letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;">
+    authorize
+  </button>
+</form>
+"""
+    return _auth_modal(body)
 
 
 @app.post("/api/garmin-auth", response_class=HTMLResponse)
@@ -1697,17 +1723,27 @@ async def api_garmin_auth_submit(ticket_or_url: str = Form(...)):
         q = parse_qs(urlparse(val).query)
         val = q.get("ticket", [""])[0]
     if not val.startswith("ST-"):
-        return ('<div class="sync-result err" style="padding:14px;">'
-                f'Not a valid Garmin ticket (must start with ST-): {val[:40]}</div>')
+        return _auth_modal(
+            f'<p style="color:var(--oxide);font-family:\'IBM Plex Mono\',monospace;'
+            f'font-size:12px;">Not a valid Garmin ticket (must start with ST-): {val[:60]}</p>'
+        )
     try:
         G.exchange_ticket_for_oauth1(val)
         G.fetch_oauth2()
     except Exception as e:
-        return ('<div class="sync-result err" style="padding:14px;">'
-                f'Exchange failed: {str(e)[:200]}</div>')
-    return ('<div class="sync-result ok" style="padding:14px;font-size:14px;">'
-            '✓ Authorized. OAuth tokens saved — good for ~12 months. '
-            'Click <strong>↻ pull &amp; refresh</strong> to test.</div>')
+        return _auth_modal(
+            f'<p style="color:var(--oxide);font-family:\'IBM Plex Mono\',monospace;'
+            f'font-size:12px;line-height:1.6;">Exchange failed:<br>{str(e)[:300]}</p>'
+        )
+    return _auth_modal(
+        '<div style="text-align:center;padding:8px 0;">'
+        '<div style="font-family:\'Fraunces\',serif;font-style:italic;font-weight:500;'
+        'font-size:28px;color:var(--forest);margin-bottom:8px;">✓ Authorized</div>'
+        '<p style="color:var(--ink);font-size:14px;line-height:1.6;margin:0;">'
+        'OAuth tokens saved — good for ~12 months. Close this and tap '
+        '<strong>↻ pull &amp; refresh</strong> to test.</p>'
+        '</div>'
+    )
 
 
 @app.post("/api/sync", response_class=HTMLResponse)
