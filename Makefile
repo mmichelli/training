@@ -45,9 +45,13 @@ daily-auto:
 today:
 	@uv run python plan_lookup.py
 
-# Visual Streamlit dashboard (training-load, HRV, sleep, plan-vs-actual)
+# FastAPI + HTMX dashboard at http://localhost:8000
 dash:
-	uv run streamlit run dashboard_app.py
+	uv run uvicorn dashboard_web:app --reload --port 8000
+
+# Pull all daily streams from Garmin (HRV, stress, activities, etc.)
+pull:
+	uv run python ingest.py --days 90
 
 # Recompute features.parquet from data/ ingest
 features:
