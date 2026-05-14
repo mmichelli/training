@@ -220,9 +220,28 @@ def login_via_browser(email: str | None = None, password: str | None = None,
         return t if t.startswith("ST-") else None
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=headless)
-        ctx = browser.new_context()
+        browser = pw.chromium.launch(
+            headless=headless,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+            ],
+        )
+        ctx = browser.new_context(
+            viewport={"width": 1280, "height": 800},
+            locale="en-US",
+            user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        )
         page = ctx.new_page()
+
+        # Apply stealth patches to dodge Cloudflare bot detection
+        try:
+            from playwright_stealth import Stealth
+            Stealth().apply_stealth_sync(page)
+        except Exception as e:
+            print(f"(stealth plugin not applied: {e})")
 
         def handle_response(resp):
             url = resp.url
@@ -399,7 +418,39 @@ def current_access_token() -> str:
 # ─── CLI ──────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "bootstrap":
+    if len(sys.argv) > 1 and sys.argv[1] == "ticket":
+        # Paste a ticket captured manually from your own Chrome's DevTools.
+        if len(sys.argv) < 3:
+            print("Usage: uv run python garmin_oauth.py ticket ST-XXX")
+            print()
+            print("How to get ST-XXX (once a year):")
+            print("  1. Open Chrome on the laptop, already logged into Garmin Connect.")
+            print("  2. Open DevTools → Network tab → make sure 'Preserve log' is on.")
+            print("  3. In a new tab, paste this URL and press enter:")
+            print()
+            print("     https://sso.garmin.com/sso/embed?id=gauth-widget&embedWidget=true"
+                  "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso"
+                  "&service=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+                  "&source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed"
+                  "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+                  "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnectapi.garmin.com%2Foauth-service%2Foauth%2Fpreauthorized"
+                  "&consumeServiceTicket=false&generateExtraServiceTicket=true&generateNoServiceTicket=false")
+            print()
+            print("  4. In Network tab, find a request to .../preauthorized?ticket=ST-...")
+            print("  5. Copy the ST-... value (everything after 'ticket=', up to '&' or end).")
+            print("  6. Run:  uv run python garmin_oauth.py ticket ST-XXXXXX...")
+            sys.exit(1)
+        t = sys.argv[2].strip()
+        if t.startswith("http"):
+            from urllib.parse import urlparse, parse_qs
+            q = parse_qs(urlparse(t).query)
+            t = q.get("ticket", [""])[0]
+        if not t.startswith("ST-"):
+            sys.exit(f"That doesn't look like a Garmin SSO ticket (should start with ST-): {t[:40]}")
+        exchange_ticket_for_oauth1(t)
+        fetch_oauth2()
+        print("All set. Tokens saved to .tokens/. Good for ~12 months.")
+    elif len(sys.argv) > 1 and sys.argv[1] == "bootstrap":
         bootstrap_via_zen_session()
         fetch_oauth2()
         print("All set. Tokens saved to .tokens/.")
