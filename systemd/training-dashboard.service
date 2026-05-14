@@ -1,0 +1,15 @@
+[Unit]
+Description=Two Oceans 2027 training dashboard (FastAPI + HTMX)
+After=network-online.target
+
+[Service]
+Type=exec
+WorkingDirectory=/home/mario/code/training
+ExecStart=/home/mario/.local/share/../bin/uv run uvicorn dashboard_web:app --host 0.0.0.0 --port 8765 --reload
+Restart=always
+RestartSec=3
+StandardOutput=append:/home/mario/code/training/.dashboard.log
+StandardError=append:/home/mario/code/training/.dashboard.log
+
+[Install]
+WantedBy=default.target
