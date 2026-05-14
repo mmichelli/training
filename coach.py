@@ -16,24 +16,36 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 PLAN = ROOT / "nsa-two-oceans-2027-plan.md"
+PRINCIPLES = ROOT / "principles.md"
 DASHBOARD = ROOT / "dashboard.md"
 ACTIVITIES_DIR = ROOT / "activities"
+DATA_DIR = ROOT / "data"
 COACH_OUT = ROOT / "coach.md"
 
 SYSTEM = """You are Mario's running coach for the Two Oceans Ultra 56K on 3 April 2027.
 
-The training philosophy is the Norwegian Singles Approach (NSA): sub-threshold quality
-3× per week, never crossing into Z4. The full plan is in nsa-two-oceans-2027-plan.md —
-treat it as authoritative. Your job is to keep Mario honest to the plan and adjust
-when life or the body says so.
+The training philosophy is the Norwegian Singles Approach (NSA). The *load-bearing*
+document is `principles.md` — read it carefully. When making any judgement call
+(continue, modify, down-week, refer out), ground your reasoning in those principles
+and cite them by section number (e.g. "per principles §5 traffic-light rule" or
+"§9 — the hard sessions show up as more reps, not faster reps").
+
+The plan itself is in `nsa-two-oceans-2027-plan.md`. The plan is the WHAT,
+the principles are the WHY — both authoritative.
+
+The DASHBOARD SIGNALS section gives you the latest numbers (HRV, RHR, sleep,
+stress, weight, ACWR). The activities section gives recent workout notes.
 
 Constraints on every response:
 - Be concise. Coaches don't lecture.
-- Lead with the call (continue / modify / take a down-week / see a physio).
+- Lead with the call (continue / modify / take a down-week / refer to physio).
+- Cite the specific principle (§N) that justifies the call.
 - If you recommend deviating from the plan, name the specific session(s) and the swap.
-- When numbers matter, cite them from the dashboard.
-- If data is missing, say so plainly — do not invent numbers.
-- Knee history: respect it. Recommend caution over heroics every time.
+- When numbers matter, cite them from the dashboard section — do not invent numbers.
+- If data is missing, say so plainly.
+- Knee history: respect it. Caution over heroics every time (§7).
+- Weight loss is part of the plan (§7) — don't flag gradual loss as a problem.
+- Boring is the goal (§9). If Mario is itching to go harder, the principles win.
 """
 
 WEEKLY_PROMPT = """It is {today}. Provide this week's coaching check-in.
@@ -67,13 +79,74 @@ def read_recent_activities(days: int = 21) -> str:
     return "\n\n".join(chunks) if chunks else "(no activities in the last {0} days)".format(days)
 
 
+def latest_signals() -> str:
+    """Pull the most recent dashboard signals as plain text the coach can cite."""
+    try:
+        # Lazy import — coach can run without dashboard deps if data isn't there yet
+        import dashboard_web as dw
+        hrv = dw.load_hrv_summaries()
+        rhr = dw.load_daily_summaries()
+        sleep = dw.load_sleep_summaries()
+        stress = dw.load_stress_summaries()
+        weight = dw.load_weight()
+        light, reasons = dw.readiness_verdict()
+    except Exception as e:
+        return f"(dashboard signals unavailable: {e})"
+
+    out = [f"Today's traffic-light verdict: **{light.upper()}**"]
+    for r in reasons:
+        out.append(f"  - {r}")
+    out.append("")
+
+    if not hrv.empty:
+        last = hrv.iloc[-1]
+        out.append(f"HRV last night: {last['last_night_avg']:.0f} ms  ·  7-day avg: {last['weekly_avg']:.0f} ms  ·  status: {last['status']}")
+        out.append(f"  Garmin's personalized balanced range: {last['baseline_balanced_low']:.0f}-{last['baseline_balanced_upper']:.0f} ms")
+
+    if not rhr.empty:
+        last = rhr.iloc[-1]
+        out.append(f"Resting HR today: {last['rhr']:.0f} bpm  ·  7-day avg: {last['rhr_7d']:.0f} bpm")
+        if len(rhr) >= 14:
+            baseline = rhr.iloc[-14:-1]["rhr"].mean()
+            out.append(f"  14-day baseline: {baseline:.1f} bpm  ·  delta today: {last['rhr'] - baseline:+.1f}")
+
+    if not sleep.empty:
+        last = sleep.iloc[-1]
+        wk = sleep.tail(7)["total_h"].mean() if len(sleep) >= 3 else None
+        out.append(f"Sleep last night: {last['total_h']:.1f}h  ·  7-day avg: {wk:.1f}h" if wk else f"Sleep last night: {last['total_h']:.1f}h")
+        if pd.notna(last.get("avg_stress")):
+            out.append(f"  Avg sleep stress: {last['avg_stress']:.0f}/100")
+
+    if not stress.empty:
+        last = stress.iloc[-1]
+        out.append(f"Daytime stress: avg {last['avg_stress']:.0f} · peak {last['max_stress']:.0f} (0-100)")
+
+    if not weight.empty:
+        last = weight.iloc[-1]
+        to_goal = last["kg"] - 75.0
+        out.append(f"Weight: {last['kg']:.1f} kg  ·  to 75 kg goal: {to_goal:+.1f} kg")
+        if len(weight) >= 2:
+            prior = weight.iloc[-2]
+            out.append(f"  Last weigh-in delta: {last['kg'] - prior['kg']:+.2f} kg over {(last['date'] - prior['date']).days} days")
+
+    return "\n".join(out)
+
+
 def build_context() -> str:
-    parts = ["# PLAN\n", PLAN.read_text() if PLAN.exists() else "(plan missing)"]
-    parts.append("\n\n# DASHBOARD\n")
-    parts.append(DASHBOARD.read_text() if DASHBOARD.exists() else "(dashboard missing — run dashboard.py)")
+    import pandas as _pd  # ensure available for latest_signals  (already imported but make explicit)
+    parts = ["# PRINCIPLES (load-bearing — cite by section)\n"]
+    parts.append(PRINCIPLES.read_text() if PRINCIPLES.exists() else "(principles missing)")
+    parts.append("\n\n# PLAN\n")
+    parts.append(PLAN.read_text() if PLAN.exists() else "(plan missing)")
+    parts.append("\n\n# DASHBOARD SIGNALS (latest)\n")
+    parts.append(latest_signals())
     parts.append("\n\n# RECENT ACTIVITIES (last 21 days)\n")
     parts.append(read_recent_activities(21))
     return "".join(parts)
+
+
+# pandas needed by latest_signals
+import pandas as pd  # noqa: E402
 
 
 def ask_claude(question: str) -> str:

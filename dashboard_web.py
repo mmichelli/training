@@ -975,12 +975,26 @@ PAGE = Template(r"""<!doctype html>
       margin-top: 56px;
       padding-top: 18px;
       border-top: 1px solid var(--rule);
-      display: flex; justify-content: space-between;
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-soft);
+    }
+    .principles-link {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 2px;
+      transition: color 120ms ease, border-color 120ms ease;
+    }
+    .principles-link:hover {
+      color: var(--oxide);
+      border-bottom-color: var(--oxide);
+    }
+    @media (max-width: 720px) {
+      footer.coords { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -1102,6 +1116,11 @@ PAGE = Template(r"""<!doctype html>
 
     <footer class="coords">
       <span>59°08′N&nbsp;&nbsp;09°39′E&nbsp;&nbsp;Porsgrunn</span>
+      <a class="principles-link"
+         href="https://github.com/mmichelli/training/blob/main/principles.md"
+         target="_blank" rel="noopener">
+        principles · how &amp; why this plan will work →
+      </a>
       <span>33°57′S&nbsp;&nbsp;18°27′E&nbsp;&nbsp;Cape Town</span>
     </footer>
   </div>
