@@ -538,7 +538,32 @@ PAGE = Template(r"""<!doctype html>
       position: relative;
       letter-spacing: 0.005em;
     }
-    /* Background is just clean paper — no patterns. */
+    /* Subtle paper grain — like the lines on a survey notebook */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg,  transparent 0 31px, rgba(28,31,42,0.012) 31px 32px),
+        repeating-linear-gradient(90deg, transparent 0 31px, rgba(28,31,42,0.010) 31px 32px);
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: multiply;
+    }
+    /* One soft topographic ring set, sitting behind the masthead and journey
+       line. Lighter than before so it reads as paper atmosphere. */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -10%; left: -10%; width: 70%; height: 70%;
+      background-image: radial-gradient(ellipse 80% 60% at 22% 30%,
+        transparent 36%, rgba(28,31,42,0.012) 36%, rgba(28,31,42,0.012) 36.5%, transparent 37%,
+        transparent 46%, rgba(28,31,42,0.014) 46%, rgba(28,31,42,0.014) 46.5%, transparent 47%,
+        transparent 56%, rgba(28,31,42,0.016) 56%, rgba(28,31,42,0.016) 56.5%, transparent 57%,
+        transparent 66%, rgba(28,31,42,0.012) 66%, rgba(28,31,42,0.012) 66.5%, transparent 67%,
+        transparent 76%, rgba(28,31,42,0.010) 76%, rgba(28,31,42,0.010) 76.5%, transparent 77%);
+      pointer-events: none;
+      z-index: 0;
+    }
     .shell {
       position: relative; z-index: 1;
       max-width: 1180px;
