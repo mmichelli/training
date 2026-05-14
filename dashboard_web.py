@@ -849,12 +849,12 @@ PAGE = Template(r"""<!doctype html>
       color: var(--ink-soft);
     }
 
-    /* Journey progress — the expedition line */
+    /* Journey progress — the expedition line + target-volume curve underneath */
     .journey {
       position: relative;
-      margin: 28px 0 36px;
+      margin: 28px 0 44px;
       padding: 0 4px;
-      height: 36px;
+      height: 66px;
     }
     .journey-line {
       position: absolute; left: 0; right: 0; top: 17px;
@@ -886,6 +886,21 @@ PAGE = Template(r"""<!doctype html>
       white-space: nowrap;
     }
     .journey-label.today { color: var(--oxide); font-weight: 500; }
+    .journey-curve {
+      position: absolute; top: 44px; left: 0; right: 0;
+      width: 100%; height: 22px;
+      overflow: visible;
+    }
+    .journey-curve-labels {
+      position: absolute; top: 50px; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding: 0 2px;
+    }
 
     /* Readiness verdict */
     .verdict {
@@ -1331,6 +1346,18 @@ PAGE = Template(r"""<!doctype html>
       <div class="journey-tick {{ m.kind }}" style="left: {{ m.pct }}%"></div>
       <div class="journey-label {{ m.kind }}" style="left: {{ m.pct }}%">{{ m.label }}</div>
       {% endfor %}
+      <svg class="journey-curve" viewBox="0 0 100 14" preserveAspectRatio="none">
+        <path d="{{ volume_path_filled }}" fill="rgba(200,54,45,0.12)" stroke="none"/>
+        <path d="{{ volume_path_outline }}" fill="none"
+              stroke="rgba(28,31,42,0.35)" stroke-width="0.6" stroke-dasharray="0.6 0.9"/>
+        <path d="{{ volume_path_done }}" fill="none"
+              stroke="var(--oxide)" stroke-width="1"/>
+        <circle cx="{{ journey_pct }}" cy="{{ today_cy }}" r="1.6" fill="var(--oxide)"/>
+      </svg>
+      <div class="journey-curve-labels">
+        <span class="lo">{{ volume_min }}h/wk</span>
+        <span class="hi">peak {{ volume_max }}h/wk</span>
+      </div>
     </div>
 
     <nav class="milestones">
@@ -1620,6 +1647,29 @@ async def index():
             "label": name.split()[0] if not a_race else "Cape Town",
         })
     journey_markers.append({"pct": journey_pct, "kind": "today", "label": "today"})
+    # Target weekly volume curve: paint the whole 48-week shape under the
+    # timeline so Mario can see "where I am on the ramp."
+    weeks = list(range(1, 49))
+    vols = [WEEKLY_TOTAL.get(w, 0.0) for w in weeks]
+    vmin, vmax = min(vols), max(vols)
+    vrange = max(vmax - vmin, 0.001)
+    cur_week = max(1, min(48, p.plan_week))
+
+    # SVG viewBox is 0..100 (x) by 0..14 (y); higher y is lower on screen.
+    def xy(week: int, hours: float) -> tuple[float, float]:
+        x = (week - 1) / 47 * 100
+        y = 13 - (hours - vmin) / vrange * 12
+        return x, y
+
+    points = [xy(w, v) for w, v in zip(weeks, vols)]
+    full_path = "M " + " L ".join(f"{x:.2f},{y:.2f}" for x, y in points)
+    filled_path = full_path + f" L 100,14 L 0,14 Z"
+
+    done_points = [xy(w, v) for w, v in zip(weeks, vols) if w <= cur_week]
+    done_path = "M " + " L ".join(f"{x:.2f},{y:.2f}" for x, y in done_points)
+
+    _, today_y = xy(cur_week, WEEKLY_TOTAL.get(cur_week, 0))
+
     return PAGE.render(
         today_long=today.strftime("%A %d %b %Y").lower(),
         plan_week=p.plan_week,
@@ -1628,6 +1678,12 @@ async def index():
         milestones=milestones,
         journey_pct=journey_pct,
         journey_markers=journey_markers,
+        volume_path_filled=filled_path,
+        volume_path_outline=full_path,
+        volume_path_done=done_path,
+        today_cy=f"{today_y:.2f}",
+        volume_min=f"{vmin:.0f}",
+        volume_max=f"{vmax:.0f}",
         PAPER=PAPER, PAPER_DEEP=PAPER_DEEP, INK=INK, INK_SOFT=INK_SOFT,
         RULE=RULE, OXIDE=OXIDE, FOREST=FOREST, OCHRE=OCHRE,
     )
