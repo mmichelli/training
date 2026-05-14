@@ -538,29 +538,38 @@ PAGE = Template(r"""<!doctype html>
       position: relative;
       letter-spacing: 0.005em;
     }
-    /* Subtle paper grain — like the lines on a survey notebook */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
+    /* Subtle paper grain — scrolls with the page so it feels like real paper */
+    body {
       background-image:
         repeating-linear-gradient(0deg,  transparent 0 31px, rgba(28,31,42,0.012) 31px 32px),
         repeating-linear-gradient(90deg, transparent 0 31px, rgba(28,31,42,0.010) 31px 32px);
-      pointer-events: none;
-      z-index: 0;
-      mix-blend-mode: multiply;
     }
-    /* One soft topographic ring set, sitting behind the masthead and journey
-       line. Lighter than before so it reads as paper atmosphere. */
+    /* One soft topographic ring set behind the masthead, scrolls with content */
     body::before {
       content: '';
-      position: fixed;
-      top: -10%; left: -10%; width: 70%; height: 70%;
-      background-image: radial-gradient(ellipse 80% 60% at 22% 30%,
+      position: absolute;
+      top: -120px; left: -120px;
+      width: 900px; height: 700px;
+      background-image: radial-gradient(ellipse 80% 60% at 30% 35%,
         transparent 36%, rgba(28,31,42,0.012) 36%, rgba(28,31,42,0.012) 36.5%, transparent 37%,
         transparent 46%, rgba(28,31,42,0.014) 46%, rgba(28,31,42,0.014) 46.5%, transparent 47%,
         transparent 56%, rgba(28,31,42,0.016) 56%, rgba(28,31,42,0.016) 56.5%, transparent 57%,
         transparent 66%, rgba(28,31,42,0.012) 66%, rgba(28,31,42,0.012) 66.5%, transparent 67%,
         transparent 76%, rgba(28,31,42,0.010) 76%, rgba(28,31,42,0.010) 76.5%, transparent 77%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* A second ring set further down so there's interest as you scroll */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 1100px; right: -100px;
+      width: 700px; height: 700px;
+      background-image: radial-gradient(ellipse 70% 70% at 70% 50%,
+        transparent 30%, rgba(28,31,42,0.014) 30%, rgba(28,31,42,0.014) 30.5%, transparent 31%,
+        transparent 42%, rgba(28,31,42,0.016) 42%, rgba(28,31,42,0.016) 42.5%, transparent 43%,
+        transparent 56%, rgba(28,31,42,0.018) 56%, rgba(28,31,42,0.018) 56.5%, transparent 57%,
+        transparent 70%, rgba(28,31,42,0.012) 70%, rgba(28,31,42,0.012) 70.5%, transparent 71%);
       pointer-events: none;
       z-index: 0;
     }
