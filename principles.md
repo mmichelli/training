@@ -34,7 +34,16 @@ Compare that to threshold (Z4) work, the traditional "tempo" zone:
 - Markedly higher injury and illness rates in deconditioned populations.
 - You can do it once a week max. Sub-threshold you can do three times.
 
-**Over a year, 156 sub-threshold sessions beats 52 threshold sessions on the metric that actually matters: cumulative time spent driving aerobic adaptation.** This is the Norwegian Singles bet, and the evidence base behind it — [Düking et al. 2021 meta-analysis on HRV-guided training][1], [Vesterinen 2016][2], the Ingebrigtsen lineage's published training logs (see [Running Writings' write-up of Kristoffer Ingebrigtsen's protocol][7]) — is the strongest in amateur-applicable endurance science.
+**Over a year, ~150 sub-threshold sessions deliver more cumulative aerobic-adaptation work than ~50 threshold sessions can, at a fraction of the recovery cost.** This is the Norwegian Singles bet.
+
+The supporting evidence is *suggestive* rather than conclusive:
+
+- [Vesterinen 2016][2] (n=40, 8 weeks): HRV-guided groups achieved 2.1% vs 1.1% improvement on 3000m with ~25% fewer hard sessions. Single RCT, modest n.
+- [Manresa-Rocamora 2021 meta-analysis][1] (8 studies, n=199): the *performance* difference across HRV-guided vs. predefined trials was non-significant in aggregate. What *was* significant: the HRV-guided groups got there with fewer high-intensity sessions, which is the load-bearing claim for our context.
+
+What we honestly have is **"do less hard work, get similar performance, with reduced injury and overreach risk"** — exactly the trade you want when injury risk and life constraints dominate. That's a smaller claim than "Norwegian Singles is optimal training" but it's a real one.
+
+The protocol's existence proof: see [Davis 2025 on Kristoffer Ingebrigtsen][7]. He went from sedentary 33-year-old to 1:15 half marathon in ~18 months on a Tue/Thu/Sat quality schedule. Important caveat: **his Saturday workout (3 × 3000 m or 3 × 10 min) was almost certainly threshold-paced, not sub-threshold**. Our plan goes *further than* Kristoffer's — capping at sub-threshold on Saturday too — explicitly because of Mario's knee history and being 14 years older. We're not copying NSA; we're applying its principles with extra caution.
 
 The marketing-grade alternatives (80/20 polarized, Daniels VDOT-based plans, traditional periodization) work for people who can absorb the harder sessions. We are explicitly designing for someone who cannot.
 
@@ -60,7 +69,7 @@ The hill block in months 11–12 is the only periodized element, and that's beca
 The dashboard tracks five autonomic and load signals. Each one earns its place because it predicts *something the plan needs to know*, with evidence-backed thresholds.
 
 ### HRV (overnight rMSSD)
-The single strongest individual-day predictor of training readiness. [Düking 2021 meta-analysis][1]: HRV-guided groups do fewer hard sessions and match or beat fixed plans on 3000m time. The [2025 Nature cyclist RCT][3] replicated. Caveat: no RCT shows direct injury reduction — the claim is performance + autonomic adaptation, not fewer injuries per se.
+The single strongest individual-day predictor of training readiness with at-home equipment. [Vesterinen 2016][2] is the cleanest evidence: HRV-guided groups did fewer hard sessions and improved 3000m performance more (2.1% vs 1.1%). The [Manresa-Rocamora 2021 meta-analysis][1] across many such studies found the performance benefit was non-significant overall — but the *same-result-with-fewer-hard-sessions* finding held. Caveat: no RCT shows direct injury reduction. The claim is autonomic adaptation + comparable performance for less training stress, not fewer injuries per se.
 
 **What we do with it**: Garmin's own `HRV Status` (BALANCED / UNBALANCED / POOR) already encodes a personalized 60-day baseline. We use that directly. A 7-day weekly average dropping >3 ms versus prior week is an early-warning amber.
 
@@ -82,7 +91,7 @@ Tracked because of the goal (75 kg from 86 kg), and as an overreach/illness prox
 
 We explicitly don't track:
 
-- **TSB / "form" / Banister fitness-fatigue tapering oracle.** [Imbach et al. 2025][5] showed the fatigue parameters of the classic FFM are ill-conditioned for amateurs — they don't improve prediction beyond fitness alone. We use a smoothed load curve for ACWR; we don't trust the form/peak prediction.
+- **TSB / "form" / Banister fitness-fatigue tapering oracle.** [Benazieb, Weldegebriel, Méline & Imbach 2025][5] showed the model is ill-conditioned: fitness and fatigue parameters are poorly identifiable, and adding the fatigue term overfits. We use a smoothed load curve for ACWR; we don't trust the form/peak prediction.
 - **Body Battery, Stress Score, Training Readiness as primary signals.** Derived metrics from HRV + activity. Use the inputs, not the composite.
 - **VO2max, Race Predictor, Fitness Age.** Marketing-grade. The Race Predictor is famously optimistic for ultras and untrained athletes.
 - **Sleep stages (deep/REM split).** Noisy versus PSG. Total only.
@@ -134,7 +143,7 @@ This is the safety valve for everything the daily traffic-light misses. Cumulati
 These are facts about your life. The plan is designed around them, not against them.
 
 - **Age 47**: tendons regenerate slower than they used to. Recovery from any single hard session takes longer. The principle this drives: **never two consecutive hard days, ever**. The plan never schedules them. The amber/red traffic light catches when even one hard day shouldn't have been hard. At 47 the cost of one missed Sunday rule is bigger than it was at 33.
-- **Knee history**: every plan decision prefers caution over heroics. Hill work is dosed (every 3rd Saturday in build phases, not a full hill block). Treadmill is preferred over downhills in winter. Eccentric step-downs every gym session. Cadence target ≥170 spm — [the single highest-leverage intervention for knee load][4]; 5–10% above spontaneous cadence drops peak knee load by ~20%.
+- **Knee history**: every plan decision prefers caution over heroics. Hill work is dosed (every 3rd Saturday in build phases, not a full hill block). Treadmill is preferred over downhills in winter. Eccentric step-downs every gym session. Cadence target ≥170 spm — a high-leverage intervention for knee load per [Figueiredo et al. 2025 systematic review][4], which cites Heiderscheit 2011 and Nijs 2020 for the ~20% peak-knee-load reduction at 5–10% above spontaneous cadence.
 - **Full-time job, three kids**: total weekly volume tops out at ~12 hours in peak weeks. Most weeks 6–10 hours. Sessions are 45–90 minutes except the Sunday long run. Quality is on weekdays, the long run is Sunday morning. Three kids means sleep continuity is fragile — the rolling 7-day sleep average is more honest than any single night, and the Sunday rule's first question (slept 7+ hours per night on average?) is doing more work than you'd think.
 - **Norwegian winter**: sub-threshold sessions can be 100% treadmill — pace control is the whole point of NSA, and the treadmill is *better* for that than icy outdoor work. Long runs go outdoor when conditions allow.
 - **Weight 86 → 75 kg**: gradual weight loss is part of the plan, not separate from it. Lose ~0.25 kg/wk for 44 weeks. Don't fuel below the work — under-fueling tanks HRV within days, and at 47 it tanks tendon repair too.
@@ -184,23 +193,43 @@ The principles don't change because a single bad day happened. They change becau
 
 ## References
 
-The plan and these principles cite specific studies. Each claim should be testable. If you want to push back on something here, push back through these:
+The plan and these principles cite specific studies. Each claim should be testable. If you want to push back on something here, push back through these. **Every citation in this list has been independently verified** (title, authors, the specific claim made) by fetching the source — see the audit note below.
 
-[1]: https://pmc.ncbi.nlm.nih.gov/articles/PMC8507742/ "Düking et al. 2021 — HRV-guided endurance training meta-analysis (PMC8507742)"
-[2]: https://pubmed.ncbi.nlm.nih.gov/26909534/ "Vesterinen 2016 — HRV-guided versus predetermined training prescription"
-[3]: https://www.nature.com/articles/s41598-025-13540-z "2025 Nature — HRV-guided training RCT in cyclists, replicates Vesterinen"
-[4]: https://pmc.ncbi.nlm.nih.gov/articles/PMC12440572/ "Anderson et al. 2025 — Running cadence and knee load systematic review"
-[5]: https://www.nature.com/articles/s41598-025-88153-7 "Imbach et al. 2025 — statistical critique of the Banister fitness-fatigue model"
-[6]: https://uphillathlete.com/aerobic-training/heart-rate-drift/ "Uphill Athlete — HR drift as aerobic fitness signal"
-[7]: https://runningwritings.com/2025/07/kristoffer-ingebrigtsen-norwegian-single-threshold-training.html "Running Writings — Kristoffer Ingebrigtsen's Norwegian Singles protocol"
+[1]: https://pmc.ncbi.nlm.nih.gov/articles/PMC8507742/ "Manresa-Rocamora et al. 2021 — HRV-guided training meta-analysis (IJERPH)"
+[2]: https://pubmed.ncbi.nlm.nih.gov/26909534/ "Vesterinen et al. 2016 — Individual endurance training prescription with HRV (MSSE)"
+[4]: https://pmc.ncbi.nlm.nih.gov/articles/PMC12440572/ "Figueiredo et al. 2025 — Running cadence systematic review (Cureus)"
+[5]: https://www.nature.com/articles/s41598-025-88153-7 "Benazieb, Weldegebriel, Méline & Imbach 2025 — Banister fitness-fatigue model statistical flaws (Scientific Reports)"
+[6]: https://uphillathlete.com/aerobic-training/heart-rate-drift/ "Uphill Athlete (Steve House) — HR drift as aerobic fitness signal"
+[7]: https://runningwritings.com/2025/07/kristoffer-ingebrigtsen-norwegian-single-threshold-training.html "Running Writings (John Davis) — Kristoffer Ingebrigtsen's Norwegian Single Threshold protocol"
 
-1. **[Düking et al. 2021 — Effects of HRV-Guided vs. Predetermined Block Training on Performance][1]**. Meta-analysis showing HRV-guided groups do fewer hard sessions yet match or beat fixed plans on 3000m and 10K. Foundation for the readiness traffic light.
-2. **[Vesterinen 2016 — HRV-Guided Endurance Training][2]**. Doctoral dissertation. The methodology for using rMSSD trend as a training prescriber. Where the "weekly avg HRV down >3 ms" threshold originates.
-3. **[Nature Scientific Reports 2025 — HRV-Guided Training in Cyclists][3]**. Recent RCT replicating Düking findings in trained cyclists with a 12-week protocol.
-4. **[Anderson et al. 2025 — Running Cadence Modifications and Knee Load][4]**. Systematic review. 5–10% cadence increase = ~20% drop in peak knee adduction moment. This is why ≥170 spm is non-negotiable on the dashboard.
-5. **[Imbach et al. 2025 — Statistical Flaws in the Banister Fitness-Fatigue Model][5]**. Why we use a smoothed acute/chronic load ratio but don't trust TSB as a tapering oracle.
-6. **[Uphill Athlete — Aerobic Decoupling][6]**. Practical write-up of HR drift at steady pace as a personal aerobic-fitness signal. Caveat: the "<5% Pa:HR" threshold is Joe Friel's, not peer-reviewed — use as a personal trend.
-7. **[Running Writings — Kristoffer Ingebrigtsen's Single Threshold Method][7]**. The protocol this plan is modeled on. Kristoffer ran 1:15 half marathon at 33 from overweight desk job in 18 months using exactly this approach.
+1. **[Manresa-Rocamora et al. 2021 — HRV-Guided Training meta-analysis][1]** (IJERPH). Methodological systematic review with meta-analysis. Found HRV-guided training achieved similar or better fitness outcomes with *fewer high-intensity sessions* than pre-planned training, though the performance difference itself was non-significant (p = 0.18). The "do less hard work, get the same result" finding is what's load-bearing here, not a stronger performance claim.
+2. **[Vesterinen et al. 2016 — Individual Endurance Training Prescription with HRV][2]** (Medicine & Science in Sports & Exercise). The cleanest single RCT: HRV-guided group improved 3000m by 2.1% vs. 1.1% in the traditional group, despite doing fewer high-intensity sessions. Methodology for using rMSSD trend as a training prescriber.
+3. **[Figueiredo, Reis e Silva & Sousa 2025 — Running Cadence Systematic Review][4]** (Cureus). Synthesizes work by Heiderscheit (2011) and Nijs (2020) showing 5–10% cadence increase above spontaneous → ~20% reduction in peak knee load. This is why ≥170 spm matters on the dashboard. Note: the 20% figure is from the cited primary studies, not original to this review.
+4. **[Benazieb, Weldegebriel, Méline & Imbach 2025 — Statistical Flaws of the Fitness-Fatigue Model][5]** (Nature Scientific Reports). Shows the classic Banister FFM is ill-conditioned: fitness and fatigue parameters are poorly identifiable from realistic training data, and including the fatigue term causes overfitting. Why we don't trust TSB as a tapering oracle.
+5. **[Uphill Athlete — Heart Rate Drift Test (Steve House)][6]**. Practical write-up of HR drift at steady pace as a personal aerobic-fitness signal. Threshold given: 3.5–5% drift identifies aerobic threshold. The classic "<5%" threshold is Joe Friel's, not peer-reviewed — use as a personal trend, not as an absolute pass/fail.
+6. **[Running Writings — Kristoffer Ingebrigtsen's Norwegian Single Threshold (John Davis, July 2025)][7]**. The protocol this plan is modeled on. Confirms: 33-year-old, overweight, ran 1:12–1:15 half marathon ~18 months later. Tue/Thu/Sat sub-threshold quality. Note: the "year-round, never crosses into Z4" framing I use is a *generalization* of his protocol — the article describes the weekly shape but doesn't explicitly state year-round or absolute-Z4-prohibition. Treat as inspiration, not exact recipe.
+
+### Audit note (2026-05-14)
+
+I originally drafted this references list based on a research agent's output. After a user prompt to "review the research," I fetched each URL and verified the title, authors, and specific claims. Five of seven original citations needed correction:
+
+- Düking 2021 → Manresa-Rocamora 2021 (wrong author entirely).
+- Anderson 2025 → Figueiredo et al. 2025 (wrong author entirely).
+- Imbach 2025 → Benazieb et al. 2025 (Imbach was last author, not first).
+- A claimed "2025 Nature cyclist HRV RCT" (s41598-025-13540-z) was **removed** — I could not verify the paper exists. Likely a hallucination by the research agent.
+- The "HRV-guided beats fixed plans on 3000m" framing was **softened** — only Vesterinen 2016 (n≈40 athletes) showed that; the meta-analysis across multiple such studies found the effect non-significant in aggregate.
+
+This is a useful lesson and the reason the audit note is permanent: when an LLM-driven research agent produces a citation list, treat it as a starting point, not as established truth, until each citation is independently verified at the source.
+
+### Where to push back
+
+If something here looks like bro-science to you, the test is: can I find a peer-reviewed paper that says the opposite, or a coach with a published track record who disagrees? If yes, share it. If no, the principle stands.
+
+The principles I'm *least confident in*, and where I'd be glad to be corrected:
+
+- The HRV-guided literature is mostly trained cyclists and runners in their 20s–30s. Generalization to a 47-year-old reconditioning from couch is inference, not direct evidence. The direction probably holds — autonomic signaling doesn't fundamentally change with age — but the specific thresholds (-3 ms weekly trend, etc.) were calibrated on younger cohorts.
+- The 0.25–0.5 kg/week weight-loss guideline for endurance athletes is consensus but not deeply RCT-validated.
+- Cadence work is well-supported, but my 170 spm floor is arbitrary within the "natural ±5%" window — your spontaneous cadence might be 165, in which case 170 is fine; if it's 180 the floor should be higher.
 
 ### Where to push back
 
