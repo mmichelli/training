@@ -11,6 +11,7 @@ uv run python refresh_session.py || true
 ( uv run python ingest.py --days 7 > /tmp/training-ingest.log 2>&1 & ) || true
 
 PORT=${PORT:-8765}
+HOST=${HOST:-0.0.0.0}
 URL="http://localhost:${PORT}"
 
 # If something's already on the port, just open the browser
@@ -30,4 +31,8 @@ fi
   done
 ) &
 
-exec uv run uvicorn dashboard_web:app --host 127.0.0.1 --port "${PORT}"
+if command -v tailscale >/dev/null && TS_IP=$(tailscale ip -4 2>/dev/null | head -1); then
+  echo "tailnet: http://${TS_IP}:${PORT}"
+fi
+
+exec uv run uvicorn dashboard_web:app --host "${HOST}" --port "${PORT}"
