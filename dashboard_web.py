@@ -2341,6 +2341,7 @@ _TASK_ROW_CSS = """
   .tasks-list li {
     display: grid;
     grid-template-columns: 1.3rem 4.2rem auto minmax(0, 1fr);
+    grid-template-areas: "glyph due toggle body";
     gap: 0.5rem;
     align-items: baseline;
     padding: 0.4rem 0;
@@ -2348,9 +2349,20 @@ _TASK_ROW_CSS = """
     font-size: 0.9rem;
     word-break: break-word;
   }
+  .tasks-list li > :nth-child(1) { grid-area: glyph; }
+  .tasks-list li > :nth-child(2) { grid-area: due; }
+  .tasks-list li > :nth-child(3) { grid-area: toggle; }
+  .tasks-list li > :nth-child(4) { grid-area: body; min-width: 0; }
   @media (max-width: 480px) {
-    .tasks-list li { grid-template-columns: 1.2rem auto 1fr; }
-    .tasks-list li .toggle { grid-column: 3 / 4; justify-self: end; }
+    .tasks-list li {
+      grid-template-columns: 1.2rem 1fr auto;
+      grid-template-areas:
+        "glyph due    toggle"
+        "body  body   body";
+      row-gap: 0.25rem;
+    }
+    .tasks-list li > :nth-child(3) { justify-self: end; }
+    .tasks-list .due { font-size: 0.78rem; }
   }
   .tasks-list li:first-child { border-top: 0; }
   .tasks-list .glyph { color: #5A5E6B; }
@@ -2687,15 +2699,26 @@ LOG_PANEL = Template("""
   }
   .log-form { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
   .log-row {
-    display: grid; grid-template-columns: 1.6rem 5.5rem auto 1fr;
+    display: grid;
+    grid-template-columns: 1.6rem 5.5rem auto minmax(0, 1fr);
+    grid-template-areas: "ord lbl field hint";
     gap: 0.6rem; align-items: baseline;
     padding-bottom: 0.45rem;
     border-bottom: 1px dashed rgba(28,31,42,0.18);
   }
-  .log-row .hint { min-width: 0; word-break: break-word; }
+  .log-row > :nth-child(1) { grid-area: ord; }
+  .log-row > :nth-child(2) { grid-area: lbl; }
+  .log-row > :nth-child(3) { grid-area: field; }
+  .log-row > :nth-child(4) { grid-area: hint; min-width: 0; word-break: break-word; }
   @media (max-width: 480px) {
-    .log-row { grid-template-columns: 1.4rem 1fr auto; }
-    .log-row .hint { grid-column: 2 / -1; font-size: 0.72rem; padding-top: 0.1rem; }
+    .log-row {
+      grid-template-columns: 1.4rem 1fr auto;
+      grid-template-areas:
+        "ord  lbl  field"
+        "hint hint hint";
+      row-gap: 0.15rem;
+    }
+    .log-row > :nth-child(4) { font-size: 0.72rem; padding-top: 0.1rem; }
   }
   .log-row .ord { color: #9C9484; font-size: 0.85rem; }
   .log-row .lbl { font-size: 0.95rem; letter-spacing: 0.02em; }
