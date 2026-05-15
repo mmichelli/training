@@ -1,11 +1,20 @@
 # Coach — weekly check-in · 2026-05-15
 
-**Volume:** Under plan, dramatically. One 21-min walk in the last 21 days. We are in Week 1 territory regardless of calendar — treat this as a fresh start. Plan calls for ~1.5h walk/run-walk this week (§ plan Months 1-2).
+**Continuity.** Last week flagged RHR drifting back to 54 — it didn't hold. RHR is 59 today (+4.5 vs 14-day baseline), so the §6 watch fired. Something non-training is brewing.
 
-**Quality:** N/A — no quality work scheduled this phase, and none attempted. Correct (§9: boring is the goal; reconditioning comes first).
+**Volume.** Week 1 of plan: 0.4h of 1.5h target (23%), six days in. You need ~1.1h more across 2–3 short walk-jogs to hit the week. Not a down-week — this is the ramp-in.
 
-**Recovery:** AMBER today. RHR 58 vs 54.4 baseline (+3.6) trips the amber threshold (principles §5). HRV 33 ms last night is at the low end of your balanced range (34-41). Sleep is excellent (8.6h 7d avg). Weight +2.4 kg over 113 days — opposite of the goal direction, but not a red flag yet (§7: weight is gradual, not a knob to crank). No knee notes. The amber is most likely just life noise on a deconditioned system, not training stress (there isn't any training to stress you).
+**Quality.** No quality prescribed in weeks 1–2 (walking + run-walks only, per plan §Months 1–2). Nothing to assess. HRmax still unmeasured (§calibration) — won't grade Z-drift until the 30 May test.
 
-**Call for this week:** Continue — start Week 1 of the plan properly. Today is amber → easy only, so make today a 25-min walk-jog (60s jog / 120s walk) per Week 1 prescription, not a harder substitute. Aim for 3-4 walk-jog sessions totaling ~1.5h. No gym yet (§ plan: gym starts Week 3). Book the trainer session for barbell form now so it's ready for Week 3.
+**Recovery.** Traffic-light is **AMBER** today (RHR +4.5, §5). HRV balanced (36 ms, in range), sleep strong (8.3h last night, 8.6h 7-day avg), stress low, alcohol negligible (2.5 units / 1 day). No Sunday check-in on file yet — start one this Sunday (§6). Knee: walking session 14 May was controlled, no flags.
 
-**Watch for next week:** RHR trending back toward 54. If it stays +3 or climbs, something non-training is brewing (sleep quality, stress, sub-clinical illness) — the Sunday rule (§6) catches it; honor it.
+**Operational.** Three blockers stacking this week:
+- HRrest baseline due 2026-05-17 — do it the next two mornings, especially given the +4.5 RHR; we need a clean baseline.
+- Gym membership by 2026-05-24 and trainer session by 2026-05-22 — both required before Gym A starts plan week 3. Book the trainer slot today.
+- HRmax test 2026-05-30 — on track.
+
+**Protein / weight.** Protein log empty — start tracking; floor is 138 g/day at 86 kg (§7, Type II preservation in deficit). Weight 86.0 kg, +2.4 kg over 113 days — gradual drift up, not down. Not alarming yet, but the deficit hasn't started.
+
+**The call.** **Modify, lightly.** Amber today → easy only: 20–30 min walk, no jog intervals. Resume walk-jogs Sat/Sun if RHR normalizes. Honor §5.
+
+**Watch for next week.** If RHR stays ≥58 after two nights of 8h+ sleep, suspect sub-clinical illness — skip, don't push.
