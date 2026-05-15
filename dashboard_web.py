@@ -8,7 +8,7 @@ Open http://localhost:8765.
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -2156,44 +2156,71 @@ async def api_checkin_post(
 
 
 ALCOHOL_PARTIAL = Template("""
-<form class="alcohol-form"
-      hx-post="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML">
-  <div class="stat-row">
-    <span class="big">{{ today_units }}</span>
-    <span class="unit">units today</span>
-    {% if insight %}<span class="delta flat" style="margin-left:auto">{{ insight }}</span>{% endif %}
-  </div>
-  <div style="display:flex;gap:8px;align-items:center;margin:8px 0 12px;flex-wrap:wrap">
-    <input type="number" name="units" min="0" step="0.5" value="{{ today_units }}"
-           style="width:90px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
+<div class="stat-row">
+  <span class="big">{{ last_units }}</span>
+  <span class="unit">units · {{ last_label }}</span>
+  <a hx-get="/api/alcohol?edit=1" hx-target="#alcohol" hx-swap="innerHTML"
+     style="margin-left:auto;color:var(--oxide);border-bottom:1px solid var(--oxide);cursor:pointer;font-size:12px">log</a>
+</div>
+{% if insight %}<div style="color:var(--ink-soft);font-size:12px;margin-top:2px">{{ insight }}</div>{% endif %}
+{{ chart|safe }}
+""")
+
+
+ALCOHOL_FORM_PARTIAL = Template("""
+<form class="alcohol-form" hx-post="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML">
+  <div style="display:flex;gap:8px;align-items:center;margin:4px 0 10px;flex-wrap:wrap">
+    <input type="date" name="for_date" value="{{ default_date }}" max="{{ today }}"
+           style="padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
+    <input type="number" name="units" min="0" step="0.5" value="{{ default_units }}" autofocus
+           style="width:80px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
+    <span style="color:var(--ink-soft);font-size:12px">units</span>
     <button type="submit"
             style="padding:6px 12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:inherit;cursor:pointer">save</button>
-    <span style="color:var(--ink-soft);font-size:12px">1 unit ≈ 1 beer / 1 glass wine / 1 shot</span>
+    <a hx-get="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML"
+       style="color:var(--ink-soft);cursor:pointer;font-size:12px">cancel</a>
+    <span style="color:var(--ink-soft);font-size:12px;flex-basis:100%">1 unit ≈ 1 beer / 1 glass wine / 1 shot</span>
   </div>
 </form>
 {{ chart|safe }}
 """)
 
 
+def _units_for(df: pd.DataFrame, d: date) -> float:
+    if df.empty:
+        return 0.0
+    m = df[df["date"] == pd.Timestamp(d)]
+    return float(m.iloc[0]["units"]) if not m.empty else 0.0
+
+
 @app.get("/api/alcohol", response_class=HTMLResponse)
-async def api_alcohol_get():
+async def api_alcohol_get(edit: int = 0):
     df = load_alcohol()
     today = date.today()
-    today_units = 0.0
-    if not df.empty:
-        match = df[df["date"] == pd.Timestamp(today)]
-        if not match.empty:
-            today_units = float(match.iloc[0]["units"])
+    yesterday = today - timedelta(days=1)
+    if edit:
+        return ALCOHOL_FORM_PARTIAL.render(
+            default_date=yesterday.isoformat(),
+            today=today.isoformat(),
+            default_units=f"{_units_for(df, yesterday):g}",
+            chart=alcohol_chart(),
+        )
+    # Summary view: show most recent logged day (today if logged, else yesterday).
+    if not df.empty and (df["date"] == pd.Timestamp(today)).any():
+        last_units, last_label = _units_for(df, today), "today"
+    else:
+        last_units, last_label = _units_for(df, yesterday), "last night"
     return ALCOHOL_PARTIAL.render(
-        today_units=f"{today_units:g}",
+        last_units=f"{last_units:g}",
+        last_label=last_label,
         insight=alcohol_hrv_insight(),
         chart=alcohol_chart(),
     )
 
 
 @app.post("/api/alcohol", response_class=HTMLResponse)
-async def api_alcohol_post(units: float = Form(...)):
-    save_alcohol(date.today(), units)
+async def api_alcohol_post(units: float = Form(...), for_date: str = Form(...)):
+    save_alcohol(date.fromisoformat(for_date), units)
     return await api_alcohol_get()
 
 
