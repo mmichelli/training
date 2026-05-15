@@ -1512,6 +1512,24 @@ PAGE = Template(r"""<!doctype html>
 
       <section class="section data-card">
         <div class="section-head">
+          <span class="roman">II<sup>d</sup>.</span>
+          <h2 class="label">Protein · log today</h2>
+          <span class="section-meta">target 1.6–2.0 g/kg · §7</span>
+        </div>
+        <div id="protein" hx-get="/api/protein" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
+      <section class="section data-card">
+        <div class="section-head">
+          <span class="roman">II<sup>e</sup>.</span>
+          <h2 class="label">Alcohol · log today</h2>
+          <span class="section-meta">30 d · vs HRV</span>
+        </div>
+        <div id="alcohol" hx-get="/api/alcohol" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
+      <section class="section data-card">
+        <div class="section-head">
           <span class="roman">III.</span>
           <h2 class="label">HRV · rMSSD</h2>
           <span class="section-meta">60 d</span>
@@ -1546,15 +1564,6 @@ PAGE = Template(r"""<!doctype html>
         <div id="stress" hx-get="/api/stress" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
-      <section class="section data-card">
-        <div class="section-head">
-          <span class="roman">VI<sup>b</sup>.</span>
-          <h2 class="label">Alcohol</h2>
-          <span class="section-meta">30 d · vs HRV</span>
-        </div>
-        <div id="alcohol" hx-get="/api/alcohol" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
       <section class="section span-2 data-card">
         <div class="section-head">
           <span class="roman">VII.</span>
@@ -1571,15 +1580,6 @@ PAGE = Template(r"""<!doctype html>
           <span class="section-meta">12 wk</span>
         </div>
         <div id="volume" hx-get="/api/volume" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
-      <section class="section span-2 data-card">
-        <div class="section-head">
-          <span class="roman">IX.</span>
-          <h2 class="label">Protein · type II preservation in deficit</h2>
-          <span class="section-meta">30 d · target 1.6–2.0 g/kg</span>
-        </div>
-        <div id="protein" hx-get="/api/protein" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
     </div>
 
