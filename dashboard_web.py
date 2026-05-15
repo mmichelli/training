@@ -1475,7 +1475,6 @@ PAGE = Template(r"""<!doctype html>
     </nav>
 
     <div id="calibration" hx-get="/api/calibration" hx-trigger="load"></div>
-    <div id="countdown" hx-get="/api/countdown" hx-trigger="load"></div>
 
     <div class="grid">
       <section class="section span-2">
@@ -2852,54 +2851,3 @@ async def api_log_post(
     return _render_log(saved=True)
 
 
-# ─────────── race countdown / phase banner ───────────
-
-@app.get("/api/countdown", response_class=HTMLResponse)
-async def api_countdown():
-    from plan_lookup import PLAN_START, phase_for
-    today = date.today()
-    days_in = (today - PLAN_START).days
-    plan_week = max(1, days_in // 7 + 1)
-    phase = phase_for(plan_week)
-    races = [
-        (date(2026, 7, 12), "parkrun", "neutral"),
-        (date(2026, 9, 12), "Oslo Half", "neutral"),
-        (date(2027, 2, 14), "Sevilla", "neutral"),
-        (date(2027, 4, 3), "TWO OCEANS", "primary"),
-    ]
-    chips = [
-        f'<span class="cd-pill cd-wk">WK {plan_week}</span>',
-        f'<span class="cd-phase">{phase}</span>',
-    ]
-    for d, label, kind in races:
-        delta = (d - today).days
-        if delta < 0:
-            continue
-        klass = "cd-race-a" if kind == "primary" else "cd-race"
-        chips.append(
-            f'<span class="{klass}">'
-            f'<span class="cd-days">{delta}<small>d</small></span> '
-            f'<span class="cd-label">{label}</span>'
-            f'</span>'
-        )
-    return (
-        '<style>'
-        ' .cd-band{display:flex;flex-wrap:wrap;align-items:baseline;gap:0.6rem;'
-        '  padding:0.55rem 0.7rem;margin:0.4rem 0 0.8rem;background:var(--paper-deep);'
-        '  border-top:1px solid rgba(28,31,42,0.18);'
-        '  border-bottom:1px solid rgba(28,31,42,0.18);'
-        '  font-family:\'IBM Plex Mono\',monospace;font-size:0.85rem;color:var(--ink);}'
-        ' .cd-pill{display:inline-block;padding:0.12rem 0.45rem;letter-spacing:0.12em;'
-        '  text-transform:uppercase;font-weight:600;border:1.5px solid var(--ink);}'
-        ' .cd-phase{color:var(--ink-soft);font-size:0.82rem;letter-spacing:0.04em;}'
-        ' .cd-race,.cd-race-a{display:inline-flex;align-items:baseline;gap:0.35rem;'
-        '  padding:0.1rem 0.55rem;border:1px solid rgba(28,31,42,0.35);}'
-        ' .cd-race-a{border-color:var(--oxide);background:rgba(200,54,45,0.06);}'
-        ' .cd-days{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums;}'
-        ' .cd-days small{font-size:0.7rem;font-weight:400;color:var(--ink-soft);}'
-        ' .cd-label{font-size:0.78rem;letter-spacing:0.05em;color:var(--ink-soft);'
-        '  text-transform:uppercase;}'
-        ' .cd-race-a .cd-label{color:var(--oxide);font-weight:600;}'
-        '</style>'
-        f'<div class="cd-band">{" ".join(chips)}</div>'
-    )
