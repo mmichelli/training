@@ -10,6 +10,7 @@ from datetime import date, datetime, time, timedelta, UTC
 from pathlib import Path
 
 from plan_lookup import PLAN_START, WEEKDAYS, prescription_for
+import tasks as _tasks
 
 ROOT = Path(__file__).parent
 ICS_PATH = ROOT / "plan.ics"
@@ -105,6 +106,21 @@ def build() -> str:
             f"DTEND;VALUE=DATE:{(d + timedelta(days=1)).strftime('%Y%m%d')}",
             fold(f"SUMMARY:🏁 {ics_escape(summary)}"),
             fold(f"DESCRIPTION:{ics_escape(desc)}"),
+            "END:VEVENT",
+        ])
+    # Operational tasks as all-day events (read tasks.yaml)
+    for task in _tasks.load():
+        if task.done or task.due is None:
+            continue
+        uid = f"to27-task-{task.id}@training"
+        lines.extend([
+            "BEGIN:VEVENT",
+            fold(f"UID:{uid}"),
+            f"DTSTAMP:{datetime.now(UTC).strftime('%Y%m%dT%H%M%SZ')}",
+            f"DTSTART;VALUE=DATE:{task.due.strftime('%Y%m%d')}",
+            f"DTEND;VALUE=DATE:{(task.due + timedelta(days=1)).strftime('%Y%m%d')}",
+            fold(f"SUMMARY:{task.glyph} {ics_escape(task.title)}"),
+            fold(f"DESCRIPTION:{ics_escape(task.context)}"),
             "END:VEVENT",
         ])
     lines.append("END:VCALENDAR")

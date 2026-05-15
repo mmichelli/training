@@ -1,0 +1,111 @@
+- id: trainer-form
+  title: Trainer session — barbell form (squat, RDL, hip thrust)
+  due: '2026-05-22'
+  category: setup
+  context: Non-negotiable per plan §gym before Gym A in week 3. One 60-min session,
+    filmed from side + front. Cues for back squat depth and knee tracking, RDL hip
+    hinge, hip thrust setup. NOK 800–1200.
+  done: false
+  done_on: null
+- id: gym-membership
+  title: Gym membership active (SATS / Family Sports / Stamina)
+  due: '2026-05-24'
+  category: setup
+  context: Gym A starts plan week 3 (week of May 25). Pick one this week.
+  done: false
+  done_on: null
+- id: hrmax-test
+  title: HRmax field test
+  due: '2026-05-30'
+  category: benchmark
+  context: 10 min easy w/u + 3 × 3 min uphill all-out, 2 min jog recovery. Highest
+    reading in third rep ≈ true max. Sets every zone downstream; blind without it.
+    Plan week 3.
+  done: false
+  done_on: null
+- id: garmin-zones
+  title: Override Garmin HR zones to %HRR (Karvonen) after HRmax test
+  due: '2026-05-31'
+  category: setup
+  context: Garmin Connect → User Settings → Heart Rate → Manual. Z1 50–60% HRR, Z2
+    60–70%, Z3 70–80% (top of Z3 = 75–78% = sub-threshold ceiling), Z4 80–90% (STAY
+    OUT), Z5 90–100% (never go here). Structured workouts pushed to the Fenix will
+    carry wrong targets otherwise.
+  done: false
+  done_on: null
+- id: knee-mri
+  title: Knee MRI results into references/
+  due: '2026-06-01'
+  category: setup
+  context: Coach can't reason about Bulgarian split squat / eccentric step-down intensity
+    without them. If meniscal/cartilage findings — modify single-leg work and steep
+    downhill volume.
+  done: false
+  done_on: null
+- id: hrrest-baseline
+  title: 3-morning HRrest baseline (lie still on wake, watch reading)
+  due: '2026-05-17'
+  category: benchmark
+  context: Plan week 1 task. Anchors readiness traffic-light thresholds.
+  done: false
+  done_on: null
+- id: parkrun-benchmark
+  title: Porsgrunn parkrun 5K — sub-threshold pace anchor
+  due: '2026-07-12'
+  category: benchmark
+  context: 'Anchors sub-threshold pace (= 5K pace + 35–45 sec/km). Backup if weather
+    kills parkrun: 5K best-effort treadmill at 1% grade, fresh legs, same week.'
+  done: false
+  done_on: null
+- id: oslo-half-reg
+  title: Register for Oslo Half Marathon
+  due: '2026-06-30'
+  category: logistics
+  context: Race date 12 Sep 2026. Fitness check, not a race target.
+  done: false
+  done_on: null
+- id: winter-gear
+  title: Studded shoes + headlamp + reflective gear
+  due: '2026-10-01'
+  category: gear
+  context: Norwegian winter — non-optional. Long runs go outdoors when conditions
+    allow.
+  done: false
+  done_on: null
+- id: vitamin-d
+  title: Vitamin D daily through Oct–Mar
+  due: '2026-10-01'
+  category: gear
+  context: Plan winter notes. Recurring through end of March.
+  done: false
+  done_on: null
+- id: two-oceans-entry
+  title: Two Oceans Ultra entry registration (window opens ~Oct)
+  due: '2026-10-15'
+  category: logistics
+  context: Entry typically opens October prior to race. Sevilla qualifier time determines
+    seeding batch. NO A-RACE WITHOUT THIS — set phone reminder.
+  done: false
+  done_on: null
+- id: sevilla-logistics
+  title: Sevilla flights + accommodation
+  due: '2026-11-30'
+  category: logistics
+  context: Torp → Madrid or Málaga + bus to Sevilla. Cheaper >90 days out.
+  done: false
+  done_on: null
+- id: capetown-logistics
+  title: Cape Town flights + accommodation
+  due: '2026-12-31'
+  category: logistics
+  context: Race week 3 Apr 2027. Stay near Newlands (start area).
+  done: false
+  done_on: null
+- id: sauna-access
+  title: Sauna access for heat acclimation
+  due: '2027-02-15'
+  category: gear
+  context: 25–35 min @ 80°C, 4–5×/week in plan weeks 46–47. Local gym sauna, public
+    sauna, or home setup. Scout now.
+  done: false
+  done_on: null

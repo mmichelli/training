@@ -1498,6 +1498,16 @@ PAGE = Template(r"""<!doctype html>
              hx-swap="innerHTML"></div>
       </section>
 
+      <section class="section span-3 data-card">
+        <div class="section-head">
+          <span class="roman">II<sup>c</sup>.</span>
+          <h2 class="label">Operational tasks</h2>
+          <span class="section-meta">tasks.yaml · calendar + dashboard</span>
+        </div>
+        <div id="tasks" hx-get="/api/tasks" hx-trigger="load,refresh"
+             hx-swap="innerHTML"></div>
+      </section>
+
       <section class="section data-card">
         <div class="section-head">
           <span class="roman">III.</span>
@@ -2284,3 +2294,112 @@ async def api_volume():
         delta=f"wk {int(last['plan_week'])}", delta_dir="flat",
         chart=volume_chart(),
     )
+
+
+# ─────────── tasks panel ───────────
+
+import tasks as _tasks
+
+
+_TASK_ROW_CSS = """
+<style>
+  .tasks-list { list-style: none; padding: 0; margin: 0; }
+  .tasks-list li {
+    display: grid;
+    grid-template-columns: 1.5rem 4.5rem auto 1fr;
+    gap: 0.6rem;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    border-top: 1px solid rgba(28,31,42,0.08);
+    font-size: 0.9rem;
+  }
+  .tasks-list li:first-child { border-top: 0; }
+  .tasks-list .glyph { color: #5A5E6B; }
+  .tasks-list .due { font-variant-numeric: tabular-nums; color: #5A5E6B; font-size: 0.82rem; }
+  .tasks-list .title { font-weight: 500; }
+  .tasks-list .context { color: #5A5E6B; font-size: 0.8rem; line-height: 1.35; }
+  .tasks-list .toggle {
+    background: none; border: 1px solid #9C9484; color: #5A5E6B;
+    padding: 0 0.4rem; font-size: 0.75rem; cursor: pointer; border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tasks-list .toggle:hover { background: #1B1F2A; color: #fff; border-color: #1B1F2A; }
+  .tasks-list .row-overdue { background: rgba(180, 50, 50, 0.06); }
+  .tasks-list .row-overdue .due { color: #b43232; font-weight: 600; }
+  .tasks-list .row-red .due { color: #b43232; font-weight: 600; }
+  .tasks-list .row-amber .due { color: #b8861f; }
+  .tasks-list .row-done .title { text-decoration: line-through; color: #9C9484; }
+  .tasks-counts { color: #5A5E6B; font-size: 0.78rem; margin-bottom: 0.6rem; }
+</style>
+"""
+
+
+def _render_tasks(show_done: bool = False) -> str:
+    from datetime import date as _date
+    today = _date.today()
+    all_tasks = _tasks.load()
+    open_ts = [t for t in all_tasks if not t.done]
+    done_ts = [t for t in all_tasks if t.done]
+    open_ts.sort(key=lambda t: (t.due is None, t.due or _date.max))
+    done_ts.sort(key=lambda t: t.done_on or _date.min, reverse=True)
+
+    overdue = sum(1 for t in open_ts if t.urgency(today) == "overdue")
+    red = sum(1 for t in open_ts if t.urgency(today) == "red")
+    counts = f"{len(open_ts)} open · {overdue} overdue · {red} due ≤7d · {len(done_ts)} done"
+
+    def row_html(t: _tasks.Task) -> str:
+        u = t.urgency(today)
+        days = t.days_until(today)
+        if t.done:
+            due_label = f"done {t.done_on.isoformat()}" if t.done_on else "done"
+        elif days is None:
+            due_label = "—"
+        elif days < 0:
+            due_label = f"{-days}d late"
+        elif days == 0:
+            due_label = "today"
+        elif days <= 30:
+            due_label = f"in {days}d"
+        else:
+            due_label = t.due.isoformat() if t.due else "—"
+        toggle_label = "undo" if t.done else "done"
+        return (
+            f'<li class="row-{u}">'
+            f'<span class="glyph">{t.glyph}</span>'
+            f'<span class="due">{due_label}</span>'
+            f'<button class="toggle" hx-post="/api/tasks/{t.id}/toggle" '
+            f'hx-target="#tasks" hx-swap="innerHTML">{toggle_label}</button>'
+            f'<div><div class="title">{t.title}</div>'
+            f'<div class="context">{t.context}</div></div>'
+            f'</li>'
+        )
+
+    rows = "".join(row_html(t) for t in open_ts)
+    if show_done and done_ts:
+        rows += '<li style="border-top:1px solid #9C9484;padding-top:0.5rem;color:#5A5E6B;font-size:0.78rem;">— done —</li>'
+        rows += "".join(row_html(t) for t in done_ts)
+
+    toggle_show = (
+        f'<a hx-get="/api/tasks?show_done=0" hx-target="#tasks" hx-swap="innerHTML" '
+        f'style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;">hide done</a>'
+        if show_done else
+        f'<a hx-get="/api/tasks?show_done=1" hx-target="#tasks" hx-swap="innerHTML" '
+        f'style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;">show done</a>'
+    )
+
+    return (
+        f'{_TASK_ROW_CSS}'
+        f'<div class="tasks-counts">{counts} · {toggle_show}</div>'
+        f'<ul class="tasks-list">{rows}</ul>'
+    )
+
+
+@app.get("/api/tasks", response_class=HTMLResponse)
+async def api_tasks(show_done: int = 0):
+    return _render_tasks(show_done=bool(show_done))
+
+
+@app.post("/api/tasks/{task_id}/toggle", response_class=HTMLResponse)
+async def api_tasks_toggle(task_id: str):
+    _tasks.toggle(task_id)
+    return _render_tasks()
