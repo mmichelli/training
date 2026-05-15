@@ -490,7 +490,7 @@ def alcohol_chart() -> str:
                 full_y.append(k)
             if u - n_full >= 0.25:
                 half_x.append(row["date"])
-                half_y.append(n_full + 1)
+                half_y.append(n_full + 0.5)
         if full_x:
             fig.add_trace(go.Scatter(
                 x=full_x, y=full_y, mode="markers", name="units",
