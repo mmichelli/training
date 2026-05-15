@@ -1327,7 +1327,7 @@ PAGE = Template(r"""<!doctype html>
       min-height: 70px;
     }
     .checkin-form textarea:focus { outline: none; border-color: var(--ink); }
-    .checkin-form button.submit {
+    .checkin-wrap button.submit {
       margin-top: 14px;
       padding: 12px 24px;
       background: var(--ink);
@@ -1339,8 +1339,8 @@ PAGE = Template(r"""<!doctype html>
       text-transform: uppercase;
       cursor: pointer;
     }
-    .checkin-form button.submit:hover { background: var(--oxide); border-color: var(--oxide); }
-    .checkin-form button.submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .checkin-wrap button.submit:hover { background: var(--oxide); border-color: var(--oxide); }
+    .checkin-wrap button.submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* Verdict (after submit) */
     .verdict-block {
