@@ -37,11 +37,11 @@
   title: Knee MRI results into references/
   due: '2026-06-01'
   category: setup
-  context: Coach can't reason about Bulgarian split squat / eccentric step-down intensity
-    without them. If meniscal/cartilage findings — modify single-leg work and steep
-    downhill volume.
-  done: false
-  done_on: null
+  context: MRI done ~2 years ago — no damage found. No imaging to file. Knee history
+    still warrants conservative single-leg progression and downhill volume management,
+    but no specific findings to work around.
+  done: true
+  done_on: '2026-05-15'
 - id: hrrest-baseline
   title: 3-morning HRrest baseline (lie still on wake, watch reading)
   due: '2026-05-17'
