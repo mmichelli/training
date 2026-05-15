@@ -820,10 +820,16 @@ PAGE = Template(r"""<!doctype html>
         gap: 4px 16px;
         line-height: 1.45;
       }
-      .stamp .big {
+      .stamp .date-line {
         grid-column: 1 / span 2;
+        justify-content: space-between;
         margin-bottom: 4px;
+      }
+      .stamp .big {
         font-size: 18px;
+      }
+      .stamp .meta {
+        grid-column: 1 / span 2;
       }
       .stamp .meta { font-size: 10px; }
       .refresh { margin-top: 0; align-self: end; }
