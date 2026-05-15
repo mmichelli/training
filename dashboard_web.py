@@ -740,19 +740,29 @@ PAGE = Template(r"""<!doctype html>
     }
     .stamp .meta { display: block; }
     .sync-row {
-      display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
       margin-top: 8px;
     }
-    .refresh {
-      background: none; border: none; cursor: pointer;
+    .sync-status {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px; letter-spacing: 0.15em;
-      color: var(--ink-soft); text-transform: uppercase;
-      padding: 4px 0;
-      border-bottom: 1px solid var(--rule);
+      font-size: 11px; letter-spacing: 0.04em;
+      color: var(--ink-soft);
+    }
+    .refresh {
+      background: none; cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 16px; line-height: 1;
+      color: var(--ink-soft);
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--rule); border-radius: 50%;
+      padding: 0;
+      transition: color 120ms ease, border-color 120ms ease, transform 200ms ease;
     }
     .refresh:hover { color: var(--oxide); border-color: var(--oxide); }
+    .refresh:active { transform: rotate(180deg); }
     .refresh:disabled { opacity: 0.4; cursor: progress; }
+    .htmx-request .refresh > span { animation: spin 0.9s linear infinite; display: inline-block; }
     .htmx-indicator {
       display: none;
       font-family: 'IBM Plex Mono', monospace;
@@ -1424,16 +1434,17 @@ PAGE = Template(r"""<!doctype html>
         <span class="meta">wk {{ plan_week }} / 48 &nbsp;·&nbsp; {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h</span>
         <div class="sync-row">
           <button class="refresh"
+                  title="pull &amp; refresh"
+                  aria-label="pull and refresh"
                   hx-post="/api/sync"
                   hx-target="#sync-result"
                   hx-swap="innerHTML"
-                  hx-indicator="#sync-spin"
+                  hx-indicator="this"
                   hx-disabled-elt="this"
-                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#hrv','refresh'); htmx.trigger('#rhr','refresh'); htmx.trigger('#sleep','refresh'); htmx.trigger('#stress','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh')">
-            ↻ pull &amp; refresh
+                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh')">
+            <span>↻</span>
           </button>
-          <span id="sync-spin" class="htmx-indicator">syncing…</span>
-          <span id="sync-result"
+          <span id="sync-result" class="sync-status"
                 hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
         </div>
       </div>
