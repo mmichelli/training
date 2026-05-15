@@ -679,12 +679,18 @@ PAGE = Template(r"""<!doctype html>
       pointer-events: none;
       z-index: 0;
     }
+    html, body { overflow-x: hidden; }
     .shell {
       position: relative; z-index: 1;
       max-width: 1180px;
       margin: 0 auto;
       padding: 40px 48px 80px;
     }
+    .shell, .shell * { box-sizing: border-box; }
+    .section { min-width: 0; }
+    .section * { max-width: 100%; }
+    /* Plotly SVG occasionally renders wider than container on first paint */
+    .plotly-graph-div, .plotly-graph-div svg { max-width: 100%; }
     /* Masthead */
     header.masthead {
       display: grid;
@@ -1564,12 +1570,13 @@ PAGE = Template(r"""<!doctype html>
           <span class="section-meta">tap to switch</span>
         </div>
         <style>
-          .trend-tabs { display: flex; gap: 0; margin: 0 0 0.6rem 0;
+          .trend-tabs { display: flex; flex-wrap: wrap; gap: 0;
+                        margin: 0 0 0.6rem 0;
                         border-bottom: 1px solid rgba(28,31,42,0.18); }
           .trend-tab {
             font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
             letter-spacing: 0.12em; text-transform: uppercase;
-            padding: 0.5rem 1rem 0.55rem; background: transparent;
+            padding: 0.5rem 0.75rem 0.55rem; background: transparent;
             border: 0; border-bottom: 2px solid transparent;
             color: var(--ink-soft); cursor: pointer;
             margin-bottom: -1px;
@@ -1862,7 +1869,7 @@ def _render_sync_chip() -> str:
             f'</span>'
         )
         return chip
-    return '<span class="sync-result idle">never synced this session</span>'
+    return ''
 
 
 GARMIN_OAUTH_URL = (
@@ -2329,12 +2336,17 @@ _TASK_ROW_CSS = """
   .tasks-list { list-style: none; padding: 0; margin: 0; }
   .tasks-list li {
     display: grid;
-    grid-template-columns: 1.5rem 4.5rem auto 1fr;
-    gap: 0.6rem;
+    grid-template-columns: 1.3rem 4.2rem auto minmax(0, 1fr);
+    gap: 0.5rem;
     align-items: baseline;
     padding: 0.4rem 0;
     border-top: 1px solid rgba(28,31,42,0.08);
     font-size: 0.9rem;
+    word-break: break-word;
+  }
+  @media (max-width: 480px) {
+    .tasks-list li { grid-template-columns: 1.2rem auto 1fr; }
+    .tasks-list li .toggle { grid-column: 3 / 4; justify-self: end; }
   }
   .tasks-list li:first-child { border-top: 0; }
   .tasks-list .glyph { color: #5A5E6B; }
@@ -2671,10 +2683,15 @@ LOG_PANEL = Template("""
   }
   .log-form { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
   .log-row {
-    display: grid; grid-template-columns: 2.2rem 7rem auto 1fr;
-    gap: 0.8rem; align-items: baseline;
+    display: grid; grid-template-columns: 1.6rem 5.5rem auto 1fr;
+    gap: 0.6rem; align-items: baseline;
     padding-bottom: 0.45rem;
     border-bottom: 1px dashed rgba(28,31,42,0.18);
+  }
+  .log-row .hint { min-width: 0; word-break: break-word; }
+  @media (max-width: 480px) {
+    .log-row { grid-template-columns: 1.4rem 1fr auto; }
+    .log-row .hint { grid-column: 2 / -1; font-size: 0.72rem; padding-top: 0.1rem; }
   }
   .log-row .ord { color: #9C9484; font-size: 0.85rem; }
   .log-row .lbl { font-size: 0.95rem; letter-spacing: 0.02em; }
