@@ -1489,7 +1489,8 @@ PAGE = Template(r"""<!doctype html>
 
     <nav class="milestones">
       {% for m in milestones %}
-      <a class="milestone {% if m.done %}done{% endif %} {% if m.a_race %}a-race{% endif %}">
+      <a class="milestone {% if m.done %}done{% endif %} {% if m.a_race %}a-race{% endif %}"
+         href="{{ m.url }}" target="_blank" rel="noopener noreferrer">
         <span class="m-rank">{{ m.rank }}</span>
         <span class="m-name">{{ m.name }}</span>
         <span class="m-when">{{ m.when }}</span>
@@ -1775,10 +1776,14 @@ def maxim_for_day(d: date) -> tuple[str, str]:
 
 
 RACES = [
-    (date(2026, 7, 12), "i.",   "Porsgrunn parkrun",  "5 K benchmark", False),
-    (date(2026, 9, 12), "ii.",  "Oslo Half",          "21 K · fitness check", False),
-    (date(2027, 2, 14), "iii.", "Sevilla Marathon",   "42 K · qualifier", False),
-    (date(2027, 4, 3),  "iv.",  "Two Oceans Ultra",   "56 K · A-race", True),
+    (date(2026, 7, 12), "i.",   "Porsgrunn parkrun",  "5 K benchmark",
+     False, "https://www.parkrun.no/porsgrunn/"),
+    (date(2026, 9, 12), "ii.",  "Oslo Half",          "21 K · fitness check",
+     False, "https://oslomaraton.no/en/"),
+    (date(2027, 2, 14), "iii.", "Sevilla Marathon",   "42 K · qualifier",
+     False, "https://www.zurichmaratondesevilla.es/en/"),
+    (date(2027, 4, 3),  "iv.",  "Two Oceans Ultra",   "56 K · A-race",
+     True,  "https://www.twooceansmarathon.org.za/"),
 ]
 
 
@@ -1788,13 +1793,14 @@ async def index():
     p = prescription_for(today)
     phase_short = p.phase.split("·")[-1].strip() if "·" in p.phase else p.phase
     milestones = []
-    for d, rank, name, when, a_race in RACES:
+    for d, rank, name, when, a_race, url in RACES:
         days = (d - today).days
         milestones.append({
             "rank": rank, "name": name, "when": when,
             "days": days if days >= 0 else 0,
             "done": days < 0,
             "a_race": a_race,
+            "url": url,
         })
     # Journey: from PLAN_START → race day (Two Oceans). Tick each race + today.
     journey_start = PLAN_START
@@ -1803,7 +1809,7 @@ async def index():
     elapsed = (today - journey_start).days
     journey_pct = max(0, min(100, elapsed / journey_total * 100))
     journey_markers = []
-    for d, rank, name, when, a_race in RACES:
+    for d, rank, name, when, a_race, _url in RACES:
         pct = max(0, min(100, (d - journey_start).days / journey_total * 100))
         journey_markers.append({
             "pct": pct, "kind": "race",
