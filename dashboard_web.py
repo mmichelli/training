@@ -2538,9 +2538,9 @@ async def api_protein(edit: int = 0):
         )
     # Show most-recently logged day
     if not df.empty and (df["date"] == pd.Timestamp(today)).any():
-        last_g, _label = _protein_for(df, today), "today"
+        last_g = _protein_for(df, today)
     else:
-        last_g, _label = _protein_for(df, yesterday), "yesterday"
+        last_g = _protein_for(df, yesterday)
     return PROTEIN_PARTIAL.render(
         last_g=f"{last_g:.0f}",
         floor=f"{floor_g:.0f}",

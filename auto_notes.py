@@ -59,7 +59,6 @@ def _system_prompt() -> str:
     )
 
 
-SYSTEM = _system_prompt()  # backwards-compat for any external import
 
 
 def is_filled(text: str) -> bool:
