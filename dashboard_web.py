@@ -745,6 +745,10 @@ PAGE = Template(r"""<!doctype html>
       margin-bottom: 2px;
     }
     .stamp .meta { display: block; }
+    .date-line {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .date-line .big { flex: 0 1 auto; }
     .sync-row {
       display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
       margin-top: 8px;
@@ -1436,9 +1440,8 @@ PAGE = Template(r"""<!doctype html>
         <div class="tagline">Porsgrunn &nbsp;&rarr;&nbsp; Cape Town &nbsp;·&nbsp; 56 K</div>
       </div>
       <div class="stamp">
-        <span class="big">{{ today_long }}</span>
-        <span class="meta">wk {{ plan_week }} / 48 &nbsp;·&nbsp; {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h</span>
-        <div class="sync-row">
+        <div class="date-line">
+          <span class="big">{{ today_long }}</span>
           <button class="refresh"
                   title="pull &amp; refresh"
                   aria-label="pull and refresh"
@@ -1450,9 +1453,10 @@ PAGE = Template(r"""<!doctype html>
                   hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh')">
             <span>↻</span>
           </button>
-          <span id="sync-result" class="sync-status"
-                hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
         </div>
+        <span class="meta">wk {{ plan_week }} / 48 &nbsp;·&nbsp; {{ phase_short }} &nbsp;·&nbsp; tgt {{ target_h }}h</span>
+        <span id="sync-result" class="sync-status"
+              hx-get="/api/sync/status" hx-trigger="load" hx-swap="innerHTML"></span>
       </div>
     </header>
 
