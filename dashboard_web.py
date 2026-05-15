@@ -1466,6 +1466,7 @@ PAGE = Template(r"""<!doctype html>
     </nav>
 
     <div id="calibration" hx-get="/api/calibration" hx-trigger="load"></div>
+    <div id="countdown" hx-get="/api/countdown" hx-trigger="load"></div>
 
     <div class="grid">
       <section class="section span-2">
@@ -1519,58 +1520,59 @@ PAGE = Template(r"""<!doctype html>
         <div id="log" hx-get="/api/log" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
-      <section class="section data-card">
+      <section class="section span-2 data-card">
         <div class="section-head">
           <span class="roman">III.</span>
-          <h2 class="label">HRV · rMSSD</h2>
-          <span class="section-meta">60 d</span>
+          <h2 class="label">Weekly volume · plan vs actual</h2>
+          <span class="section-meta">12 wk</span>
         </div>
-        <div id="hrv" hx-get="/api/hrv" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
-      <section class="section data-card">
-        <div class="section-head">
-          <span class="roman">IV.</span>
-          <h2 class="label">Resting HR</h2>
-          <span class="section-meta">60 d</span>
-        </div>
-        <div id="rhr" hx-get="/api/rhr" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
-      <section class="section data-card">
-        <div class="section-head">
-          <span class="roman">V.</span>
-          <h2 class="label">Sleep</h2>
-          <span class="section-meta">30 d</span>
-        </div>
-        <div id="sleep" hx-get="/api/sleep" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
-      <section class="section data-card">
-        <div class="section-head">
-          <span class="roman">VI.</span>
-          <h2 class="label">Stress</h2>
-          <span class="section-meta">60 d</span>
-        </div>
-        <div id="stress" hx-get="/api/stress" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+        <div id="volume" hx-get="/api/volume" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
       <section class="section span-2 data-card">
         <div class="section-head">
-          <span class="roman">VII.</span>
+          <span class="roman">IV.</span>
           <h2 class="label">Weight · journey to 75 kg</h2>
           <span class="section-meta">all-time</span>
         </div>
         <div id="weight" hx-get="/api/weight" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
-      <section class="section data-card">
+      <section class="section span-3 data-card">
         <div class="section-head">
-          <span class="roman">VIII.</span>
-          <h2 class="label">Weekly volume</h2>
-          <span class="section-meta">12 wk</span>
+          <span class="roman">V.</span>
+          <h2 class="label">Trends · 60 d</h2>
+          <span class="section-meta">tap to switch</span>
         </div>
-        <div id="volume" hx-get="/api/volume" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+        <style>
+          .trend-tabs { display: flex; gap: 0; margin: 0 0 0.6rem 0;
+                        border-bottom: 1px solid rgba(28,31,42,0.18); }
+          .trend-tab {
+            font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.5rem 1rem 0.55rem; background: transparent;
+            border: 0; border-bottom: 2px solid transparent;
+            color: var(--ink-soft); cursor: pointer;
+            margin-bottom: -1px;
+          }
+          .trend-tab:hover { color: var(--ink); }
+          .trend-tab.active {
+            color: var(--ink); border-bottom-color: var(--ink);
+            font-weight: 600;
+          }
+        </style>
+        <nav class="trend-tabs" role="tablist"
+             onclick="if(event.target.matches('.trend-tab')){this.querySelectorAll('.trend-tab').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}">
+          <button class="trend-tab active"
+                  hx-get="/api/hrv" hx-target="#trend-body" hx-swap="innerHTML">HRV</button>
+          <button class="trend-tab"
+                  hx-get="/api/rhr" hx-target="#trend-body" hx-swap="innerHTML">RHR</button>
+          <button class="trend-tab"
+                  hx-get="/api/sleep" hx-target="#trend-body" hx-swap="innerHTML">Sleep</button>
+          <button class="trend-tab"
+                  hx-get="/api/stress" hx-target="#trend-body" hx-swap="innerHTML">Stress</button>
+        </nav>
+        <div id="trend-body" hx-get="/api/hrv" hx-trigger="load" hx-swap="innerHTML"></div>
       </section>
     </div>
 
@@ -2839,3 +2841,56 @@ async def api_log_post(
     if knee.strip():
         save_knee(d, float(knee))
     return _render_log(saved=True)
+
+
+# ─────────── race countdown / phase banner ───────────
+
+@app.get("/api/countdown", response_class=HTMLResponse)
+async def api_countdown():
+    from plan_lookup import PLAN_START, phase_for
+    today = date.today()
+    days_in = (today - PLAN_START).days
+    plan_week = max(1, days_in // 7 + 1)
+    phase = phase_for(plan_week)
+    races = [
+        (date(2026, 7, 12), "parkrun", "neutral"),
+        (date(2026, 9, 12), "Oslo Half", "neutral"),
+        (date(2027, 2, 14), "Sevilla", "neutral"),
+        (date(2027, 4, 3), "TWO OCEANS", "primary"),
+    ]
+    chips = [
+        f'<span class="cd-pill cd-wk">WK {plan_week}</span>',
+        f'<span class="cd-phase">{phase}</span>',
+    ]
+    for d, label, kind in races:
+        delta = (d - today).days
+        if delta < 0:
+            continue
+        klass = "cd-race-a" if kind == "primary" else "cd-race"
+        chips.append(
+            f'<span class="{klass}">'
+            f'<span class="cd-days">{delta}<small>d</small></span> '
+            f'<span class="cd-label">{label}</span>'
+            f'</span>'
+        )
+    return (
+        '<style>'
+        ' .cd-band{display:flex;flex-wrap:wrap;align-items:baseline;gap:0.6rem;'
+        '  padding:0.55rem 0.7rem;margin:0.4rem 0 0.8rem;background:var(--paper-deep);'
+        '  border-top:1px solid rgba(28,31,42,0.18);'
+        '  border-bottom:1px solid rgba(28,31,42,0.18);'
+        '  font-family:\'IBM Plex Mono\',monospace;font-size:0.85rem;color:var(--ink);}'
+        ' .cd-pill{display:inline-block;padding:0.12rem 0.45rem;letter-spacing:0.12em;'
+        '  text-transform:uppercase;font-weight:600;border:1.5px solid var(--ink);}'
+        ' .cd-phase{color:var(--ink-soft);font-size:0.82rem;letter-spacing:0.04em;}'
+        ' .cd-race,.cd-race-a{display:inline-flex;align-items:baseline;gap:0.35rem;'
+        '  padding:0.1rem 0.55rem;border:1px solid rgba(28,31,42,0.35);}'
+        ' .cd-race-a{border-color:var(--oxide);background:rgba(200,54,45,0.06);}'
+        ' .cd-days{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums;}'
+        ' .cd-days small{font-size:0.7rem;font-weight:400;color:var(--ink-soft);}'
+        ' .cd-label{font-size:0.78rem;letter-spacing:0.05em;color:var(--ink-soft);'
+        '  text-transform:uppercase;}'
+        ' .cd-race-a .cd-label{color:var(--oxide);font-weight:600;}'
+        '</style>'
+        f'<div class="cd-band">{" ".join(chips)}</div>'
+    )
