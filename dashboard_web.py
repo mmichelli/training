@@ -412,8 +412,17 @@ def chart_layout(title: str | None = None, height: int = 240) -> dict:
 def chart_html(fig: go.Figure, div_id: str) -> str:
     # Plotly is loaded once in the page <head>; don't bundle per-card or we
     # race the CDN load against the inline newPlot call after HTMX swap.
-    return fig.to_html(include_plotlyjs=False, div_id=div_id, full_html=False,
-                       config={"displayModeBar": False, "responsive": True})
+    #
+    # `staticPlot: True` disables pan/zoom/hover. Critical on mobile — without
+    # it, a vertical swipe over a chart captures the gesture and the page
+    # won't scroll. We're read-only here (no interaction needed), so static
+    # is the right call. `touch-action: pan-y` on the wrapper is belt-and-
+    # braces in case Plotly's gesture handler still partially fires.
+    body = fig.to_html(
+        include_plotlyjs=False, div_id=div_id, full_html=False,
+        config={"displayModeBar": False, "responsive": True, "staticPlot": True},
+    )
+    return f'<div style="touch-action: pan-y;">{body}</div>'
 
 
 def hrv_chart() -> str:
