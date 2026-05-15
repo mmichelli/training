@@ -1639,6 +1639,19 @@ CHECKIN_PARTIAL = Template(r"""
           </button>
         </div>
       </div>
+    {% elif not show_form %}
+      <div class="verdict-block">
+        <div class="head">
+          <span class="call">No check-in yet for week ending {{ week_ending_eu }}.</span>
+        </div>
+        <div style="margin-top:14px;">
+          <button class="submit"
+                  hx-get="/api/checkin?reopen=1"
+                  hx-target="#checkin" hx-swap="innerHTML">
+            log check-in
+          </button>
+        </div>
+      </div>
     {% else %}
       <form class="checkin-form"
             hx-post="/api/checkin" hx-target="#checkin" hx-swap="innerHTML">
@@ -2146,6 +2159,7 @@ def _build_checkin_view(reopen: bool = False) -> str:
             {**existing, "week_ending_eu": eu_date(existing["week_ending"])}
             if existing and not reopen else None
         ),
+        show_form=reopen,
         week_ending=week_ending.isoformat(),
         week_ending_eu=eu_date(week_ending),
         questions=C.QUESTIONS,
@@ -2193,8 +2207,10 @@ ALCOHOL_PARTIAL = Template("""
 ALCOHOL_FORM_PARTIAL = Template("""
 <form class="alcohol-form" hx-post="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML">
   <div style="display:flex;gap:8px;align-items:center;margin:4px 0 10px;flex-wrap:wrap">
-    <input type="date" name="for_date" value="{{ default_date }}" max="{{ today }}"
-           style="padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
+    <input type="text" name="for_date" value="{{ default_date }}"
+           pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" placeholder="DD/MM/YYYY"
+           style="width:110px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"
+           title="DD/MM/YYYY"/>
     <input type="number" name="units" min="0" step="0.5" value="{{ default_units }}" autofocus
            style="width:80px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
     <span style="color:var(--ink-soft);font-size:12px">units</span>
@@ -2223,7 +2239,7 @@ async def api_alcohol_get(edit: int = 0):
     yesterday = today - timedelta(days=1)
     if edit:
         return ALCOHOL_FORM_PARTIAL.render(
-            default_date=yesterday.isoformat(),
+            default_date=eu_date(yesterday),
             today=today.isoformat(),
             default_units=f"{_units_for(df, yesterday):g}",
             chart=alcohol_chart(),
@@ -2241,9 +2257,17 @@ async def api_alcohol_get(edit: int = 0):
     )
 
 
+def _parse_eu_or_iso(s: str) -> date:
+    s = s.strip()
+    if "/" in s:
+        d, m, y = s.split("/")
+        return date(int(y), int(m), int(d))
+    return date.fromisoformat(s)
+
+
 @app.post("/api/alcohol", response_class=HTMLResponse)
 async def api_alcohol_post(units: float = Form(...), for_date: str = Form(...)):
-    save_alcohol(date.fromisoformat(for_date), units)
+    save_alcohol(_parse_eu_or_iso(for_date), units)
     return await api_alcohol_get()
 
 
