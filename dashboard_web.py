@@ -102,6 +102,56 @@ def load_sleep_summaries() -> pd.DataFrame:
     return df
 
 
+def load_alcohol() -> pd.DataFrame:
+    """One row per day with a logged value. Days without a file = no entry."""
+    rows = []
+    d = DATA / "alcohol"
+    if not d.exists():
+        return pd.DataFrame()
+    for p in sorted(d.glob("*.json")):
+        try:
+            obj = json.loads(p.read_text())
+            rows.append({"date": p.stem, "units": float(obj.get("units") or 0)})
+        except Exception:
+            continue
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date").reset_index(drop=True)
+    return df
+
+
+def save_alcohol(d: date, units: float) -> None:
+    out = DATA / "alcohol"
+    out.mkdir(parents=True, exist_ok=True)
+    from datetime import datetime as _dt
+    (out / f"{d.isoformat()}.json").write_text(json.dumps({
+        "units": round(max(0.0, units), 2),
+        "logged_at": _dt.now().isoformat(timespec="seconds"),
+    }, indent=2))
+
+
+def alcohol_hrv_insight() -> str:
+    """Short text comparing HRV on drinking days vs dry days over last 30d."""
+    alc = load_alcohol()
+    hrv = load_hrv_summaries()
+    if alc.empty or hrv.empty:
+        return ""
+    cutoff = pd.Timestamp(date.today()) - pd.Timedelta(days=30)
+    alc = alc[alc["date"] >= cutoff]
+    hrv = hrv[["date", "last_night_avg"]].copy()
+    # Drinking on day N most affects HRV on the night of day N → recorded on day N+1.
+    alc = alc.assign(next_day=alc["date"] + pd.Timedelta(days=1))
+    joined = hrv.merge(alc[["next_day", "units"]], left_on="date", right_on="next_day", how="left")
+    joined["units"] = joined["units"].fillna(0)
+    drank = joined[joined["units"] > 0]["last_night_avg"].dropna()
+    dry = joined[joined["units"] == 0]["last_night_avg"].dropna()
+    if len(drank) < 2 or len(dry) < 3:
+        return ""
+    delta = drank.mean() - dry.mean()
+    return f"HRV after drinking days: {drank.mean():.0f} ms (n={len(drank)}) · dry: {dry.mean():.0f} ms (n={len(dry)}) · Δ {delta:+.0f}"
+
+
 def load_daily_summaries() -> pd.DataFrame:
     rows = []
     if not (DATA / "daily").exists():
@@ -402,6 +452,33 @@ def sleep_chart() -> str:
     fig.update_layout(**layout)
     fig.update_yaxes(title=dict(text="hours", font=dict(size=10, color=INK_SOFT)))
     return chart_html(fig, "sleep-chart")
+
+
+def alcohol_chart() -> str:
+    alc = load_alcohol().tail(30)
+    hrv = load_hrv_summaries().tail(30)
+    if alc.empty and hrv.empty:
+        return "<div class='empty'>no entries yet</div>"
+    fig = go.Figure()
+    if not alc.empty:
+        fig.add_trace(go.Bar(
+            x=alc["date"], y=alc["units"], name="units",
+            marker_color=OXIDE, marker_line=dict(width=0),
+        ))
+    if not hrv.empty:
+        fig.add_trace(go.Scatter(
+            x=hrv["date"], y=hrv["last_night_avg"], name="HRV (ms)",
+            mode="lines", line=dict(color=FOREST, width=1.5),
+            yaxis="y2",
+        ))
+    layout = chart_layout()
+    layout["yaxis"] = dict(title=dict(text="units", font=dict(size=10, color=INK_SOFT)),
+                           gridcolor=GRID, zeroline=False)
+    layout["yaxis2"] = dict(title=dict(text="HRV", font=dict(size=10, color=INK_SOFT)),
+                            overlaying="y", side="right", showgrid=False, zeroline=False)
+    layout["showlegend"] = False
+    fig.update_layout(**layout)
+    return chart_html(fig, "alcohol-chart")
 
 
 def stress_chart() -> str:
@@ -1437,6 +1514,15 @@ PAGE = Template(r"""<!doctype html>
         <div id="stress" hx-get="/api/stress" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
+      <section class="section data-card">
+        <div class="section-head">
+          <span class="roman">VI<sup>b</sup>.</span>
+          <h2 class="label">Alcohol</h2>
+          <span class="section-meta">30 d · vs HRV</span>
+        </div>
+        <div id="alcohol" hx-get="/api/alcohol" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
       <section class="section span-2 data-card">
         <div class="section-head">
           <span class="roman">VII.</span>
@@ -2067,6 +2153,48 @@ async def api_checkin_post(
     }
     C.submit(date.fromisoformat(week_ending), answers, notes, signals_text())
     return _build_checkin_view()
+
+
+ALCOHOL_PARTIAL = Template("""
+<form class="alcohol-form"
+      hx-post="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML">
+  <div class="stat-row">
+    <span class="big">{{ today_units }}</span>
+    <span class="unit">units today</span>
+    {% if insight %}<span class="delta flat" style="margin-left:auto">{{ insight }}</span>{% endif %}
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;margin:8px 0 12px;flex-wrap:wrap">
+    <input type="number" name="units" min="0" step="0.5" value="{{ today_units }}"
+           style="width:90px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
+    <button type="submit"
+            style="padding:6px 12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:inherit;cursor:pointer">save</button>
+    <span style="color:var(--ink-soft);font-size:12px">1 unit ≈ 1 beer / 1 glass wine / 1 shot</span>
+  </div>
+</form>
+{{ chart|safe }}
+""")
+
+
+@app.get("/api/alcohol", response_class=HTMLResponse)
+async def api_alcohol_get():
+    df = load_alcohol()
+    today = date.today()
+    today_units = 0.0
+    if not df.empty:
+        match = df[df["date"] == pd.Timestamp(today)]
+        if not match.empty:
+            today_units = float(match.iloc[0]["units"])
+    return ALCOHOL_PARTIAL.render(
+        today_units=f"{today_units:g}",
+        insight=alcohol_hrv_insight(),
+        chart=alcohol_chart(),
+    )
+
+
+@app.post("/api/alcohol", response_class=HTMLResponse)
+async def api_alcohol_post(units: float = Form(...)):
+    save_alcohol(date.today(), units)
+    return await api_alcohol_get()
 
 
 @app.get("/api/volume", response_class=HTMLResponse)

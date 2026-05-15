@@ -1,0 +1,164 @@
+{
+  "userProfilePK": 34745850,
+  "calendarDate": "2026-05-15",
+  "startTimestampGMT": "2026-05-14T22:00:00.0",
+  "endTimestampGMT": "2026-05-14T22:35:00.0",
+  "startTimestampLocal": "2026-05-15T00:00:00.0",
+  "endTimestampLocal": "2026-05-15T00:35:00.0",
+  "maxStressLevel": 33,
+  "avgStressLevel": 25,
+  "stressChartValueOffset": 1,
+  "stressChartYAxisOrigin": -1,
+  "stressValueDescriptorsDTOList": [
+    {
+      "index": 0,
+      "key": "timestamp"
+    },
+    {
+      "index": 1,
+      "key": "stressLevel"
+    }
+  ],
+  "stressValuesArray": [
+    [
+      1778796000000,
+      25
+    ],
+    [
+      1778796180000,
+      26
+    ],
+    [
+      1778796360000,
+      22
+    ],
+    [
+      1778796540000,
+      25
+    ],
+    [
+      1778796720000,
+      21
+    ],
+    [
+      1778796900000,
+      23
+    ],
+    [
+      1778797080000,
+      24
+    ],
+    [
+      1778797260000,
+      23
+    ],
+    [
+      1778797440000,
+      25
+    ],
+    [
+      1778797620000,
+      28
+    ],
+    [
+      1778797800000,
+      28
+    ],
+    [
+      1778797980000,
+      28
+    ]
+  ],
+  "bodyBatteryValueDescriptorsDTOList": [
+    {
+      "bodyBatteryValueDescriptorIndex": 0,
+      "bodyBatteryValueDescriptorKey": "timestamp"
+    },
+    {
+      "bodyBatteryValueDescriptorIndex": 1,
+      "bodyBatteryValueDescriptorKey": "bodyBatteryStatus"
+    },
+    {
+      "bodyBatteryValueDescriptorIndex": 2,
+      "bodyBatteryValueDescriptorKey": "bodyBatteryLevel"
+    },
+    {
+      "bodyBatteryValueDescriptorIndex": 3,
+      "bodyBatteryValueDescriptorKey": "bodyBatteryVersion"
+    }
+  ],
+  "bodyBatteryValuesArray": [
+    [
+      1778796000000,
+      "MEASURED",
+      35,
+      2.0
+    ],
+    [
+      1778796180000,
+      "MEASURED",
+      35,
+      2.0
+    ],
+    [
+      1778796360000,
+      "MEASURED",
+      35,
+      2.0
+    ],
+    [
+      1778796540000,
+      "MEASURED",
+      36,
+      2.0
+    ],
+    [
+      1778796720000,
+      "MEASURED",
+      36,
+      2.0
+    ],
+    [
+      1778796900000,
+      "MEASURED",
+      36,
+      2.0
+    ],
+    [
+      1778797080000,
+      "MEASURED",
+      36,
+      2.0
+    ],
+    [
+      1778797260000,
+      "MEASURED",
+      36,
+      2.0
+    ],
+    [
+      1778797440000,
+      "MEASURED",
+      37,
+      2.0
+    ],
+    [
+      1778797620000,
+      "MEASURED",
+      37,
+      2.0
+    ],
+    [
+      1778797800000,
+      "MEASURED",
+      37,
+      2.0
+    ],
+    [
+      1778797980000,
+      "MEASURED",
+      38,
+      2.0
+    ]
+  ]
+}

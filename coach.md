@@ -1,13 +1,11 @@
-# Coach — weekly check-in · 2026-05-14
+# Coach — weekly check-in · 2026-05-15
 
-**Call: continue as planned — this is week 1, walking only. No change.**
+**Volume:** Under plan, dramatically. One 21-min walk in the last 21 days. We are in Week 1 territory regardless of calendar — treat this as a fresh start. Plan calls for ~1.5h walk/run-walk this week (§ plan Months 1-2).
 
-**1. Volume.** Under plan, but on-target for week 1: only one logged session (21 min walk) against a ~1.5h target of "three to four short walk/run-walk sessions." You need 2–3 more short walks this week to hit the floor. Not a concern yet — week is mid-flight.
+**Quality:** N/A — no quality work scheduled this phase, and none attempted. Correct (§9: boring is the goal; reconditioning comes first).
 
-**2. Quality.** N/A. Week 1 has no quality work by design (plan §Months 1-2). Walk HR 99 avg / 123 max is well under any ceiling — controlled, exactly per §9 ("boring is the goal").
+**Recovery:** AMBER today. RHR 58 vs 54.4 baseline (+3.6) trips the amber threshold (principles §5). HRV 33 ms last night is at the low end of your balanced range (34-41). Sleep is excellent (8.6h 7d avg). Weight +2.4 kg over 113 days — opposite of the goal direction, but not a red flag yet (§7: weight is gradual, not a knob to crank). No knee notes. The amber is most likely just life noise on a deconditioned system, not training stress (there isn't any training to stress you).
 
-**3. Recovery signal.** Dashboard is **amber**: RHR 58 today vs 54 baseline (+3.6, per principles §5). HRV 33 ms last night sits just under Garmin's balanced floor of 34, though 7-day avg (36) is still in range. Sleep is excellent (8.4h last night, 8.6h 7-day) and stress is low — so the RHR bump is the lone amber signal, not a cluster. No knee notes. Weight +2.4 kg over 113 days is going the wrong direction vs. the 75 kg goal (§7) but it's gradual, not acute — flag, don't act.
+**Call for this week:** Continue — start Week 1 of the plan properly. Today is amber → easy only, so make today a 25-min walk-jog (60s jog / 120s walk) per Week 1 prescription, not a harder substitute. Aim for 3-4 walk-jog sessions totaling ~1.5h. No gym yet (§ plan: gym starts Week 3). Book the trainer session for barbell form now so it's ready for Week 3.
 
-**4. The call.** Continue week 1 as written. Today is amber → **easy only** (§5): if you walk today, keep it short and Z1, same as yesterday's session. No gym this week (correct per plan). Hit 2–3 more walk-jogs Thu–Sun to land near 1.5h.
-
-**5. Watch next week.** Whether RHR returns to baseline within 2–3 days. If it stays +3 or climbs, treat week 2 as the down-week trigger via §6 Sunday rule.
+**Watch for next week:** RHR trending back toward 54. If it stays +3 or climbs, something non-training is brewing (sleep quality, stress, sub-clinical illness) — the Sunday rule (§6) catches it; honor it.

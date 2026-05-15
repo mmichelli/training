@@ -121,6 +121,21 @@ def latest_signals() -> str:
         last = stress.iloc[-1]
         out.append(f"Daytime stress: avg {last['avg_stress']:.0f} · peak {last['max_stress']:.0f} (0-100)")
 
+    try:
+        alc = dw.load_alcohol()
+    except Exception:
+        alc = pd.DataFrame()
+    if not alc.empty:
+        cutoff = pd.Timestamp(date.today()) - pd.Timedelta(days=14)
+        recent = alc[alc["date"] >= cutoff]
+        if not recent.empty:
+            total = recent["units"].sum()
+            drink_days = int((recent["units"] > 0).sum())
+            out.append(f"Alcohol (last 14d): {total:.1f} units across {drink_days} drinking day(s)")
+            insight = dw.alcohol_hrv_insight()
+            if insight:
+                out.append(f"  {insight}")
+
     if not weight.empty:
         last = weight.iloc[-1]
         to_goal = last["kg"] - 75.0

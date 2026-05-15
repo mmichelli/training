@@ -1,8 +1,8 @@
 # Two Oceans 2027 — Training Dashboard
 
-_Generated 2026-05-14 20:04 from `activities/`._
+_Generated 2026-05-15 07:32 from `activities/`._
 
-Plan week 1 starts: **2026-05-11** · Today: **2026-05-14** · Current plan week: **1**
+Plan week 1 starts: **2026-05-11** · Today: **2026-05-15** · Current plan week: **1**
 
 ## This week
 
