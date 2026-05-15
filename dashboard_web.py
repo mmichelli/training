@@ -1510,22 +1510,13 @@ PAGE = Template(r"""<!doctype html>
              hx-swap="innerHTML"></div>
       </section>
 
-      <section class="section data-card">
+      <section class="section span-3 data-card">
         <div class="section-head">
           <span class="roman">II<sup>d</sup>.</span>
-          <h2 class="label">Protein · log today</h2>
-          <span class="section-meta">target 1.6–2.0 g/kg · §7</span>
+          <h2 class="label">Today's log · protein · alcohol · knee</h2>
+          <span class="section-meta">field journal · stamp daily</span>
         </div>
-        <div id="protein" hx-get="/api/protein" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
-      </section>
-
-      <section class="section data-card">
-        <div class="section-head">
-          <span class="roman">II<sup>e</sup>.</span>
-          <h2 class="label">Alcohol · log today</h2>
-          <span class="section-meta">30 d · vs HRV</span>
-        </div>
-        <div id="alcohol" hx-get="/api/alcohol" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+        <div id="log" hx-get="/api/log" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
 
       <section class="section data-card">
@@ -2579,3 +2570,272 @@ async def api_calibration():
         + " · ".join(pieces) +
         '</div>'
     )
+
+
+# ─────────── knee score (0–10) ───────────
+
+def load_knee() -> "pd.DataFrame":
+    rows = []
+    d = DATA / "knee"
+    if not d.exists():
+        return pd.DataFrame()
+    for p in sorted(d.glob("*.json")):
+        try:
+            obj = json.loads(p.read_text())
+            rows.append({"date": p.stem, "score": float(obj.get("score") or 0)})
+        except Exception:
+            continue
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date").reset_index(drop=True)
+    return df
+
+
+def save_knee(d: date, score: float) -> None:
+    out = DATA / "knee"
+    out.mkdir(parents=True, exist_ok=True)
+    from datetime import datetime as _dt
+    (out / f"{d.isoformat()}.json").write_text(json.dumps({
+        "score": round(max(0.0, min(10.0, score)), 1),
+        "logged_at": _dt.now().isoformat(timespec="seconds"),
+    }, indent=2))
+
+
+# ─────────── unified daily log ───────────
+
+# Unicode sparkline blocks. Index 0 = visible-but-minimal, 8 = full.
+_SPARK_BLOCKS = "▁▂▃▄▅▆▇█"
+_SPARK_EMPTY = "·"  # for missing days
+
+
+def _spark(values: list[float | None], scale_max: float, width: int = 7) -> str:
+    """Render a 7-char unicode sparkline. None = missing day (rendered as dot)."""
+    out = []
+    for v in values[-width:]:
+        if v is None:
+            out.append(_SPARK_EMPTY)
+        elif v <= 0:
+            out.append(_SPARK_BLOCKS[0])
+        else:
+            idx = min(len(_SPARK_BLOCKS) - 1, int(v / scale_max * (len(_SPARK_BLOCKS) - 1)))
+            out.append(_SPARK_BLOCKS[max(0, idx)])
+    # left-pad if shorter than width
+    while len(out) < width:
+        out.insert(0, _SPARK_EMPTY)
+    return "".join(out)
+
+
+def _last7_values(df: "pd.DataFrame", col: str, today: date) -> list[float | None]:
+    """Return 7 values for [today-6 .. today], None where the day is missing."""
+    if df.empty:
+        return [None] * 7
+    idx = df.set_index("date")[col]
+    out: list[float | None] = []
+    for i in range(6, -1, -1):
+        d = today - timedelta(days=i)
+        ts = pd.Timestamp(d)
+        out.append(float(idx[ts]) if ts in idx.index else None)
+    return out
+
+
+LOG_PANEL = Template("""
+<style>
+  .log-panel { font-family: 'IBM Plex Mono', monospace; color: var(--ink); }
+  .log-stamp {
+    display: inline-block; padding: 0.15rem 0.5rem; font-size: 0.78rem;
+    border: 1px solid var(--ink); letter-spacing: 0.08em; text-transform: uppercase;
+    transform: rotate(-1.5deg); color: var(--ink); background: var(--paper);
+    margin-bottom: 0.8rem;
+  }
+  .log-form { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
+  .log-row {
+    display: grid; grid-template-columns: 2.2rem 7rem auto 1fr;
+    gap: 0.8rem; align-items: baseline;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px dashed rgba(28,31,42,0.18);
+  }
+  .log-row .ord { color: #9C9484; font-size: 0.85rem; }
+  .log-row .lbl { font-size: 0.95rem; letter-spacing: 0.02em; }
+  .log-row .field {
+    font-family: inherit; font-size: 1.5rem; font-weight: 500;
+    color: var(--ink); background: transparent; border: 0;
+    border-bottom: 1.5px solid var(--ink); width: 5.5rem;
+    text-align: right; padding: 0 0.2rem 0.05rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .log-row .field:focus { outline: 0; border-bottom-color: var(--oxide); }
+  .log-row .hint { font-size: 0.78rem; color: var(--ink-soft); }
+
+  .log-action { display: flex; justify-content: space-between; align-items: center;
+                margin-top: 0.5rem; }
+  .log-action .date-field {
+    font-family: inherit; font-size: 0.85rem; color: var(--ink-soft);
+    background: transparent; border: 0;
+    border-bottom: 1px dotted var(--ink-soft); padding: 0.1rem 0.2rem;
+  }
+  .log-action button.stamp {
+    font-family: inherit; font-size: 0.85rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.4rem 1rem;
+    background: var(--ink); color: var(--paper); border: 0;
+    cursor: pointer;
+  }
+  .log-action button.stamp:hover { background: var(--oxide); }
+
+  .log-week { margin-top: 0.9rem; padding-top: 0.6rem;
+              border-top: 1px solid rgba(28,31,42,0.15); }
+  .log-week .head { font-size: 0.72rem; letter-spacing: 0.18em;
+                    text-transform: uppercase; color: #9C9484;
+                    margin-bottom: 0.4rem; }
+  .log-week .row { display: grid;
+                   grid-template-columns: 7rem auto 1fr;
+                   gap: 0.8rem; align-items: baseline;
+                   font-size: 0.85rem; margin-bottom: 0.15rem; }
+  .log-week .spark {
+    font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem;
+    letter-spacing: 0.18em; color: var(--ink);
+  }
+  .log-week .summary { color: var(--ink-soft); font-size: 0.8rem; }
+  .log-saved { color: var(--forest); font-size: 0.78rem; margin-left: 0.5rem; }
+</style>
+
+<div class="log-panel">
+  <span class="log-stamp">entry · {{ stamp_date }}</span>
+  {% if saved %}<span class="log-saved">stamped ✓</span>{% endif %}
+
+  <form class="log-form" hx-post="/api/log" hx-target="#log" hx-swap="innerHTML">
+    <div class="log-row">
+      <span class="ord">i.</span>
+      <span class="lbl">protein</span>
+      <input class="field" type="number" step="1" min="0" name="protein"
+             value="{{ protein_val }}" />
+      <span class="hint">grams · floor {{ floor_g }}g · roof {{ roof_g }}g</span>
+    </div>
+    <div class="log-row">
+      <span class="ord">ii.</span>
+      <span class="lbl">alcohol</span>
+      <input class="field" type="number" step="0.5" min="0" name="alcohol"
+             value="{{ alcohol_val }}" />
+      <span class="hint">standard units · {{ alc_insight }}</span>
+    </div>
+    <div class="log-row">
+      <span class="ord">iii.</span>
+      <span class="lbl">knee</span>
+      <input class="field" type="number" step="1" min="0" max="10" name="knee"
+             value="{{ knee_val }}" />
+      <span class="hint">0–10 · 0=fine · 3=watch · 5+=stop</span>
+    </div>
+
+    <div class="log-action">
+      <label style="color: var(--ink-soft); font-size: 0.78rem;">
+        for date
+        <input class="date-field" name="for_date" value="{{ for_date }}" />
+      </label>
+      <button class="stamp" type="submit">stamp it</button>
+    </div>
+  </form>
+
+  <div class="log-week">
+    <div class="head">this week · seven days back</div>
+    <div class="row">
+      <span class="lbl">protein</span>
+      <span class="spark">{{ spark_p }}</span>
+      <span class="summary">{{ summary_p }}</span>
+    </div>
+    <div class="row">
+      <span class="lbl">alcohol</span>
+      <span class="spark">{{ spark_a }}</span>
+      <span class="summary">{{ summary_a }}</span>
+    </div>
+    <div class="row">
+      <span class="lbl">knee</span>
+      <span class="spark">{{ spark_k }}</span>
+      <span class="summary">{{ summary_k }}</span>
+    </div>
+  </div>
+</div>
+""")
+
+
+def _render_log(saved: bool = False) -> str:
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    floor_g, roof_g, _kg = protein_target_floor()
+
+    pdf = load_protein()
+    adf = load_alcohol()
+    kdf = load_knee()
+
+    # Default form values: prefer today's logged, else yesterday's logged, else blank
+    def latest_or_blank(df, col: str) -> str:
+        if df.empty:
+            return ""
+        for d in (today, yesterday):
+            ts = pd.Timestamp(d)
+            row = df[df["date"] == ts]
+            if not row.empty:
+                v = row[col].iloc[-1]
+                return f"{v:g}"
+        return ""
+
+    # 7-day spark + summary
+    p7 = _last7_values(pdf, "grams", today)
+    a7 = _last7_values(adf, "units", today)
+    k7 = _last7_values(kdf, "score", today)
+
+    p_vals = [v for v in p7 if v is not None]
+    a_vals = [v for v in a7 if v is not None]
+    k_vals = [v for v in k7 if v is not None]
+
+    p_mean = (sum(p_vals) / len(p_vals)) if p_vals else 0.0
+    a_total = sum(a_vals) if a_vals else 0.0
+    a_days = sum(1 for v in a_vals if v > 0)
+    k_max = max(k_vals) if k_vals else 0.0
+
+    p_summary = f"avg {p_mean:.0f} g/day · {len(p_vals)} of 7 logged" if p_vals else "no entries"
+    a_summary = f"{a_total:g} u total · {a_days} drinking day(s)" if a_vals else "no entries"
+    if k_vals:
+        k_label = "fine" if k_max <= 2 else ("watch" if k_max <= 4 else "stop")
+        k_summary = f"peak {k_max:g}/10 · {k_label}"
+    else:
+        k_summary = "no entries"
+
+    return LOG_PANEL.render(
+        stamp_date=today.strftime("%a · %d %b %Y").upper(),
+        saved=saved,
+        protein_val=latest_or_blank(pdf, "grams"),
+        alcohol_val=latest_or_blank(adf, "units"),
+        knee_val=latest_or_blank(kdf, "score"),
+        floor_g=f"{floor_g:.0f}",
+        roof_g=f"{roof_g:.0f}",
+        alc_insight=alcohol_hrv_insight() or "no HRV comparison yet",
+        for_date=eu_date(today),
+        spark_p=_spark(p7, scale_max=max(roof_g, 1.0)),
+        spark_a=_spark(a7, scale_max=5.0),
+        spark_k=_spark(k7, scale_max=10.0),
+        summary_p=p_summary,
+        summary_a=a_summary,
+        summary_k=k_summary,
+    )
+
+
+@app.get("/api/log", response_class=HTMLResponse)
+async def api_log():
+    return _render_log()
+
+
+@app.post("/api/log", response_class=HTMLResponse)
+async def api_log_post(
+    protein: str = Form(""),
+    alcohol: str = Form(""),
+    knee: str = Form(""),
+    for_date: str = Form(...),
+):
+    d = _parse_eu_or_iso(for_date)
+    if protein.strip():
+        save_protein(d, float(protein))
+    if alcohol.strip():
+        save_alcohol(d, float(alcohol))
+    if knee.strip():
+        save_knee(d, float(knee))
+    return _render_log(saved=True)
