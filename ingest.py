@@ -108,6 +108,26 @@ def write_json(stream: str, ymd: date, payload: dict | None) -> bool:
     return True
 
 
+def has_data(stream: str, ymd: date) -> bool:
+    """True if the stored file for this day has actual data (not all-null)."""
+    f = DATA / stream / f"{ymd.isoformat()}.json"
+    if not f.exists():
+        return False
+    try:
+        p = json.loads(f.read_text())
+    except Exception:
+        return False
+    if stream == "sleep":
+        return bool((p.get("dailySleepDTO") or {}).get("sleepTimeSeconds"))
+    if stream == "hrv":
+        return bool(p.get("hrvSummary") or p.get("hrvReadings"))
+    if stream == "stress":
+        return p.get("avgStressLevel") is not None or bool(p.get("stressValuesArray"))
+    if stream == "daily":
+        return p.get("totalSteps") is not None or p.get("wellnessStartTimeGmt") is not None
+    return True
+
+
 def ingest_activities(g: Garmin, days: int, force: bool) -> int:
     ACTIVITIES.mkdir(exist_ok=True)
     start_date = (date.today() - timedelta(days=days)).isoformat()
@@ -153,15 +173,15 @@ def ingest_daily_streams(g: Garmin, days: int, force: bool) -> dict[str, int]:
     for d in daterange(days):
         ymd = d.isoformat()
         # HRV (confirmed working)
-        if force or not (DATA / "hrv" / f"{ymd}.json").exists():
+        if force or not has_data("hrv", d):
             if write_json("hrv", d, g.get(f"/gc-api/hrv-service/hrv/{ymd}")):
                 counts["hrv"] += 1
         # Stress (confirmed working)
-        if force or not (DATA / "stress" / f"{ymd}.json").exists():
+        if force or not has_data("stress", d):
             if write_json("stress", d, g.get(f"/gc-api/wellness-service/wellness/dailyStress/{ymd}")):
                 counts["stress"] += 1
         # Sleep — displayName in path + nonSleepBufferMinutes is required
-        if force or not (DATA / "sleep" / f"{ymd}.json").exists():
+        if force or not has_data("sleep", d):
             r = g.get(
                 f"/gc-api/wellness-service/wellness/dailySleepData/{g.display_name}",
                 date=ymd, nonSleepBufferMinutes=60,
@@ -170,7 +190,7 @@ def ingest_daily_streams(g: Garmin, days: int, force: bool) -> dict[str, int]:
                 write_json("sleep", d, r)
                 counts["sleep"] += 1
         # Daily summary — displayName + calendarDate query
-        if force or not (DATA / "daily" / f"{ymd}.json").exists():
+        if force or not has_data("daily", d):
             r = g.get(
                 f"/gc-api/usersummary-service/usersummary/daily/{g.display_name}",
                 calendarDate=ymd,
