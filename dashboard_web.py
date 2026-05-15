@@ -480,29 +480,11 @@ def alcohol_chart() -> str:
         return "<div class='empty'>no entries yet</div>"
     fig = go.Figure()
     if not alc.empty:
-        full_x, full_y = [], []
-        half_x, half_y = [], []
-        for _, row in alc.iterrows():
-            u = float(row["units"])
-            n_full = int(u)
-            for k in range(1, n_full + 1):
-                full_x.append(row["date"])
-                full_y.append(k)
-            if u - n_full >= 0.25:
-                half_x.append(row["date"])
-                half_y.append(n_full + 0.5)
-        if full_x:
-            fig.add_trace(go.Scatter(
-                x=full_x, y=full_y, mode="markers", name="units",
-                marker=dict(color=OXIDE, size=9, symbol="circle",
-                            line=dict(width=0)),
-            ))
-        if half_x:
-            fig.add_trace(go.Scatter(
-                x=half_x, y=half_y, mode="markers", name="½ unit",
-                marker=dict(color=OXIDE, size=9, symbol="circle-open",
-                            line=dict(color=OXIDE, width=1.5)),
-            ))
+        fig.add_trace(go.Scatter(
+            x=alc["date"], y=alc["units"], mode="lines+markers", name="units",
+            line=dict(color=OXIDE, width=1.4),
+            marker=dict(size=6, color=OXIDE, line=dict(color=PAPER, width=1)),
+        ))
     if not hrv.empty:
         fig.add_trace(go.Scatter(
             x=hrv["date"], y=hrv["last_night_avg"], name="HRV (ms)",
