@@ -17,6 +17,18 @@ from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 from jinja2 import Template
 
+
+def eu_date(value) -> str:
+    """Render ISO date string or date object as DD/MM/YYYY."""
+    if value is None or value == "":
+        return ""
+    if isinstance(value, str):
+        try:
+            value = date.fromisoformat(value[:10])
+        except ValueError:
+            return value
+    return value.strftime("%d/%m/%Y")
+
 import checkin as C
 import features as F
 from plan_lookup import PLAN_START, WEEKLY_TOTAL, prescription_for
@@ -381,6 +393,13 @@ def chart_layout(title: str | None = None, height: int = 240) -> dict:
             gridcolor=GRID, linecolor=RULE, linewidth=1, ticks="outside",
             tickcolor=RULE, ticklen=4, tickfont=dict(size=10, color=INK_SOFT),
             showspikes=False,
+            tickformatstops=[
+                dict(dtickrange=[None, 86400000], value="%d/%m %H:%M"),
+                dict(dtickrange=[86400000, "M1"], value="%d/%m"),
+                dict(dtickrange=["M1", "M12"], value="%b %Y"),
+                dict(dtickrange=["M12", None], value="%Y"),
+            ],
+            hoverformat="%d/%m/%Y",
         ),
         yaxis=dict(
             gridcolor=GRID, linecolor=RULE, linewidth=1, ticks="outside",
@@ -1609,7 +1628,7 @@ CHECKIN_PARTIAL = Template(r"""
             {% if today_record.result == 'down-week' %}Down-week ahead.
             {% else %}Continue as written.{% endif %}
           </span>
-          <span class="yes-count">{{ today_record.yes_count }} / 5 yes · week ending {{ today_record.week_ending }}</span>
+          <span class="yes-count">{{ today_record.yes_count }} / 5 yes · week ending {{ today_record.week_ending_eu }}</span>
         </div>
         <div>{{ today_record.ai_verdict }}</div>
         <div style="margin-top:14px;">
@@ -2109,11 +2128,11 @@ def _build_checkin_view(reopen: bool = False) -> str:
         rec = C.load(cursor)
         if rec:
             if rec.get("yes_count", 0) >= 3:
-                strip.append({"cls": "green", "glyph": "✓", "title": f"{cursor} · {rec['yes_count']}/5"})
+                strip.append({"cls": "green", "glyph": "✓", "title": f"{eu_date(cursor)} · {rec['yes_count']}/5"})
             else:
-                strip.append({"cls": "amber", "glyph": "△", "title": f"{cursor} · {rec['yes_count']}/5 → down-week"})
+                strip.append({"cls": "amber", "glyph": "△", "title": f"{eu_date(cursor)} · {rec['yes_count']}/5 → down-week"})
         else:
-            strip.append({"cls": "miss", "glyph": " ", "title": f"{cursor} · no check-in"})
+            strip.append({"cls": "miss", "glyph": " ", "title": f"{eu_date(cursor)} · no check-in"})
         cursor = C.previous_sunday(cursor)
     strip.reverse()
 
@@ -2123,8 +2142,12 @@ def _build_checkin_view(reopen: bool = False) -> str:
         total_green=s.total_green,
         total_checkins=s.total_checkins,
         weeks_strip=strip,
-        today_record=existing if not reopen else None,
+        today_record=(
+            {**existing, "week_ending_eu": eu_date(existing["week_ending"])}
+            if existing and not reopen else None
+        ),
         week_ending=week_ending.isoformat(),
+        week_ending_eu=eu_date(week_ending),
         questions=C.QUESTIONS,
     )
 
