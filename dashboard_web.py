@@ -1465,6 +1465,8 @@ PAGE = Template(r"""<!doctype html>
       {% endfor %}
     </nav>
 
+    <div id="calibration" hx-get="/api/calibration" hx-trigger="load"></div>
+
     <div class="grid">
       <section class="section span-2">
         <div class="section-head">
@@ -1569,6 +1571,15 @@ PAGE = Template(r"""<!doctype html>
           <span class="section-meta">12 wk</span>
         </div>
         <div id="volume" hx-get="/api/volume" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
+      </section>
+
+      <section class="section span-2 data-card">
+        <div class="section-head">
+          <span class="roman">IX.</span>
+          <h2 class="label">Protein · type II preservation in deficit</h2>
+          <span class="section-meta">30 d · target 1.6–2.0 g/kg</span>
+        </div>
+        <div id="protein" hx-get="/api/protein" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
       </section>
     </div>
 
@@ -2403,3 +2414,168 @@ async def api_tasks(show_done: int = 0):
 async def api_tasks_toggle(task_id: str):
     _tasks.toggle(task_id)
     return _render_tasks()
+
+
+# ─────────── protein tracking ───────────
+
+PROTEIN_MULT_LOW = 1.6   # g/kg, masters lower bound
+PROTEIN_MULT_HIGH = 2.0  # g/kg, masters upper bound (in deficit)
+
+
+def load_protein() -> "pd.DataFrame":
+    rows = []
+    d = DATA / "protein"
+    if not d.exists():
+        return pd.DataFrame()
+    for p in sorted(d.glob("*.json")):
+        try:
+            obj = json.loads(p.read_text())
+            rows.append({"date": p.stem, "grams": float(obj.get("grams") or 0)})
+        except Exception:
+            continue
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date").reset_index(drop=True)
+    return df
+
+
+def save_protein(d: date, grams: float) -> None:
+    out = DATA / "protein"
+    out.mkdir(parents=True, exist_ok=True)
+    from datetime import datetime as _dt
+    (out / f"{d.isoformat()}.json").write_text(json.dumps({
+        "grams": round(max(0.0, grams), 1),
+        "logged_at": _dt.now().isoformat(timespec="seconds"),
+    }, indent=2))
+
+
+def protein_target_floor() -> tuple[float, float, float]:
+    """Returns (floor_g, high_g, current_kg). Uses current weight; falls back to goal weight."""
+    wdf = load_weight()
+    kg = float(wdf.iloc[-1]["kg"]) if not wdf.empty else WEIGHT_GOAL_KG
+    return PROTEIN_MULT_LOW * kg, PROTEIN_MULT_HIGH * kg, kg
+
+
+def protein_chart() -> str:
+    df = load_protein().tail(30)
+    floor_g, high_g, _kg = protein_target_floor()
+    if df.empty:
+        return "<div class='empty'>no protein entries yet</div>"
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=df["date"], y=df["grams"],
+        marker_color=OXIDE, marker_line=dict(width=0),
+        name="g/day",
+    ))
+    fig.add_hline(y=floor_g, line=dict(color=FOREST, width=1.2, dash="dash"),
+                  annotation_text=f"1.6 g/kg = {floor_g:.0f} g",
+                  annotation_position="top left",
+                  annotation_font=dict(size=9, color=FOREST))
+    fig.add_hline(y=high_g, line=dict(color=FOREST, width=0.8, dash="dot"),
+                  annotation_text=f"2.0 g/kg = {high_g:.0f} g",
+                  annotation_position="top right",
+                  annotation_font=dict(size=9, color=FOREST))
+    fig.update_layout(**chart_layout())
+    fig.update_yaxes(title=dict(text="g/day", font=dict(size=10, color=INK_SOFT)))
+    return chart_html(fig, "protein-chart")
+
+
+PROTEIN_PARTIAL = Template("""
+<div class="stat-row">
+  <div class="stat-big">{{last_g}}</div>
+  <div class="stat-unit">g · floor {{floor}} g · roof {{roof}} g · at {{kg}} kg</div>
+  <a hx-get="/api/protein?edit=1" hx-target="#protein" hx-swap="innerHTML"
+     style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;margin-left:0.6rem;">edit</a>
+</div>
+{% if insight %}<div class="insight">{{insight}}</div>{% endif %}
+{{chart|safe}}
+""")
+
+PROTEIN_FORM_PARTIAL = Template("""
+<form class="alcohol-form" hx-post="/api/protein" hx-target="#protein" hx-swap="innerHTML">
+  <label>date <input name="for_date" value="{{default_date}}" required></label>
+  <label>grams <input name="grams" type="number" step="1" min="0" value="{{default_grams}}" required></label>
+  <button type="submit">save</button>
+  <a hx-get="/api/protein" hx-target="#protein" hx-swap="innerHTML"
+     style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;margin-left:0.6rem;">cancel</a>
+</form>
+{{chart|safe}}
+""")
+
+
+def _protein_for(df: "pd.DataFrame", d: date) -> float:
+    if df.empty:
+        return 0.0
+    row = df[df["date"] == pd.Timestamp(d)]
+    return float(row["grams"].iloc[-1]) if not row.empty else 0.0
+
+
+def _protein_insight(df: "pd.DataFrame", floor_g: float) -> str:
+    if df.empty:
+        return ""
+    last7 = df.tail(7)
+    if last7.empty:
+        return ""
+    avg = last7["grams"].mean()
+    short = (avg < floor_g)
+    pct = (avg / floor_g * 100) if floor_g else 0
+    flag = "⚠" if short else "✓"
+    return f"{flag} 7-day avg {avg:.0f} g ({pct:.0f}% of floor)"
+
+
+@app.get("/api/protein", response_class=HTMLResponse)
+async def api_protein(edit: int = 0):
+    df = load_protein()
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    floor_g, high_g, kg = protein_target_floor()
+    if edit:
+        return PROTEIN_FORM_PARTIAL.render(
+            default_date=eu_date(yesterday),
+            default_grams=f"{_protein_for(df, yesterday):.0f}",
+            chart=protein_chart(),
+        )
+    # Show most-recently logged day
+    if not df.empty and (df["date"] == pd.Timestamp(today)).any():
+        last_g, _label = _protein_for(df, today), "today"
+    else:
+        last_g, _label = _protein_for(df, yesterday), "yesterday"
+    return PROTEIN_PARTIAL.render(
+        last_g=f"{last_g:.0f}",
+        floor=f"{floor_g:.0f}",
+        roof=f"{high_g:.0f}",
+        kg=f"{kg:.1f}",
+        insight=_protein_insight(df, floor_g),
+        chart=protein_chart(),
+    )
+
+
+@app.post("/api/protein", response_class=HTMLResponse)
+async def api_protein_post(grams: float = Form(...), for_date: str = Form(...)):
+    save_protein(_parse_eu_or_iso(for_date), grams)
+    return await api_protein()
+
+
+# ─────────── HRmax calibration banner ───────────
+
+@app.get("/api/calibration", response_class=HTMLResponse)
+async def api_calibration():
+    """Tiny status pill showing whether HRmax has been measured.
+    Reads task `hrmax-test` done state from tasks.yaml."""
+    ts = {t.id: t for t in _tasks.load()}
+    hrmax_done = ts.get("hrmax-test") and ts["hrmax-test"].done
+    knee_mri_done = ts.get("knee-mri") and ts["knee-mri"].done
+    pieces = []
+    if not hrmax_done:
+        pieces.append('<span style="color:#b43232;">⚠ HRmax not measured — zone targets are estimates</span>')
+    else:
+        pieces.append('<span style="color:#3f7d3f;">✓ HRmax measured</span>')
+    if not knee_mri_done:
+        pieces.append('<span style="color:#b8861f;">⚠ knee MRI not in references/</span>')
+    return (
+        '<div style="font-size:0.78rem;color:#5A5E6B;margin:0.2rem 0 0.6rem 0;'
+        'display:flex;gap:1rem;flex-wrap:wrap;">'
+        + " · ".join(pieces) +
+        '</div>'
+    )

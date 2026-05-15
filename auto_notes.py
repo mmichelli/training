@@ -22,16 +22,44 @@ ACTIVITIES_DIR = ROOT / "activities"
 
 SCAFFOLD_MARKERS = ("<!-- felt:", "<!-- knee:", "<!-- sub-threshold")
 
-SYSTEM = """You are Mario's running coach. Your task: read a single Garmin activity and write a concise structured note about it. Output Markdown bullets only, no preamble.
 
-Required bullets:
-- **Session type**: one of [easy Z2, sub-threshold quality, long run, hill, recovery, cross-training, race, other]
-- **Vs. plan**: did this match the prescribed session? (yes / no / partial — one sentence)
-- **HR discipline**: based on avg/max HR and the sub-threshold ceiling (top of Z3 ≈ 75-78% HRR, Z4 starts ~80% HRR), was effort controlled? Flag if max HR suggests Z4 drift.
-- **Notable**: any single thing worth flagging (very strong pace, unusually high HR, short duration, etc.) — one line. If nothing notable, write "nothing".
-- **Suggested label**: short tag like "easy/Z2-controlled" or "quality/Z3-clean" or "long/aerobic" — useful for grep.
+def _hrmax_calibrated() -> bool:
+    """True if the hrmax-test task is marked done. Until then, max-HR-based
+    Z4-drift flags are unreliable (no measured max) — suppress that bullet."""
+    try:
+        import tasks as _tasks
+        return any(t.id == "hrmax-test" and t.done for t in _tasks.load())
+    except Exception:
+        return False
 
-Be terse. No filler. If data is missing, say so."""
+
+def _system_prompt() -> str:
+    hr_bullet = (
+        "- **HR discipline**: based on avg/max HR and the sub-threshold ceiling "
+        "(top of Z3 ≈ 75-78% HRR, Z4 starts ~80% HRR), was effort controlled? "
+        "Flag if max HR suggests Z4 drift."
+        if _hrmax_calibrated() else
+        "- **HR discipline**: HRmax has NOT been measured yet — Z4-drift flagging is "
+        "suppressed. Report avg/max HR observed and note the calibration gap; do not "
+        "assert Z4 drift without a measured max."
+    )
+    return (
+        "You are Mario's running coach. Your task: read a single Garmin activity and write a "
+        "concise structured note about it. Output Markdown bullets only, no preamble.\n\n"
+        "Required bullets:\n"
+        "- **Session type**: one of [easy Z2, sub-threshold quality, long run, hill, recovery, "
+        "cross-training, race, other]\n"
+        "- **Vs. plan**: did this match the prescribed session? (yes / no / partial — one sentence)\n"
+        f"{hr_bullet}\n"
+        "- **Notable**: any single thing worth flagging (very strong pace, unusually high HR, "
+        'short duration, etc.) — one line. If nothing notable, write "nothing".\n'
+        "- **Suggested label**: short tag like \"easy/Z2-controlled\" or \"quality/Z3-clean\" or "
+        "\"long/aerobic\" — useful for grep.\n\n"
+        "Be terse. No filler. If data is missing, say so."
+    )
+
+
+SYSTEM = _system_prompt()  # backwards-compat for any external import
 
 
 def is_filled(text: str) -> bool:
@@ -42,8 +70,9 @@ def is_filled(text: str) -> bool:
 
 
 def ask_claude(activity_text: str, prescribed: str) -> str:
+    # Resolve at call-time so the calibration flag reflects current task state.
     prompt = (
-        f"{SYSTEM}\n\n"
+        f"{_system_prompt()}\n\n"
         f"# PRESCRIBED FOR THIS DATE\n{prescribed}\n\n"
         f"# ACTIVITY\n{activity_text}\n"
     )

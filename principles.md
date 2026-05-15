@@ -47,6 +47,24 @@ The protocol's existence proof: see [Davis 2025 on Kristoffer Ingebrigtsen][7]. 
 
 The marketing-grade alternatives (80/20 polarized, Daniels VDOT-based plans, traditional periodization) work for people who can absorb the harder sessions. We are explicitly designing for someone who cannot.
 
+### What kind of distribution this actually is
+
+In the training-intensity-distribution literature, three patterns are named:
+
+- **Polarized** — ~80% easy + ~20% hard (Z5/VO2), almost nothing in the middle. [Seiler & Kjerland 2006][8] documented this in elite endurance athletes.
+- **Pyramidal** — heavy easy + meaningful threshold/sub-threshold + minimal Z5. Decreasing intensity, increasing time-in-zone.
+- **Threshold-focused** — middle-zone dominant.
+
+NSA is **pyramidal sub-threshold**: ~80% Z1–Z2 + ~20% top-of-Z3, with the Z4–Z5 cap of polarized stripped out. The [Rosenblat 2025 IPD network meta-analysis][9] (lead author with Seiler) found polarized and pyramidal both produce significant VO2max and TT improvements; the difference between them is small relative to either-vs-threshold. The bet here is that pyramidal beats polarized for *us specifically* because the Z4–Z5 portion of polarized is exactly what would break the knee.
+
+### The trade-off being made (worth naming)
+
+[Pollock et al. 1997][10] followed 21 masters track athletes for 20 years and found those who *kept* high-intensity work intact lost ~half the VO2max per decade compared to those who dropped intensity (−15% vs −34% in the second decade). On its face, that argues for keeping Z4–Z5 in the plan.
+
+We are deliberately not doing that. The wager: at 47 with knee history and life constraints, the *injury cost* of Z4–Z5 work outweighs the *VO2max-protection benefit* it would have bought. Plan = more durable, lower-ceiling. Pollock-style high-intensity = higher-ceiling, higher-fragility.
+
+This trade is real and worth naming. If injury risk drops to near zero — say, after 12 months durable on the plan — revisit whether to reintroduce occasional Z5 work in a controlled microcycle. The principles are designed to be revisitable, not religious.
+
 ---
 
 ## 3. Why year-round, not periodized
@@ -201,6 +219,10 @@ The plan and these principles cite specific studies. Each claim should be testab
 [5]: https://www.nature.com/articles/s41598-025-88153-7 "Benazieb, Weldegebriel, Méline & Imbach 2025 — Banister fitness-fatigue model statistical flaws (Scientific Reports)"
 [6]: https://uphillathlete.com/aerobic-training/heart-rate-drift/ "Uphill Athlete (Steve House) — HR drift as aerobic fitness signal"
 [7]: https://runningwritings.com/2025/07/kristoffer-ingebrigtsen-norwegian-single-threshold-training.html "Running Writings (John Davis) — Kristoffer Ingebrigtsen's Norwegian Single Threshold protocol"
+[8]: https://pubmed.ncbi.nlm.nih.gov/16430681/ "Seiler & Kjerland 2006 — Polarized training intensity distribution in elite endurance athletes (Scand J Med Sci Sports)"
+[9]: https://pubmed.ncbi.nlm.nih.gov/39888556/ "Rosenblat et al. 2025 — Training intensity distribution IPD network meta-analysis (Sports Medicine)"
+[10]: https://pubmed.ncbi.nlm.nih.gov/9134900/ "Pollock et al. 1997 — Twenty-year follow-up of aerobic power in older track athletes (J Appl Physiol)"
+[11]: https://pubmed.ncbi.nlm.nih.gov/7327965/ "Heath et al. 1981 — Physiological comparison of young and older endurance athletes (J Appl Physiol)"
 
 1. **[Manresa-Rocamora et al. 2021 — HRV-Guided Training meta-analysis][1]** (IJERPH). Methodological systematic review with meta-analysis. Found HRV-guided training achieved similar or better fitness outcomes with *fewer high-intensity sessions* than pre-planned training, though the performance difference itself was non-significant (p = 0.18). The "do less hard work, get the same result" finding is what's load-bearing here, not a stronger performance claim.
 2. **[Vesterinen et al. 2016 — Individual Endurance Training Prescription with HRV][2]** (Medicine & Science in Sports & Exercise). The cleanest single RCT: HRV-guided group improved 3000m by 2.1% vs. 1.1% in the traditional group, despite doing fewer high-intensity sessions. Methodology for using rMSSD trend as a training prescriber.
@@ -208,6 +230,10 @@ The plan and these principles cite specific studies. Each claim should be testab
 4. **[Benazieb, Weldegebriel, Méline & Imbach 2025 — Statistical Flaws of the Fitness-Fatigue Model][5]** (Nature Scientific Reports). Shows the classic Banister FFM is ill-conditioned: fitness and fatigue parameters are poorly identifiable from realistic training data, and including the fatigue term causes overfitting. Why we don't trust TSB as a tapering oracle.
 5. **[Uphill Athlete — Heart Rate Drift Test (Steve House)][6]**. Practical write-up of HR drift at steady pace as a personal aerobic-fitness signal. Threshold given: 3.5–5% drift identifies aerobic threshold. The classic "<5%" threshold is Joe Friel's, not peer-reviewed — use as a personal trend, not as an absolute pass/fail.
 6. **[Running Writings — Kristoffer Ingebrigtsen's Norwegian Single Threshold (John Davis, July 2025)][7]**. The protocol this plan is modeled on. Confirms: 33-year-old, overweight, ran 1:12–1:15 half marathon ~18 months later. Tue/Thu/Sat sub-threshold quality. Note: the "year-round, never crosses into Z4" framing I use is a *generalization* of his protocol — the article describes the weekly shape but doesn't explicitly state year-round or absolute-Z4-prohibition. Treat as inspiration, not exact recipe.
+7. **[Seiler & Kjerland 2006 — Polarized training intensity distribution][8]** (Scand J Med Sci Sports). The original empirical TID paper. Elite cross-country skiers, 384 sessions: ~75% below VT1, ~8% between VT1–VT2, ~17% above VT2. Source for §2b "what kind of distribution this actually is" — names polarized as a real, distinct pattern from pyramidal.
+8. **[Rosenblat et al. 2025 — TID network meta-analysis (IPD)][9]** (Sports Medicine). Individual-participant-data network meta-analysis of TID interventions, Seiler as senior author. Polarized and pyramidal both produced significant VO2max and TT-performance improvements; the difference between them was small relative to either-vs-threshold-focused. Justifies our pyramidal-sub-threshold variant on the grounds that the literature does not strongly favour polarized over pyramidal.
+9. **[Pollock et al. 1997 — 20-year follow-up of masters track athletes][10]** (J Appl Physiol). 21 masters athletes followed 50–70 yr. Those who kept high-intensity training lost VO2max at ~half the rate of those who dropped intensity. The cleanest evidence that intensity preservation matters for ageing endurance athletes — and the strongest counter-argument to NSA's no-Z4 cap. Cited in §2b for the trade-off being made.
+10. **[Heath et al. 1981 — Young vs older endurance athletes][11]** (J Appl Physiol). 16 masters (59 yr) vs training-matched young athletes vs sedentary middle-aged. Masters VO2max 15% lower, max HR 14% lower — but O2 pulse identical. The peripheral machinery (stroke volume, oxygen extraction, mitochondria) is preserved with continued training; the entire deficit is chronotropic. Source for "don't use 220 − age" and for the §HR-zones override task.
 
 ### Audit note (2026-05-14)
 
