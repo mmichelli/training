@@ -995,7 +995,7 @@ PAGE = Template(r"""<!doctype html>
     /* Journey progress — the expedition line + target-volume curve underneath */
     .journey {
       position: relative;
-      margin: 28px 0 44px;
+      margin: 32px 0 32px;
       padding: 0 4px;
       height: 66px;
     }
@@ -1188,9 +1188,7 @@ PAGE = Template(r"""<!doctype html>
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      margin: -8px 0 36px;
+      margin: 4px 0 40px;
     }
     @media (max-width: 980px) {
       .milestones { grid-template-columns: 1fr 1fr; }
@@ -1545,7 +1543,7 @@ PAGE = Template(r"""<!doctype html>
     }
 
     /* ─── §2 Coming Week — compact, clickable session list ──────────── */
-    .coming-week { margin: 28px 0 8px; }
+    .coming-week { margin: 32px 0; }
     .coming-week-head {
       display: grid; grid-template-columns: auto 1fr auto;
       align-items: end; gap: 18px; padding-bottom: 6px;
@@ -1572,7 +1570,7 @@ PAGE = Template(r"""<!doctype html>
       font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
       color: var(--ink-soft); margin-left: 8px;
     }
-    .week-list { border-bottom: 1px solid var(--ink); margin-top: 6px; }
+    .week-list { margin-top: 6px; }
     .week-row {
       display: grid; grid-template-columns: 64px 1fr auto; align-items: center;
       gap: 18px; padding: 11px 4px 11px 16px;
