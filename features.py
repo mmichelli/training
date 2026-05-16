@@ -1,5 +1,15 @@
 """Compute training features from ingested Garmin data.
 
+Sleep extras (added 2026-05-16):
+  sleep_stress       — Garmin's avgSleepStress (0-100). Captures "I slept long
+                       but it wasn't restful" — exactly the post-drinking case
+                       where total_h looks fine.
+  bedtime_min        — minutes since noon, so late bedtimes don't wrap (22:00
+                       → 600, 01:30 → 810).
+  bedtime_delta_min  — today vs rolling 30d median bedtime. Surfaces nights
+                       out without needing user input.
+
+
 Inputs (data/ — populated by ingest):
   activities/*.md   — per-activity markdown (existing)
   sleep/*.json      — daily sleep
@@ -75,6 +85,17 @@ def load_daily(stream: str) -> pd.DataFrame:
             d_ = obj.get("dailySleepDTO") or obj
             secs = d_.get("sleepTimeSeconds")
             rec["sleep_hours"] = (secs / 3600) if secs else None
+            rec["sleep_stress"] = d_.get("avgSleepStress")
+            # sleepStartTimestampLocal is epoch-ms tagged as local wall-clock
+            # (UTC interpretation == local time). Convert to minutes-since-noon
+            # so post-midnight bedtimes stay numerically larger than evening
+            # ones (22:00 → 600, 01:30 → 810).
+            ms = d_.get("sleepStartTimestampLocal")
+            if ms:
+                from datetime import datetime, timezone
+                dt = datetime.fromtimestamp(ms / 1000, tz=timezone.utc)
+                mins = dt.hour * 60 + dt.minute
+                rec["bedtime_min"] = mins + 720 if dt.hour < 12 else mins - 720
         elif stream == "daily":
             rec["resting_hr"] = obj.get("restingHeartRate")
         else:
@@ -172,6 +193,17 @@ def compute_features() -> pd.DataFrame:
         # debt vs 7.5h target
         df["sleep_debt"] = (7.5 - df["sleep_h"]).clip(lower=0).rolling(7, min_periods=3).sum()
 
+    if not sleep.empty and "sleep_stress" in sleep.columns:
+        ss = sleep.set_index("date")["sleep_stress"]
+        df = df.join(ss.rename("sleep_stress"), how="outer")
+        df["sleep_stress_baseline_30d"] = df["sleep_stress"].rolling(30, min_periods=7).median()
+
+    if not sleep.empty and "bedtime_min" in sleep.columns:
+        b = sleep.set_index("date")["bedtime_min"]
+        df = df.join(b.rename("bedtime_min"), how="outer")
+        df["bedtime_baseline_30d"] = df["bedtime_min"].rolling(30, min_periods=7).median()
+        df["bedtime_delta_min"] = df["bedtime_min"] - df["bedtime_baseline_30d"]
+
     if not daily.empty and "resting_hr" in daily.columns:
         r = daily.set_index("date")["resting_hr"]
         df = df.join(r.rename("rhr"), how="outer")
@@ -220,6 +252,19 @@ def readiness(latest: pd.Series) -> Verdict:
             red(f"sleep debt {latest['sleep_debt']:.1f}h over 7d")
         elif latest["sleep_debt"] > 4:
             amber(f"sleep debt {latest['sleep_debt']:.1f}h over 7d")
+
+    if "sleep_stress" in latest and pd.notna(latest["sleep_stress"]):
+        # Garmin's bands: <25 restful, 25-50 stressed, 50-75 very stressed.
+        if latest["sleep_stress"] > 75:
+            red(f"sleep stress {latest['sleep_stress']:.0f} (very stressed)")
+        elif latest["sleep_stress"] > 50:
+            amber(f"sleep stress {latest['sleep_stress']:.0f} (stressed)")
+
+    if "bedtime_delta_min" in latest and pd.notna(latest["bedtime_delta_min"]):
+        if latest["bedtime_delta_min"] > 180:
+            red(f"bedtime {latest['bedtime_delta_min']:.0f} min late vs baseline")
+        elif latest["bedtime_delta_min"] > 90:
+            amber(f"bedtime {latest['bedtime_delta_min']:.0f} min late vs baseline")
 
     if not reasons:
         reasons.append("nothing flagged")

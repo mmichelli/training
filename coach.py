@@ -200,6 +200,9 @@ def derived_features() -> str:
             ("ACWR",                     "acwr",              "",     ".2f"),
             ("Sleep 7d mean",            "sleep_h_7d",        " h",   ".1f"),
             ("Sleep debt (7d sum vs 7.5h)", "sleep_debt",     " h",   ".1f"),
+            ("Sleep stress (0-100)",     "sleep_stress",      "",     ".0f"),
+            ("Sleep stress 30d median",  "sleep_stress_baseline_30d", "", ".0f"),
+            ("Bedtime delta vs 30d median", "bedtime_delta_min", " min late", "+.0f"),
         ]
         for label, key, unit, spec in rows:
             if key in latest.index and pd.notna(latest[key]):
