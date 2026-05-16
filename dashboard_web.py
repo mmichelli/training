@@ -1018,6 +1018,31 @@ PAGE = Template(r"""<!doctype html>
       white-space: nowrap;
     }
     .journey-label.today { color: var(--oxide); font-weight: 500; }
+
+    /* Past-session dots: trail of completed activities along the expedition line */
+    .session-dot {
+      position: absolute;
+      top: 14px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink-soft);
+      transform: translateX(-50%);
+      z-index: 2;
+      cursor: help;
+      transition: transform 100ms ease;
+    }
+    .session-dot:hover { transform: translateX(-50%) scale(1.6); z-index: 4; }
+    .session-dot.run      { background: var(--oxide); }
+    .session-dot.long-run {
+      width: 9px; height: 9px; top: 13px;
+      background: var(--oxide);
+      box-shadow: 0 0 0 1.5px var(--paper);
+    }
+    .session-dot.walk     { background: var(--ink-soft); }
+    .session-dot.gym      { background: var(--ochre); }
+    .session-dot.bike     { background: var(--forest); }
+    .session-dot.other    { background: var(--ink); opacity: 0.55; }
+
     .journey-curve {
       position: absolute; top: 44px; left: 0; right: 0;
       width: 100%; height: 22px;
@@ -1470,6 +1495,9 @@ PAGE = Template(r"""<!doctype html>
     <div class="journey">
       <div class="journey-line"></div>
       <div class="journey-fill" style="width: {{ journey_pct }}%"></div>
+      {% for d in session_dots %}
+      <span class="session-dot {{ d.cls }}" style="left: {{ d.pct }}%" title="{{ d.title }}"></span>
+      {% endfor %}
       {% for m in journey_markers %}
       <div class="journey-tick {{ m.kind }}" style="left: {{ m.pct }}%"></div>
       <div class="journey-label {{ m.kind }}" style="left: {{ m.pct }}%">{{ m.label }}</div>
@@ -1840,6 +1868,8 @@ async def index():
 
     _, today_y = xy(cur_week, WEEKLY_TOTAL.get(cur_week, 0))
 
+    session_dots = _load_session_dots(journey_start, journey_total)
+
     return PAGE.render(
         today_long=today.strftime("%A %d %b %Y").lower(),
         plan_week=p.plan_week,
@@ -1848,6 +1878,7 @@ async def index():
         milestones=milestones,
         journey_pct=journey_pct,
         journey_markers=journey_markers,
+        session_dots=session_dots,
         volume_path_filled=filled_path,
         volume_path_outline=full_path,
         volume_path_done=done_path,
@@ -1864,6 +1895,58 @@ _AUTH_PROMPT = (
     ' style="color:var(--oxide);border-bottom:1px solid var(--oxide);'
     ' cursor:pointer;text-decoration:none;margin-left:6px;">⚿ authorize</a>'
 )
+
+
+def _load_session_dots(journey_start: date, journey_total_days: int) -> list[dict]:
+    """Past sessions as dots on the journey line: one per completed activity."""
+    act_dir = ROOT / "activities"
+    if not act_dir.exists() or journey_total_days <= 0:
+        return []
+    dots: list[dict] = []
+    for p in sorted(act_dir.glob("*.md")):
+        try:
+            parts = p.read_text().split("---", 2)
+            if len(parts) < 3:
+                continue
+            fm: dict[str, str] = {}
+            for line in parts[1].strip().splitlines():
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    fm[k.strip()] = v.strip().strip('"')
+            if not fm.get("date"):
+                continue
+            d = datetime.strptime(fm["date"], "%Y-%m-%d").date()
+            elapsed = (d - journey_start).days
+            if elapsed < 0:
+                continue
+            pct = min(100.0, elapsed / journey_total_days * 100)
+            atype = (fm.get("type") or "").lower()
+            duration_h = int(fm.get("duration_s") or 0) / 3600
+            distance_km = float(fm.get("distance_km") or 0)
+            name = fm.get("name") or atype
+            if atype.startswith("running") and duration_h >= 1.5:
+                cls = "long-run"
+            elif atype.startswith("running"):
+                cls = "run"
+            elif atype.startswith("walking") or atype.startswith("hiking"):
+                cls = "walk"
+            elif "strength" in atype or "weight" in atype:
+                cls = "gym"
+            elif atype.startswith("cycling") or atype.startswith("indoor_cycling"):
+                cls = "bike"
+            else:
+                cls = "other"
+            dots.append({
+                "pct": pct,
+                "cls": cls,
+                "title": (
+                    f"{d.strftime('%a %d %b')} · {name} · "
+                    f"{distance_km:.1f} km · {int(duration_h * 60)} min"
+                ),
+            })
+        except Exception:
+            continue
+    return dots
 
 
 def _latest_activity_summary() -> str:
