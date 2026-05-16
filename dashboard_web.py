@@ -2061,7 +2061,11 @@ async def index():
 
     _, today_y = xy(cur_week, WEEKLY_TOTAL.get(cur_week, 0))
 
-    session_dots = _load_session_dots(journey_start, journey_total)
+    # Scale the trail to elapsed-so-far (not full journey) so dots in the
+    # current week don't pile on top of each other on a 11-month axis.
+    # Allow 10% right-padding so dots near today aren't crammed at the edge.
+    trail_span = max(elapsed * 1.10, 14)  # at least 14 days so a single dot doesn't fill the strip
+    session_dots = _load_session_dots(journey_start, trail_span)
 
     # §2 Coming Week — today + next 6 days from plan_lookup
     coming_days = []
@@ -2146,7 +2150,7 @@ def _parse_activity_frontmatter(p: Path) -> dict[str, str] | None:
         return None
 
 
-def _load_session_dots(journey_start: date, journey_total_days: int) -> list[dict]:
+def _load_session_dots(journey_start: date, journey_total_days: float) -> list[dict]:
     """Past sessions as dots on the journey line: one per completed activity."""
     act_dir = ROOT / "activities"
     if not act_dir.exists() or journey_total_days <= 0:
