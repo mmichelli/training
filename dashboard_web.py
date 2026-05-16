@@ -1462,6 +1462,52 @@ PAGE = Template(r"""<!doctype html>
       footer.coords { flex-direction: column; gap: 12px; text-align: center; }
     }
 
+    /* ─── §7 Activity Log — synced sessions, zones inline ───────────── */
+    .activity-log-wrap { overflow-x: auto; }
+    .activity-log { width: 100%; border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; }
+    .activity-log th, .activity-log td {
+      text-align: left; padding: 10px 8px;
+      border-bottom: 1px dotted var(--rule);
+      font-size: 12px; vertical-align: baseline; white-space: nowrap;
+    }
+    .activity-log th {
+      font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--ink-soft); font-weight: 500;
+      border-bottom: 1px solid var(--ink);
+    }
+    .activity-log td.al-day em {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
+      color: var(--ink-soft); font-size: 13px; margin-right: 4px;
+    }
+    .activity-log td.al-name { white-space: normal; }
+    .activity-log td.al-name strong {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+      font-size: 13px; letter-spacing: -.005em;
+    }
+    .activity-log td.al-name em {
+      display: block;
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
+      font-size: 11px; color: var(--ink-soft); margin-top: 1px;
+    }
+    .activity-log .al-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      margin-right: 6px; vertical-align: middle; background: var(--ink-soft);
+    }
+    .activity-log .al-dot.run { background: var(--oxide); }
+    .activity-log .al-dot.long-run { background: var(--oxide);
+      box-shadow: 0 0 0 1.5px var(--paper-deep); }
+    .activity-log .al-dot.walk { background: var(--ink-soft); }
+    .activity-log .al-dot.gym { background: var(--ochre); }
+    .activity-log .al-dot.bike { background: var(--forest); }
+    .activity-log .muted { color: var(--ink-soft); }
+    .activity-log .al-zones .z {
+      display: inline-block; padding: 1px 5px; margin-right: 3px;
+      border: 1px solid var(--rule); font-size: 10px; letter-spacing: 0;
+    }
+    .activity-log .al-zones .z.dom {
+      border-color: var(--ink); color: var(--ink); font-weight: 600;
+    }
+
     /* ─── §2 Coming Week — compact, clickable session list ──────────── */
     .coming-week { margin: 28px 0 8px; }
     .coming-week-head {
@@ -1471,12 +1517,24 @@ PAGE = Template(r"""<!doctype html>
     }
     .coming-week-head .roman { color: var(--oxide); font-style: italic; font-size: 22px; }
     .coming-week-head h2 {
-      font-family: 'Newsreader', Georgia, serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-weight: 400; font-size: 26px; line-height: 1; letter-spacing: -.01em;
     }
     .coming-week-head .meta {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .cw-maxim {
+      margin: 12px 0 4px;
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
+      font-size: 14px; color: var(--ink-soft); line-height: 1.55;
+      max-width: 64ch;
+    }
+    .cw-maxim-mark { color: var(--oxide); margin-right: 6px; font-weight: 600; }
+    .cw-maxim cite {
+      font-family: 'IBM Plex Mono', monospace; font-style: normal;
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--ink-soft); margin-left: 8px;
     }
     .week-list { border-bottom: 1px solid var(--ink); margin-top: 6px; }
     .week-row {
@@ -1500,7 +1558,7 @@ PAGE = Template(r"""<!doctype html>
     }
     .week-row .wr-day { display: flex; flex-direction: column; line-height: 1; }
     .week-row .wr-day strong {
-      font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
       font-size: 17px; color: var(--ink);
     }
     .week-row .wr-day small {
@@ -1510,11 +1568,11 @@ PAGE = Template(r"""<!doctype html>
     .week-row.is-today .wr-day small { color: var(--oxide); font-weight: 600; }
     .week-row .wr-session { font-size: 13px; line-height: 1.35; color: var(--ink); }
     .week-row .wr-session strong {
-      font-family: 'Newsreader', Georgia, serif; font-weight: 500;
+      font-family: 'Fraunces', Georgia, serif; font-weight: 500;
       font-size: 15px; letter-spacing: -.005em;
     }
     .week-row .wr-session em {
-      font-family: 'Newsreader', Georgia, serif; font-style: italic;
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
       font-size: 12px; color: var(--ink-soft); margin-left: 8px;
     }
     .week-row .wr-tag {
@@ -1570,7 +1628,7 @@ PAGE = Template(r"""<!doctype html>
                   hx-indicator="this"
                   hx-disabled-elt="this"
                   hx-on::before-request="document.getElementById('sync-result').textContent='syncing…'"
-                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh'); htmx.trigger('#tasks','refresh')">
+                  hx-on::after-request="htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh'); htmx.trigger('#tasks','refresh'); htmx.trigger('#activity-log','refresh')">
             <span>↻</span>
           </button>
         </div>
@@ -1627,6 +1685,11 @@ PAGE = Template(r"""<!doctype html>
         <h2>The Coming Week</h2>
         <span class="meta">wk {{ plan_week }} · tgt {{ target_h }} h · {{ week_actual_h }} h logged</span>
       </div>
+      <p class="cw-maxim">
+        <span class="cw-maxim-mark">¶</span>
+        {{ maxim_text }}
+        <cite>— {{ maxim_attr }}</cite>
+      </p>
       <div class="week-list">
         {% for d in coming_days %}
         <article class="week-row {% if d.is_today %}is-today{% endif %} {% if d.is_rest %}rest{% endif %}"
@@ -1650,15 +1713,14 @@ PAGE = Template(r"""<!doctype html>
     </section>
 
     <div class="grid">
-      <section class="section span-2">
+      <section class="section span-2 data-card">
         <div class="section-head">
-          <span class="roman">I.</span>
-          <h2 class="label">Today's session</h2>
-          <span class="section-meta">field card</span>
+          <span class="roman">§ 7</span>
+          <h2 class="label">The Log</h2>
+          <span class="section-meta">synced sessions · last 14 d · zones inline</span>
         </div>
-        <div id="today" hx-get="/api/today" hx-trigger="load,refresh" hx-swap="innerHTML">
-          <div class="text-zinc-500">loading…</div>
-        </div>
+        <div id="activity-log" hx-get="/api/activity-log" hx-trigger="load,refresh"
+             hx-swap="innerHTML"></div>
       </section>
 
       <section class="section">
@@ -1770,22 +1832,6 @@ PAGE = Template(r"""<!doctype html>
   </div>
 </body>
 </html>""")
-
-
-TODAY_PARTIAL = Template("""
-<div class="field-card">
-  <div class="corner-tr"></div>
-  <div class="corner-bl"></div>
-  <div class="purpose">{{ weekday }} · {{ purpose }}</div>
-  <h3 class="title">{{ title }}</h3>
-  <div class="description">{{ description }}</div>
-  <blockquote class="maxim">
-    <span class="maxim-mark">¶</span>
-    <span class="maxim-text">{{ maxim_text }}</span>
-    <cite>— {{ maxim_attr }}</cite>
-  </blockquote>
-</div>
-""")
 
 
 READINESS_PARTIAL = Template("""
@@ -2009,23 +2055,18 @@ async def index():
     if act_dir.exists():
         wk_start = today - timedelta(days=today.weekday())
         for ap in act_dir.glob("*.md"):
+            fm = _parse_activity_frontmatter(ap)
+            if not fm or not fm.get("date"):
+                continue
             try:
-                head = ap.read_text(errors="ignore").split("---", 2)
-                if len(head) < 3:
-                    continue
-                fm: dict[str, str] = {}
-                for line in head[1].strip().splitlines():
-                    if ":" in line:
-                        k, v = line.split(":", 1)
-                        fm[k.strip()] = v.strip().strip('"')
-                if not fm.get("date"):
-                    continue
                 ad = datetime.strptime(fm["date"], "%Y-%m-%d").date()
                 if wk_start <= ad <= today:
                     week_actual_s += int(fm.get("duration_s") or 0)
-            except Exception:
+            except ValueError:
                 continue
     week_actual_h = f"{week_actual_s / 3600:.1f}"
+
+    maxim_text, maxim_attr = maxim_for_day(today)
 
     return PAGE.render(
         today_long=today.strftime("%A %d %b %Y").lower(),
@@ -2038,6 +2079,8 @@ async def index():
         session_dots=session_dots,
         coming_days=coming_days,
         week_actual_h=week_actual_h,
+        maxim_text=maxim_text,
+        maxim_attr=maxim_attr,
         volume_path_filled=filled_path,
         volume_path_outline=full_path,
         volume_path_done=done_path,
@@ -2056,6 +2099,22 @@ _AUTH_PROMPT = (
 )
 
 
+def _parse_activity_frontmatter(p: Path) -> dict[str, str] | None:
+    """Read an activities/*.md file and return its frontmatter dict, or None."""
+    try:
+        head = p.read_text(errors="ignore").split("---", 2)
+        if len(head) < 3:
+            return None
+        fm: dict[str, str] = {}
+        for line in head[1].strip().splitlines():
+            if ":" in line:
+                k, v = line.split(":", 1)
+                fm[k.strip()] = v.strip().strip('"')
+        return fm
+    except Exception:
+        return None
+
+
 def _load_session_dots(journey_start: date, journey_total_days: int) -> list[dict]:
     """Past sessions as dots on the journey line: one per completed activity."""
     act_dir = ROOT / "activities"
@@ -2063,17 +2122,10 @@ def _load_session_dots(journey_start: date, journey_total_days: int) -> list[dic
         return []
     dots: list[dict] = []
     for p in sorted(act_dir.glob("*.md")):
+        fm = _parse_activity_frontmatter(p)
+        if not fm or not fm.get("date"):
+            continue
         try:
-            parts = p.read_text().split("---", 2)
-            if len(parts) < 3:
-                continue
-            fm: dict[str, str] = {}
-            for line in parts[1].strip().splitlines():
-                if ":" in line:
-                    k, v = line.split(":", 1)
-                    fm[k.strip()] = v.strip().strip('"')
-            if not fm.get("date"):
-                continue
             d = datetime.strptime(fm["date"], "%Y-%m-%d").date()
             elapsed = (d - journey_start).days
             if elapsed < 0:
@@ -2116,21 +2168,13 @@ def _latest_activity_summary() -> str:
     latest_start = ""
     latest_name = ""
     for p in act_dir.glob("*.md"):
-        try:
-            head = p.read_text().split("---", 2)
-            if len(head) < 3:
-                continue
-            fm = {}
-            for line in head[1].strip().splitlines():
-                if ":" in line:
-                    k, v = line.split(":", 1)
-                    fm[k.strip()] = v.strip().strip('"')
-            start = fm.get("start", "")
-            if start and start > latest_start:
-                latest_start = start
-                latest_name = fm.get("name", "")
-        except Exception:
+        fm = _parse_activity_frontmatter(p)
+        if not fm:
             continue
+        start = fm.get("start", "")
+        if start and start > latest_start:
+            latest_start = start
+            latest_name = fm.get("name", "")
     if not latest_start:
         return ""
     try:
@@ -2286,15 +2330,115 @@ async def api_sync_status():
     return _render_sync_chip()
 
 
-@app.get("/api/today", response_class=HTMLResponse)
-async def api_today():
-    today = date.today()
-    p = prescription_for(today)
-    text, attr = maxim_for_day(today)
-    return TODAY_PARTIAL.render(
-        weekday=p.weekday, title=p.title, purpose=p.purpose, description=p.description,
-        maxim_text=text, maxim_attr=attr,
-    )
+def _activity_type_class(atype: str, duration_h: float) -> str:
+    atype = (atype or "").lower()
+    if atype.startswith("running") and duration_h >= 1.5:
+        return "long-run"
+    if atype.startswith("running"):
+        return "run"
+    if atype.startswith("walking") or atype.startswith("hiking"):
+        return "walk"
+    if "strength" in atype or "weight" in atype:
+        return "gym"
+    if atype.startswith("cycling") or atype.startswith("indoor_cycling"):
+        return "bike"
+    return "other"
+
+
+def _load_recent_activities(days: int = 14) -> list[dict]:
+    """Read activities/*.md (last N days), parse frontmatter, return rows for §7 Log."""
+    act_dir = ROOT / "activities"
+    if not act_dir.exists():
+        return []
+    cutoff = date.today() - timedelta(days=days)
+    rows: list[dict] = []
+    for p in sorted(act_dir.glob("*.md"), reverse=True):
+        fm = _parse_activity_frontmatter(p)
+        if not fm or not fm.get("date"):
+            continue
+        try:
+            ad = datetime.strptime(fm["date"], "%Y-%m-%d").date()
+            if ad < cutoff:
+                continue
+            dist_km = float(fm.get("distance_km") or 0)
+            dur_s = int(fm.get("duration_s") or 0)
+            moving_s = int(fm.get("moving_s") or dur_s)
+            pace_s = int(moving_s / dist_km) if dist_km else 0
+            zones = [int(fm.get(f"hr_z{n}_s") or 0) for n in range(1, 6)]
+            ztotal = sum(zones) or 1
+            zpct = [z / ztotal * 100 for z in zones]
+            dom_zone = zpct.index(max(zpct)) + 1 if any(zones) else 0
+            rows.append({
+                "date": ad,
+                "weekday": ad.strftime("%a"),
+                "datestr": ad.strftime("%d %b"),
+                "atype": fm.get("type", ""),
+                "name": fm.get("name", ""),
+                "cls": _activity_type_class(fm.get("type", ""), dur_s / 3600),
+                "distance_km": dist_km,
+                "duration_s": dur_s,
+                "moving_s": moving_s,
+                "pace_s": pace_s,
+                "avg_hr": int(float(fm["avg_hr"])) if fm.get("avg_hr") else None,
+                "max_hr": int(float(fm["max_hr"])) if fm.get("max_hr") else None,
+                "zones_pct": zpct,
+                "dom_zone": dom_zone,
+                "has_zones": any(zones),
+            })
+        except Exception:
+            continue
+    return rows
+
+
+ACTIVITY_LOG_PARTIAL = Template("""
+{% if rows %}
+<div class="activity-log-wrap">
+  <table class="activity-log">
+    <thead>
+      <tr>
+        <th>Day</th><th>Session</th><th>Dist</th><th>Time</th><th>Pace</th>
+        <th>HR avg · max</th><th>Zones (% time)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td class="al-day"><em>{{ r.weekday }}</em> {{ r.datestr }}</td>
+        <td class="al-name">
+          <span class="al-dot {{ r.cls }}"></span>
+          <strong>{{ r.name }}</strong>
+          <em>{{ r.atype }}</em>
+        </td>
+        <td>{{ "%.2f"|format(r.distance_km) }} km</td>
+        <td>{{ "{:d}:{:02d}".format(r.duration_s // 60, r.duration_s % 60) }}</td>
+        <td>
+          {% if r.pace_s %}
+            {{ "{:d}:{:02d}".format(r.pace_s // 60, r.pace_s % 60) }}<span class="muted">/km</span>
+          {% else %}—{% endif %}
+        </td>
+        <td>{% if r.avg_hr %}{{ r.avg_hr }} · {{ r.max_hr or "—" }}{% else %}—{% endif %}</td>
+        <td class="al-zones">
+          {% if r.has_zones %}
+            {% for pct in r.zones_pct %}
+              {% set n = loop.index %}
+              <span class="z {% if n == r.dom_zone %}dom{% endif %}">Z{{ n }} {{ "%.0f"|format(pct) }}%</span>
+            {% endfor %}
+          {% else %}<span class="muted">no zone data</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty">no activities synced yet</div>
+{% endif %}
+""")
+
+
+@app.get("/api/activity-log", response_class=HTMLResponse)
+async def api_activity_log():
+    return ACTIVITY_LOG_PARTIAL.render(rows=_load_recent_activities(14))
 
 
 @app.get("/api/readiness", response_class=HTMLResponse)

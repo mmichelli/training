@@ -9,28 +9,11 @@ from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-from plan_lookup import WEEKDAYS, prescription_for
+from plan_lookup import PLAN_START, WEEKDAYS, WEEKLY_TOTAL as PLAN_HOURS, prescription_for
 
 ROOT = Path(__file__).parent
 ACTIVITIES_DIR = ROOT / "activities"
 DASHBOARD = ROOT / "dashboard.md"
-
-# Plan anchor: week 1 starts on this Monday. Adjust as the user starts the block.
-# Default to the Monday of the week containing today, so the dashboard is meaningful
-# even before the formal plan kickoff.
-PLAN_START = date(2026, 5, 11)  # week 1 Mon — update as needed
-
-# Expected weekly totals (hours) from the plan tables
-PLAN_HOURS: dict[int, float] = {
-    1: 2.0, 2: 2.5, 3: 3.0, 4: 2.5, 5: 3.5, 6: 4.0, 7: 4.5, 8: 3.5,
-    9: 6.0, 10: 6.5, 11: 7.0, 12: 5.5, 13: 6.5, 14: 7.0, 15: 7.5, 16: 5.75,
-    17: 7.5, 18: 8.0, 19: 8.5, 20: 6.0,
-    21: 8.0, 22: 8.5, 23: 8.5, 24: 6.5, 25: 9.0, 26: 9.0, 27: 9.5, 28: 7.0,
-    29: 10.0, 30: 10.5, 31: 10.5, 32: 7.5,
-    33: 10.0, 34: 10.5, 35: 10.5, 36: 8.0, 37: 11.0, 38: 11.5, 39: 8.0, 40: 0.0,
-    41: 5.5, 42: 8.0, 43: 9.0, 44: 11.0,
-    45: 12.0, 46: 7.5, 47: 5.0, 48: 0.0,
-}
 
 
 def parse_frontmatter(text: str) -> dict[str, str]:
