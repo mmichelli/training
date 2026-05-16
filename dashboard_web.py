@@ -510,18 +510,97 @@ def alcohol_chart() -> str:
     return chart_html(fig, "alcohol-chart")
 
 
-def stress_chart() -> str:
-    df = load_stress_summaries().tail(60)
+def stress_heatmap_html(days: int = 63) -> str:
+    """A GitHub-contributions-style calendar heatmap of daily avg stress.
+
+    Weeks march left → right; each column is a Mon-to-Sun week. Cell colour
+    fades from paper (calm) → ochre (moderate) → oxide (high). Reads at a
+    glance: clusters of dark cells = stretches of hard days.
+    """
+    df = load_stress_summaries().tail(days)
     if df.empty:
         return "<div class='empty'>no stress data yet</div>"
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=df["date"], y=df["avg_stress"],
-                        marker_color=OCHRE, marker_line=dict(width=0)))
-    fig.add_trace(go.Scatter(x=df["date"], y=df["max_stress"], mode="lines",
-                            line=dict(color=OXIDE, width=1, dash="dot")))
-    fig.update_layout(**chart_layout())
-    fig.update_yaxes(title=dict(text="stress · 0-100", font=dict(size=10, color=INK_SOFT)))
-    return chart_html(fig, "stress-chart")
+    by_date = {row.date.date(): (row.avg_stress, row.max_stress)
+               for row in df.itertuples()}
+
+    today = date.today()
+    # Snap the window start back to the Monday of its calendar week so
+    # every column is a complete Mon→Sun stripe.
+    start = today - timedelta(days=days - 1)
+    grid_start = start - timedelta(days=start.weekday())
+
+    columns: list[list[dict]] = []
+    cur = grid_start
+    month_labels: list[tuple[int, str]] = []  # (col_index, label)
+    last_month = None
+    col_idx = 0
+    while cur <= today:
+        if cur.month != last_month:
+            month_labels.append((col_idx, cur.strftime("%b").lower()))
+            last_month = cur.month
+        week = []
+        for wd in range(7):
+            d = cur + timedelta(days=wd)
+            in_window = start <= d <= today
+            avg, mx = by_date.get(d, (None, None))
+            week.append({
+                "date": d,
+                "in_window": in_window,
+                "avg": avg if (avg is not None and not pd.isna(avg)) else None,
+                "max": mx if (mx is not None and not pd.isna(mx)) else None,
+            })
+        columns.append(week)
+        cur += timedelta(days=7)
+        col_idx += 1
+
+    parts: list[str] = ['<div class="hm-wrap">']
+    parts.append('<div class="hm-months">')
+    for idx, label in month_labels:
+        parts.append(f'<span style="grid-column:{idx + 2}">{label}</span>')
+    parts.append("</div>")
+
+    parts.append('<div class="hm-body">')
+    parts.append('<div class="hm-days">')
+    for wd_label in ["mon", "", "wed", "", "fri", "", ""]:
+        parts.append(f'<span>{wd_label}</span>')
+    parts.append("</div>")
+
+    parts.append('<div class="hm-grid">')
+    for week in columns:
+        parts.append('<div class="hm-col">')
+        for cell in week:
+            if not cell["in_window"]:
+                parts.append('<div class="hm-cell pad"></div>')
+            elif cell["avg"] is None:
+                parts.append(
+                    f'<div class="hm-cell empty" '
+                    f'title="{cell["date"].strftime("%a %d %b")} · no data"></div>'
+                )
+            else:
+                # Map 0–80 stress → 0..1 intensity. 80+ saturates to full oxide.
+                intensity = min(1.0, max(0.0, cell["avg"] / 80.0))
+                peak = int(cell["max"]) if cell["max"] is not None else 0
+                parts.append(
+                    f'<div class="hm-cell" style="--v:{intensity:.2f}" '
+                    f'title="{cell["date"].strftime("%a %d %b")} · '
+                    f'avg {int(cell["avg"])} · peak {peak}"></div>'
+                )
+        parts.append("</div>")
+    parts.append("</div></div>")
+
+    parts.append(
+        '<div class="hm-legend">'
+        '<span class="hm-leg-label">less</span>'
+        '<span class="hm-leg-cell" style="--v:0"></span>'
+        '<span class="hm-leg-cell" style="--v:.25"></span>'
+        '<span class="hm-leg-cell" style="--v:.5"></span>'
+        '<span class="hm-leg-cell" style="--v:.75"></span>'
+        '<span class="hm-leg-cell" style="--v:1"></span>'
+        '<span class="hm-leg-label">more</span>'
+        '</div>'
+    )
+    parts.append("</div>")
+    return "".join(parts)
 
 
 WEIGHT_GOAL_KG = 75.0
@@ -1475,6 +1554,56 @@ PAGE = Template(r"""<!doctype html>
     }
     @media (max-width: 720px) {
       footer.coords { flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    /* ─── Stress calendar heatmap (replaces the bar+line chart) ────── */
+    .hm-wrap {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--ink-soft);
+    }
+    .hm-months {
+      display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr);
+      gap: 3px; padding-left: 28px; margin-bottom: 4px;
+      font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+    }
+    .hm-body { display: flex; gap: 6px; align-items: stretch; }
+    .hm-days {
+      display: grid; grid-template-rows: repeat(7, 1fr); gap: 3px;
+      font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+      width: 22px; text-align: right;
+      padding-top: 2px;
+    }
+    .hm-grid {
+      display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr);
+      gap: 3px; flex: 1; min-width: 0;
+    }
+    .hm-col { display: grid; grid-template-rows: repeat(7, 1fr); gap: 3px; }
+    .hm-cell {
+      aspect-ratio: 1; min-height: 10px;
+      border-radius: 2px;
+      background: color-mix(in srgb,
+        var(--paper-deep) calc((1 - var(--v, 0)) * 100%),
+        var(--oxide) calc(var(--v, 0) * 100%));
+      transition: transform 80ms ease;
+      cursor: help;
+    }
+    .hm-cell:hover { transform: scale(1.4); z-index: 4; position: relative; }
+    .hm-cell.pad { background: transparent; cursor: default; }
+    .hm-cell.empty {
+      background: transparent; border: 1px dashed var(--rule);
+      cursor: default;
+    }
+    .hm-legend {
+      display: flex; align-items: center; gap: 4px;
+      justify-content: flex-end; margin-top: 8px;
+      font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+    }
+    .hm-leg-label { color: var(--ink-soft); }
+    .hm-leg-cell {
+      width: 10px; height: 10px; border-radius: 2px;
+      background: color-mix(in srgb,
+        var(--paper-deep) calc((1 - var(--v, 0)) * 100%),
+        var(--oxide) calc(var(--v, 0) * 100%));
     }
 
     /* ─── §7 Activity Log — synced sessions, zones inline ───────────── */
@@ -2531,12 +2660,12 @@ async def api_sleep():
 async def api_stress():
     df = load_stress_summaries()
     if df.empty:
-        return CARD_WITH_STAT.render(stat_big="—", stat_unit="/100", chart=stress_chart())
+        return CARD_WITH_STAT.render(stat_big="—", stat_unit="/100", chart=stress_heatmap_html())
     last = df.iloc[-1]
     return CARD_WITH_STAT.render(
         stat_big=int(last["avg_stress"]), stat_unit="avg today",
         delta=f"peak {int(last['max_stress'])}" if pd.notna(last["max_stress"]) else "",
-        delta_dir="flat", chart=stress_chart(),
+        delta_dir="flat", chart=stress_heatmap_html(),
     )
 
 
