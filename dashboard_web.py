@@ -2029,16 +2029,8 @@ async def index():
     journey_total = max((journey_end - journey_start).days, 1)
     elapsed = (today - journey_start).days
     journey_pct = max(0, min(100, elapsed / journey_total * 100))
-    journey_markers = []
-    for d, rank, name, when, a_race, _url in RACES:
-        pct = max(0, min(100, (d - journey_start).days / journey_total * 100))
-        journey_markers.append({
-            "pct": pct, "kind": "race",
-            "label": name.split()[0] if not a_race else "Cape Town",
-        })
-    journey_markers.append({"pct": journey_pct, "kind": "today", "label": "today"})
-    # Target weekly volume curve: paint the whole 48-week shape under the
-    # timeline so Mario can see "where I am on the ramp."
+    # Target weekly volume curve: paint the whole 48-week shape so Mario
+    # can see "where I am on the ramp."
     weeks = list(range(1, 49))
     vols = [WEEKLY_TOTAL.get(w, 0.0) for w in weeks]
     vmin, vmax = min(vols), max(vols)
@@ -2109,7 +2101,6 @@ async def index():
         target_h=f"{p.target_hours:.1f}",
         milestones=milestones,
         journey_pct=journey_pct,
-        journey_markers=journey_markers,
         session_dots=session_dots,
         coming_days=coming_days,
         week_actual_h=week_actual_h,
@@ -2149,6 +2140,22 @@ def _parse_activity_frontmatter(p: Path) -> dict[str, str] | None:
         return None
 
 
+def _activity_type_class(atype: str, duration_h: float) -> str:
+    """Map Garmin activityType.typeKey → dot/log CSS class."""
+    atype = (atype or "").lower()
+    if atype.startswith("running") and duration_h >= 1.5:
+        return "long-run"
+    if atype.startswith("running"):
+        return "run"
+    if atype.startswith("walking") or atype.startswith("hiking"):
+        return "walk"
+    if "strength" in atype or "weight" in atype:
+        return "gym"
+    if atype.startswith("cycling") or atype.startswith("indoor_cycling"):
+        return "bike"
+    return "other"
+
+
 def _load_session_dots(journey_start: date, journey_total_days: float) -> list[dict]:
     """Past sessions as dots on the journey line: one per completed activity."""
     act_dir = ROOT / "activities"
@@ -2165,25 +2172,13 @@ def _load_session_dots(journey_start: date, journey_total_days: float) -> list[d
             if elapsed < 0:
                 continue
             pct = min(100.0, elapsed / journey_total_days * 100)
-            atype = (fm.get("type") or "").lower()
+            atype = fm.get("type") or ""
             duration_h = int(fm.get("duration_s") or 0) / 3600
             distance_km = float(fm.get("distance_km") or 0)
             name = fm.get("name") or atype
-            if atype.startswith("running") and duration_h >= 1.5:
-                cls = "long-run"
-            elif atype.startswith("running"):
-                cls = "run"
-            elif atype.startswith("walking") or atype.startswith("hiking"):
-                cls = "walk"
-            elif "strength" in atype or "weight" in atype:
-                cls = "gym"
-            elif atype.startswith("cycling") or atype.startswith("indoor_cycling"):
-                cls = "bike"
-            else:
-                cls = "other"
             dots.append({
                 "pct": pct,
-                "cls": cls,
+                "cls": _activity_type_class(atype, duration_h),
                 "title": (
                     f"{d.strftime('%a %d %b')} · {name} · "
                     f"{distance_km:.1f} km · {int(duration_h * 60)} min"
@@ -2362,21 +2357,6 @@ async def api_sync():
 @app.get("/api/sync/status", response_class=HTMLResponse)
 async def api_sync_status():
     return _render_sync_chip()
-
-
-def _activity_type_class(atype: str, duration_h: float) -> str:
-    atype = (atype or "").lower()
-    if atype.startswith("running") and duration_h >= 1.5:
-        return "long-run"
-    if atype.startswith("running"):
-        return "run"
-    if atype.startswith("walking") or atype.startswith("hiking"):
-        return "walk"
-    if "strength" in atype or "weight" in atype:
-        return "gym"
-    if atype.startswith("cycling") or atype.startswith("indoor_cycling"):
-        return "bike"
-    return "other"
 
 
 def _load_recent_activities(days: int = 14) -> list[dict]:
