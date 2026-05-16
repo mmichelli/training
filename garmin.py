@@ -91,6 +91,14 @@ class Garmin:
     def activity_splits(self, activity_id: int) -> dict | None:
         return self.get(f"/activity-service/activity/{activity_id}/splits")
 
+    def activity_details(self, activity_id: int, max_chart: int = 10000, max_poly: int = 4000) -> dict | None:
+        """Per-record time-series: HR, speed, altitude, cadence. The raw input
+        for HR-drift / Pa:HR / efficiency-factor analysis."""
+        return self.get(
+            f"/activity-service/activity/{activity_id}/details",
+            maxChartSize=max_chart, maxPolylineSize=max_poly,
+        )
+
 
 if __name__ == "__main__":
     g = Garmin()

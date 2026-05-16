@@ -21,6 +21,7 @@ from garmin import Garmin
 ROOT = Path(__file__).parent
 ACTIVITIES = ROOT / "activities"
 DATA = ROOT / "data"
+STREAMS = DATA / "activity_streams"
 
 
 def slugify(s: str) -> str:
@@ -189,8 +190,9 @@ def has_data(stream: str, ymd: date) -> bool:
     return True
 
 
-def ingest_activities(g: Garmin, days: int, force: bool) -> int:
+def ingest_activities(g: Garmin, days: int, force: bool) -> tuple[int, int]:
     ACTIVITIES.mkdir(exist_ok=True)
+    STREAMS.mkdir(parents=True, exist_ok=True)
     start_date = (date.today() - timedelta(days=days)).isoformat()
     all_a: list[dict] = []
     start = 0
@@ -203,27 +205,34 @@ def ingest_activities(g: Garmin, days: int, force: bool) -> int:
             break
         start += 50
     written = 0
+    streams_written = 0
     for a in all_a:
         aid = a["activityId"]
         fname, _ = activity_to_md(a)
         p = ACTIVITIES / fname
-        # Idempotency: if the file already carries enriched zone data, leave it
-        # alone — saves two API calls per known activity on repeat syncs.
-        if p.exists() and not force:
-            head = p.read_text(errors="ignore")[:1500]
-            if "hr_z1_s:" in head:
-                continue
-        zones = g.activity_zones(aid)
-        splits = g.activity_splits(aid)
-        _, content = activity_to_md(a, zones=zones, splits=splits)
-        if p.exists():
-            existing = p.read_text()
-            if "## Notes" in existing:
-                user_notes = existing.split("## Notes", 1)[1]
-                content = content.split("## Notes")[0] + "## Notes" + user_notes
-        p.write_text(content)
-        written += 1
-    return written
+        stream_path = STREAMS / f"{aid}.json"
+
+        md_enriched = p.exists() and "hr_z1_s:" in p.read_text(errors="ignore")[:1500]
+        if not md_enriched or force:
+            zones = g.activity_zones(aid)
+            splits = g.activity_splits(aid)
+            _, content = activity_to_md(a, zones=zones, splits=splits)
+            if p.exists():
+                existing = p.read_text()
+                if "## Notes" in existing:
+                    user_notes = existing.split("## Notes", 1)[1]
+                    content = content.split("## Notes")[0] + "## Notes" + user_notes
+            p.write_text(content)
+            written += 1
+
+        # Per-record time-series: enables HR-drift / Pa:HR analysis later.
+        # Stored once per activity_id and never re-fetched unless --force.
+        if force or not stream_path.exists():
+            details = g.activity_details(aid)
+            if details:
+                stream_path.write_text(json.dumps(details))
+                streams_written += 1
+    return written, streams_written
 
 
 def ingest_weight(g: Garmin) -> int:
@@ -281,8 +290,8 @@ def main() -> int:
     g = Garmin()
     print(f"Pulling last {args.days} days for {g.get('/gc-api/userprofile-service/socialProfile').get('displayName')}…")
 
-    n_act = ingest_activities(g, args.days, args.force)
-    print(f"activities: {n_act} files written/updated")
+    n_act, n_streams = ingest_activities(g, args.days, args.force)
+    print(f"activities: {n_act} files written/updated, {n_streams} stream files saved")
 
     n_w = ingest_weight(g)
     print(f"weight: {n_w} weigh-ins")

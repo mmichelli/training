@@ -50,17 +50,35 @@ class Verdict:
 
 
 def load_daily(stream: str) -> pd.DataFrame:
-    """Load all data/<stream>/*.json into a date-indexed dataframe."""
+    """Load all data/<stream>/*.json into a date-indexed dataframe.
+
+    Flattens nested Garmin payloads to the flat keys compute_features() reads:
+      hrv    → rmssd        (hrvSummary.lastNightAvg)
+      daily  → resting_hr   (restingHeartRate)
+      sleep  → sleep_hours  (dailySleepDTO.sleepTimeSeconds / 3600)
+    Other streams (alcohol/knee/protein/stress) are passed through unchanged.
+    """
     d = DATA / stream
     if not d.exists():
         return pd.DataFrame()
     rows = []
     for p in d.glob("*.json"):
         try:
-            rec = json.loads(p.read_text())
+            obj = json.loads(p.read_text())
         except Exception:
             continue
-        rec.setdefault("date", p.stem)
+        rec: dict = {"date": p.stem}
+        if stream == "hrv":
+            s = obj.get("hrvSummary") or {}
+            rec["rmssd"] = s.get("lastNightAvg")
+        elif stream == "sleep":
+            d_ = obj.get("dailySleepDTO") or obj
+            secs = d_.get("sleepTimeSeconds")
+            rec["sleep_hours"] = (secs / 3600) if secs else None
+        elif stream == "daily":
+            rec["resting_hr"] = obj.get("restingHeartRate")
+        else:
+            rec.update(obj)
         rows.append(rec)
     if not rows:
         return pd.DataFrame()

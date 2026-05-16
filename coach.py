@@ -45,6 +45,12 @@ You will receive several context blocks. Use all of them:
   your response if blocking (e.g. trainer session overdue, gym membership
   not active, HRmax test due).
 - **DASHBOARD SIGNALS** — latest HRV, RHR, sleep, stress, weight, alcohol.
+- **DERIVED FEATURES** — computed by features.py from rolling baselines:
+  HRV z-score (7d mean vs 60d baseline, in 60d-SD units), RHR delta vs 60d
+  baseline, EWMA training load (7d/42d τ), ACWR, sleep debt. Cite these
+  directly when the numbers matter — they are the rigorous version of the
+  raw dashboard signals. Note: 60d baselines need ≥14 days of data; if
+  fields are blank, the baseline isn't ready yet.
 - **PROTEIN** — last 7-day mean vs floor. With weight loss in flight,
   call this out explicitly when below floor (Type II preservation, §7).
 - **LAST SUNDAY CHECK-IN** — Mario's own answers to the §6 questions.
@@ -170,6 +176,42 @@ def latest_signals() -> str:
             out.append(f"  Last weigh-in delta: {last['kg'] - prior['kg']:+.2f} kg over {(last['date'] - prior['date']).days} days")
 
     return "\n".join(out)
+
+
+def derived_features() -> str:
+    """Latest row from features.py — z-scores, deltas, EWMA load, ACWR, debt."""
+    try:
+        import features as feat
+        df = feat.compute_features()
+        if df.empty:
+            return "(no features computed — run `uv run python ingest.py` first)"
+        latest = df.iloc[-1]
+        lines = [f"As of {df.index[-1]}:"]
+        rows = [
+            ("HRV rMSSD (overnight)",    "hrv_rmssd",         " ms",  ".0f"),
+            ("HRV 7d mean",              "hrv_7d",            " ms",  ".1f"),
+            ("HRV 60d baseline",         "hrv_baseline_60d",  " ms",  ".1f"),
+            ("HRV z-score (7d vs 60d)",  "hrv_z",             "",     "+.2f"),
+            ("RHR",                      "rhr",               " bpm", ".0f"),
+            ("RHR 60d baseline",         "rhr_baseline_60d",  " bpm", ".1f"),
+            ("RHR delta vs baseline",    "rhr_delta",         " bpm", "+.1f"),
+            ("Load acute (7d τ EWMA)",   "load_acute_7d",     "",     ".1f"),
+            ("Load chronic (42d τ EWMA)","load_chronic_42d",  "",     ".1f"),
+            ("ACWR",                     "acwr",              "",     ".2f"),
+            ("Sleep 7d mean",            "sleep_h_7d",        " h",   ".1f"),
+            ("Sleep debt (7d sum vs 7.5h)", "sleep_debt",     " h",   ".1f"),
+        ]
+        for label, key, unit, spec in rows:
+            if key in latest.index and pd.notna(latest[key]):
+                lines.append(f"  {label}: {latest[key]:{spec}}{unit}")
+        v = feat.readiness(latest)
+        lines.append("")
+        lines.append(f"features.py readiness: {v.light.upper()}")
+        for r in v.reasons:
+            lines.append(f"  · {r}")
+        return "\n".join(lines)
+    except Exception as e:
+        return f"(derived features unavailable: {e})"
 
 
 def plan_week_status() -> str:
@@ -316,6 +358,8 @@ def build_context() -> str:
     parts.append(operational_tasks())
     parts.append("\n\n# DASHBOARD SIGNALS (latest)\n")
     parts.append(latest_signals())
+    parts.append("\n\n# DERIVED FEATURES (features.py — rolling baselines)\n")
+    parts.append(derived_features())
     parts.append("\n\n# PROTEIN\n")
     parts.append(protein_status())
     parts.append("\n\n# LAST SUNDAY CHECK-IN\n")
