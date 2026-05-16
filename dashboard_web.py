@@ -992,70 +992,52 @@ PAGE = Template(r"""<!doctype html>
       color: var(--ink-soft);
     }
 
-    /* Journey progress — the expedition line + target-volume curve underneath */
+    /* Journey — just the target-volume ramp curve. The race timeline that
+       used to sit above it was duplicating the milestones strip below. */
     .journey {
       position: relative;
-      margin: 32px 0 32px;
+      margin: 24px 0 28px;
       padding: 0 4px;
-      height: 66px;
-    }
-    .journey-line {
-      position: absolute; left: 0; right: 0; top: 17px;
-      height: 1px; background: var(--rule);
-    }
-    .journey-fill {
-      position: absolute; left: 0; top: 16px;
-      height: 3px; background: var(--ink);
-    }
-    .journey-tick {
-      position: absolute; top: 12px;
-      width: 1px; height: 11px;
-      background: var(--ink);
-    }
-    .journey-tick.race { background: var(--oxide); height: 15px; top: 10px; width: 2px; }
-    .journey-tick.today {
-      background: var(--oxide); height: 19px; top: 8px; width: 2px;
-      box-shadow: 0 0 0 4px rgba(200,54,45,0.10);
-    }
-    .journey-label {
-      position: absolute;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      transform: translateX(-50%);
-      top: 28px;
-      white-space: nowrap;
-    }
-    .journey-label.today { color: var(--oxide); font-weight: 500; }
-    @media (max-width: 720px) {
-      .journey-label { font-size: 8px; letter-spacing: .08em; }
-      /* Right-align the rightmost label so 'CAPE TOWN' can't run off the edge */
-      .journey-label:last-of-type { transform: translateX(-100%); padding-right: 2px; }
-      /* Hide intermediate intermediate-spaced labels at very narrow widths
-         to break the SEVILLA/CAPE-TOWN collision */
-      .journey-curve-labels .hi { display: none; }
+      height: 44px;
     }
 
-    /* Past-session dots: trail of completed activities along the expedition line */
+    /* Past-session dots: their own trail strip, above the ramp curve. */
+    .session-trail {
+      display: flex; align-items: center; gap: 12px;
+      margin: 12px 0 8px;
+    }
+    .session-trail-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .session-trail-line {
+      position: relative; flex: 1;
+      height: 12px;
+    }
+    .session-trail-line::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 50%;
+      height: 1px; background: var(--rule);
+      transform: translateY(-50%);
+    }
     .session-dot {
       position: absolute;
-      top: 14px;
-      width: 6px; height: 6px;
+      top: 50%;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--ink-soft);
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       z-index: 2;
       cursor: help;
       transition: transform 100ms ease;
+      box-shadow: 0 0 0 2px var(--paper);
     }
-    .session-dot:hover { transform: translateX(-50%) scale(1.6); z-index: 4; }
+    .session-dot:hover { transform: translate(-50%, -50%) scale(1.6); z-index: 4; }
     .session-dot.run      { background: var(--oxide); }
     .session-dot.long-run {
-      width: 9px; height: 9px; top: 13px;
+      width: 10px; height: 10px;
       background: var(--oxide);
-      box-shadow: 0 0 0 1.5px var(--paper);
     }
     .session-dot.walk     { background: var(--ink-soft); }
     .session-dot.gym      { background: var(--ochre); }
@@ -1063,12 +1045,12 @@ PAGE = Template(r"""<!doctype html>
     .session-dot.other    { background: var(--ink); opacity: 0.55; }
 
     .journey-curve {
-      position: absolute; top: 44px; left: 0; right: 0;
-      width: 100%; height: 22px;
+      position: absolute; top: 0; left: 0; right: 0;
+      width: 100%; height: 28px;
       overflow: visible;
     }
     .journey-curve-labels {
-      position: absolute; top: 50px; left: 0; right: 0;
+      position: absolute; top: 32px; left: 0; right: 0;
       display: flex; justify-content: space-between;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 9px;
@@ -1545,18 +1527,27 @@ PAGE = Template(r"""<!doctype html>
     /* ─── §2 Coming Week — compact, clickable session list ──────────── */
     .coming-week { margin: 32px 0; }
     .coming-week-head {
-      display: grid; grid-template-columns: auto 1fr auto;
-      align-items: end; gap: 18px; padding-bottom: 6px;
+      display: flex; flex-wrap: wrap; align-items: baseline;
+      gap: 14px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--ink);
     }
-    .coming-week-head .roman { color: var(--oxide); font-style: italic; font-size: 22px; }
+    .coming-week-head .roman {
+      color: var(--oxide); font-style: italic;
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "opsz" 60, "SOFT" 100;
+      font-weight: 400; font-size: 22px; line-height: 1;
+    }
     .coming-week-head h2 {
       font-family: 'Fraunces', Georgia, serif;
-      font-weight: 400; font-size: 26px; line-height: 1; letter-spacing: -.01em;
+      font-variation-settings: "opsz" 60, "SOFT" 30;
+      font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: -.005em;
+      flex: 1 1 auto;
     }
     .coming-week-head .meta {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft);
+      flex: 0 0 auto;
     }
     .cw-maxim {
       margin: 12px 0 4px;
@@ -1636,11 +1627,7 @@ PAGE = Template(r"""<!doctype html>
       max-width: 60ch; white-space: pre-wrap; margin-bottom: 6px;
     }
     @media (max-width: 720px) {
-      .coming-week-head { grid-template-columns: auto 1fr; }
-      .coming-week-head h2 { font-size: 22px; }
-      .coming-week-head .meta {
-        grid-column: 1 / -1; margin-top: 2px; line-height: 1.5;
-      }
+      .coming-week-head .meta { flex-basis: 100%; margin-top: 4px; }
       .week-row { grid-template-columns: 52px 1fr auto; gap: 10px; padding: 9px 0 9px 12px; }
       .week-row .wr-day strong { font-size: 15px; }
       .week-row .wr-day small { white-space: nowrap; }
@@ -1680,16 +1667,18 @@ PAGE = Template(r"""<!doctype html>
       </div>
     </header>
 
+    {% if session_dots %}
+    <div class="session-trail" aria-label="trail of completed sessions">
+      <span class="session-trail-label">done so far</span>
+      <div class="session-trail-line">
+        {% for d in session_dots %}
+        <span class="session-dot {{ d.cls }}" style="left: {{ d.pct }}%" title="{{ d.title }}"></span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
     <div class="journey">
-      <div class="journey-line"></div>
-      <div class="journey-fill" style="width: {{ journey_pct }}%"></div>
-      {% for d in session_dots %}
-      <span class="session-dot {{ d.cls }}" style="left: {{ d.pct }}%" title="{{ d.title }}"></span>
-      {% endfor %}
-      {% for m in journey_markers %}
-      <div class="journey-tick {{ m.kind }}" style="left: {{ m.pct }}%"></div>
-      <div class="journey-label {{ m.kind }}" style="left: {{ m.pct }}%">{{ m.label }}</div>
-      {% endfor %}
       <svg class="journey-curve" viewBox="0 0 100 14" preserveAspectRatio="none">
         <path d="{{ volume_path_filled }}" fill="rgba(200,54,45,0.12)" stroke="none"/>
         <path d="{{ volume_path_outline }}" fill="none"
@@ -1699,8 +1688,8 @@ PAGE = Template(r"""<!doctype html>
         <circle cx="{{ journey_pct }}" cy="{{ today_cy }}" r="1.6" fill="var(--oxide)"/>
       </svg>
       <div class="journey-curve-labels">
-        <span class="lo">now {{ volume_now }}h/wk</span>
-        <span class="hi">peak {{ volume_max }}h/wk</span>
+        <span class="lo">now {{ volume_now }} h/wk</span>
+        <span class="hi">peak {{ volume_max }} h/wk</span>
       </div>
     </div>
 
