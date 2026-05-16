@@ -697,9 +697,8 @@ PAGE = Template(r"""<!doctype html>
       grid-template-columns: 1fr auto;
       align-items: end;
       gap: 8px 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 28px;
+      padding-bottom: 0;
+      margin-bottom: 12px;
     }
     .brand {
       font-family: 'Fraunces', serif;
