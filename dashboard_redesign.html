@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Two Oceans · A Log of Passage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:        #F1ECE0;
+    --paper-deep:   #E8E1D2;
+    --paper-glow:   #FBF6E9;
+    --ink:          #1B1F2A;
+    --ink-soft:     #5A5E6B;
+    --rule:         #9C9484;
+    --rule-soft:    #C9C1AE;
+    --oxide:        #C8362D;
+    --oxide-deep:   #8B231C;
+    --oxide-glow:   rgba(200,54,45,.08);
+    --forest:       #4A6B47;
+    --ochre:        #C18B3D;
+    --sea:          #2E5C7E;
+    --display:      "Fraunces", "Newsreader", Georgia, serif;
+    --mono:         "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:14px;line-height:1.5}
+
+  /* Paper grain — subtle, never noisy */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0 0.16  0 0 0 .045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode:multiply;opacity:.85;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse at 20% 0%, rgba(255,250,235,.55), transparent 55%),
+               radial-gradient(ellipse at 80% 100%, rgba(28,31,42,.06), transparent 60%);
+  }
+
+  .sheet{
+    max-width:1180px;margin:0 auto;padding:48px 56px 80px;position:relative;z-index:1;
+  }
+
+  /* ─── Masthead ─────────────────────────────────────────────────────── */
+  .masthead{
+    display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+    padding-bottom:18px;border-bottom:2px solid var(--ink);
+    position:relative;
+  }
+  .masthead::after{
+    content:"";position:absolute;bottom:-6px;left:0;right:0;height:1px;background:var(--ink);
+  }
+  .brand{
+    font-family:var(--display);font-weight:300;font-size:64px;line-height:.92;
+    letter-spacing:-.02em;font-variation-settings:"opsz" 144, "SOFT" 50, "WONK" 1;
+  }
+  .brand em{
+    font-style:italic;font-weight:400;color:var(--oxide);
+    font-variation-settings:"opsz" 144, "SOFT" 100, "WONK" 1;
+  }
+  .brand .amp{color:var(--ink-soft);font-style:italic;margin:0 .1em;font-variation-settings:"opsz" 144}
+  .imprint{
+    margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .imprint .dot{color:var(--oxide);font-size:13px;line-height:0;vertical-align:middle;margin:0 8px;}
+
+  .stamp{
+    text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+    letter-spacing:.12em;text-transform:uppercase;
+  }
+  .stamp .vol{
+    display:inline-block;border:2px solid var(--oxide);color:var(--oxide);
+    padding:6px 12px 5px;letter-spacing:.32em;font-size:10px;font-weight:600;
+    transform:rotate(-1.6deg);margin-bottom:10px;
+    box-shadow:1px 1px 0 rgba(200,54,45,.18);
+  }
+  .stamp .date{
+    font-family:var(--display);font-style:italic;font-size:22px;
+    font-weight:400;color:var(--ink);text-transform:none;letter-spacing:0;
+    font-variation-settings:"opsz" 30, "SOFT" 100;
+  }
+  .stamp .sync{display:flex;align-items:center;gap:10px;justify-content:flex-end;margin-top:8px}
+  .stamp .sync .chip{
+    border:1px solid var(--rule);padding:3px 8px;background:var(--paper-glow);
+    letter-spacing:.08em;font-size:10px;
+  }
+  .stamp .sync .chip.ok{border-color:var(--forest);color:var(--forest)}
+  .stamp .refresh{
+    width:28px;height:28px;border:1px solid var(--ink);border-radius:50%;background:none;
+    cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--mono);color:var(--ink);transition:all .15s;
+  }
+  .stamp .refresh:hover{background:var(--ink);color:var(--paper)}
+
+  /* ─── Section heading shared style ────────────────────────────────── */
+  .sect{margin-top:64px;position:relative}
+  .sect-head{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:24px;
+    padding-bottom:6px;border-bottom:1px solid var(--ink);
+  }
+  .sect-num{
+    font-family:var(--display);font-style:italic;font-weight:400;font-size:32px;
+    color:var(--oxide);line-height:1;font-variation-settings:"opsz" 60;
+  }
+  .sect-title{
+    font-family:var(--display);font-weight:400;font-size:34px;line-height:1;
+    letter-spacing:-.01em;font-variation-settings:"opsz" 60, "SOFT" 30;
+  }
+  .sect-meta{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+
+  .marginnote{
+    font-family:var(--display);font-style:italic;font-size:13px;color:var(--ink-soft);
+    line-height:1.5;font-variation-settings:"opsz" 14, "SOFT" 100;
+  }
+
+  /* ─── §1 Today ────────────────────────────────────────────────────── */
+  .today{
+    display:grid;grid-template-columns:280px 1fr 240px;gap:48px;align-items:start;
+    margin-top:32px;
+  }
+  .verdict-stamp{
+    border:2.5px solid var(--ochre);background:var(--paper-glow);
+    padding:18px 22px 20px;position:relative;
+    transform:rotate(-.8deg);box-shadow:2px 2px 0 rgba(193,139,61,.18);
+  }
+  .verdict-stamp.green{border-color:var(--forest);box-shadow:2px 2px 0 rgba(74,107,71,.18)}
+  .verdict-stamp.red{border-color:var(--oxide);box-shadow:2px 2px 0 rgba(200,54,45,.22)}
+  .verdict-stamp .label{
+    font-size:9px;letter-spacing:.32em;color:var(--ink-soft);
+    text-transform:uppercase;border-bottom:1px dashed var(--rule);
+    padding-bottom:8px;margin-bottom:10px;
+  }
+  .verdict-stamp .word{
+    font-family:var(--display);font-size:48px;line-height:.92;color:var(--ochre);
+    font-weight:600;letter-spacing:-.02em;font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;
+  }
+  .verdict-stamp.green .word{color:var(--forest)}
+  .verdict-stamp.red .word{color:var(--oxide)}
+  .verdict-stamp .sub{font-size:11px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
+
+  .today-session{position:relative;padding-left:28px}
+  .today-session::before{
+    content:"";position:absolute;left:0;top:6px;bottom:0;width:1px;background:var(--rule-soft);
+  }
+  .today-session::after{
+    content:"";position:absolute;left:-4px;top:6px;width:9px;height:9px;border-radius:50%;
+    background:var(--oxide);box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--oxide);
+  }
+  .today-kicker{
+    font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .today-title{
+    font-family:var(--display);font-size:38px;line-height:1.05;font-weight:400;
+    letter-spacing:-.01em;font-variation-settings:"opsz" 144,"SOFT" 30;
+    margin-bottom:14px;
+  }
+  .today-title small{
+    display:block;font-family:var(--display);font-style:italic;font-size:18px;
+    color:var(--ink-soft);font-weight:300;margin-top:2px;
+    font-variation-settings:"opsz" 30,"SOFT" 100;
+  }
+  .today-desc{font-size:14px;line-height:1.65;color:var(--ink);max-width:54ch}
+  .today-desc strong{font-weight:600;color:var(--ink)}
+  .today-desc + .today-desc{margin-top:12px}
+  .today-actions{display:flex;gap:14px;margin-top:22px}
+  .btn{
+    border:1.5px solid var(--ink);background:none;font-family:var(--mono);
+    padding:9px 14px 8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    cursor:pointer;color:var(--ink);transition:all .15s;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.primary{background:var(--oxide);border-color:var(--oxide);color:var(--paper-glow)}
+  .btn.primary:hover{background:var(--oxide-deep);border-color:var(--oxide-deep)}
+
+  .today-signals{font-family:var(--mono);font-size:11px}
+  .today-signals .row{
+    display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;
+    border-bottom:1px dotted var(--rule-soft);
+  }
+  .today-signals .row:last-child{border-bottom:none}
+  .today-signals .k{color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+  .today-signals .v{font-weight:500;color:var(--ink)}
+  .today-signals .v.warn{color:var(--ochre)}
+  .today-signals .v.alert{color:var(--oxide)}
+  .today-signals .v.good{color:var(--forest)}
+
+  /* ─── §2 Coming Week (the user's headline concern) ────────────────── */
+  .week-strip{
+    margin-top:28px;display:grid;grid-template-columns:repeat(7,1fr);
+    gap:0;border:1px solid var(--ink);background:var(--paper-glow);
+  }
+  .day{
+    padding:14px 12px 16px;border-right:1px solid var(--rule-soft);
+    position:relative;min-height:170px;display:flex;flex-direction:column;
+  }
+  .day:last-child{border-right:none}
+  .day.is-today{background:var(--oxide-glow)}
+  .day.is-today::after{
+    content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--oxide);
+  }
+  .day.rest{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(155,148,132,.08) 6px 7px)}
+  .day-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .day-name{
+    font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink);
+    font-variation-settings:"opsz" 30,"SOFT" 100;line-height:1;
+  }
+  .day-num{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.08em}
+  .day.is-today .day-num{color:var(--oxide);font-weight:600}
+  .day-glyph{
+    font-family:var(--display);font-size:22px;color:var(--ochre);line-height:1;margin-bottom:8px;
+    font-variation-settings:"opsz" 30,"SOFT" 30,"WONK" 1;
+  }
+  .day.rest .day-glyph{color:var(--ink-soft)}
+  .day-session{
+    font-family:var(--display);font-size:15px;line-height:1.25;font-weight:400;
+    color:var(--ink);font-variation-settings:"opsz" 30,"SOFT" 30;
+    margin-bottom:8px;
+  }
+  .day-purpose{
+    font-family:var(--display);font-style:italic;font-size:11px;color:var(--ink-soft);
+    line-height:1.4;font-variation-settings:"opsz" 14,"SOFT" 100;
+    margin-top:auto;
+  }
+  .day-tag{
+    align-self:flex-start;
+    font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
+    padding:2px 6px;border:1px solid var(--rule);
+    margin-bottom:8px;
+  }
+  .day.is-today .day-tag{color:var(--oxide);border-color:var(--oxide)}
+
+  /* ─── §3 The Build · journey curve ────────────────────────────────── */
+  .build{position:relative;margin-top:36px;padding:36px 0 60px}
+  .build-canvas{
+    position:relative;height:160px;background:
+      linear-gradient(to bottom,transparent 0 78%,rgba(155,148,132,.12) 78% 78.5%,transparent 78.5%);
+  }
+  .build-canvas .baseline{
+    position:absolute;left:0;right:0;top:78%;height:1px;background:var(--ink);
+  }
+  .build-canvas svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .build-tick{
+    position:absolute;top:78%;width:2px;height:14px;background:var(--ink);transform:translateX(-50%);
+  }
+  .build-tick.race{background:var(--oxide);height:22px;top:calc(78% - 8px);box-shadow:0 0 0 3px var(--paper-glow)}
+  .build-tick.today{background:var(--oxide);height:26px;top:calc(78% - 12px);width:3px;
+    box-shadow:0 0 0 5px rgba(200,54,45,.10)}
+  .build-label{
+    position:absolute;top:calc(78% + 22px);transform:translateX(-50%);
+    font-family:var(--display);font-style:italic;font-size:13px;color:var(--ink);
+    white-space:nowrap;font-variation-settings:"opsz" 14,"SOFT" 100;
+    text-align:center;line-height:1.2;
+  }
+  .build-label small{
+    display:block;font-family:var(--mono);font-style:normal;font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-soft);margin-top:2px;
+  }
+  .build-label.today{color:var(--oxide);font-weight:600}
+  .build-label.today small{color:var(--oxide)}
+  .build-dot{
+    position:absolute;width:8px;height:8px;border-radius:50%;
+    background:var(--ink-soft);transform:translate(-50%,-50%);cursor:help;z-index:2;
+    transition:transform .12s;
+  }
+  .build-dot:hover{transform:translate(-50%,-50%) scale(1.6)}
+  .build-dot.run{background:var(--oxide)}
+  .build-dot.long{background:var(--oxide);width:11px;height:11px;
+    box-shadow:0 0 0 2px var(--paper-glow)}
+  .build-dot.walk{background:var(--ink-soft)}
+  .build-dot.gym{background:var(--ochre)}
+  .build-dot.bike{background:var(--forest)}
+
+  .build-legend{
+    margin-top:32px;display:flex;gap:32px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .build-legend .swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+  .build-stats{
+    margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  }
+  .build-stat{
+    padding:14px 18px;border-right:1px dotted var(--rule-soft);position:relative;
+  }
+  .build-stat:last-child{border-right:none}
+  .build-stat .k{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .build-stat .v{
+    font-family:var(--display);font-weight:400;font-size:38px;line-height:1.05;margin-top:6px;
+    font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;letter-spacing:-.02em;
+  }
+  .build-stat .v sup{font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;
+    margin-left:4px;letter-spacing:.05em}
+  .build-stat .delta{font-size:10px;letter-spacing:.14em;color:var(--ink-soft);margin-top:4px}
+  .build-stat .delta.up{color:var(--forest)}
+  .build-stat .delta.down{color:var(--oxide)}
+
+  /* ─── §4 The Body · vitals ────────────────────────────────────────── */
+  .body-grid{
+    margin-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--rule-soft);border:1px solid var(--rule-soft);
+  }
+  .vital{padding:22px 22px 24px;background:var(--paper);position:relative}
+  .vital .k{
+    font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
+    display:flex;align-items:baseline;justify-content:space-between;
+  }
+  .vital .k em{
+    font-family:var(--display);font-style:italic;font-weight:400;font-size:10px;color:var(--ink-soft);
+    letter-spacing:0;text-transform:none;font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .vital .v{
+    font-family:var(--display);font-weight:400;font-size:48px;line-height:1;margin-top:10px;
+    font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;letter-spacing:-.02em;
+  }
+  .vital .v sup{font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+    font-weight:400;letter-spacing:.04em;margin-left:4px}
+  .vital .status{
+    font-family:var(--display);font-style:italic;font-size:14px;margin-top:8px;
+    font-variation-settings:"opsz" 30,"SOFT" 100;
+  }
+  .vital .status.ok{color:var(--forest)}
+  .vital .status.warn{color:var(--ochre)}
+  .vital .status.alert{color:var(--oxide)}
+  .vital .spark{margin-top:14px;height:30px}
+  .vital .spark svg{width:100%;height:100%;overflow:visible}
+
+  /* ─── §5 The Path · Two Oceans elevation ──────────────────────────── */
+  .path{margin-top:32px}
+  .elev-frame{
+    background:var(--paper-glow);border:1px solid var(--ink);
+    padding:28px 28px 22px;position:relative;
+  }
+  .elev-frame::before{
+    content:"56 KM · CONSTANTIA NEK · NEWLANDS";
+    position:absolute;top:-9px;left:24px;background:var(--paper);padding:0 10px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:var(--ink);
+  }
+  .elev-svg{display:block;width:100%;height:auto}
+  .elev-meta{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:18px;
+    border-top:1px solid var(--rule-soft);padding-top:14px;
+  }
+  .elev-meta .cell{padding:0 14px;border-right:1px dotted var(--rule);
+    font-family:var(--mono);font-size:11px}
+  .elev-meta .cell:last-child{border-right:none}
+  .elev-meta .k{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .elev-meta .v{
+    font-family:var(--display);font-size:22px;font-weight:400;margin-top:4px;
+    font-variation-settings:"opsz" 30,"SOFT" 30;letter-spacing:-.01em;
+  }
+
+  /* ─── §6 Provisions · tasks ───────────────────────────────────────── */
+  .provisions{margin-top:28px;display:grid;grid-template-columns:1.5fr 1fr;gap:48px}
+  .tasks-list{list-style:none}
+  .tasks-list li{
+    display:grid;grid-template-columns:auto 90px 1fr auto;align-items:baseline;
+    gap:14px;padding:10px 0 11px;border-bottom:1px dotted var(--rule-soft);
+  }
+  .tasks-list li:last-child{border-bottom:none}
+  .tasks-list .tnum{
+    font-family:var(--display);font-style:italic;font-size:14px;color:var(--ink-soft);
+    font-variation-settings:"opsz" 30,"SOFT" 100;
+  }
+  .tasks-list .tdue{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .tasks-list .red .tdue{color:var(--oxide);font-weight:600}
+  .tasks-list .amber .tdue{color:var(--ochre)}
+  .tasks-list .tttl{font-size:13px;line-height:1.4;color:var(--ink)}
+  .tasks-list .tttl em{
+    display:block;font-family:var(--display);font-style:italic;font-size:11px;color:var(--ink-soft);
+    margin-top:2px;line-height:1.4;font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .tasks-list .tdone{
+    font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-soft);
+    text-transform:uppercase;cursor:pointer;border:1px solid var(--rule);padding:3px 7px;
+    background:none;transition:all .12s;
+  }
+  .tasks-list .tdone:hover{border-color:var(--ink);color:var(--ink)}
+
+  .checkin{
+    padding:22px 24px;background:var(--paper-glow);border:1px solid var(--ink);position:relative;
+  }
+  .checkin::before{
+    content:"§ 6.b WEEKLY CHECK-IN";position:absolute;top:-9px;left:18px;
+    background:var(--paper);padding:0 10px;font-family:var(--mono);
+    font-size:10px;letter-spacing:.28em;color:var(--ink);
+  }
+  .checkin h3{
+    font-family:var(--display);font-style:italic;font-weight:400;font-size:14px;
+    color:var(--ink-soft);margin-bottom:14px;
+    font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .checkin ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:12px}
+  .checkin li{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+  .checkin .box{
+    width:14px;height:14px;border:1.5px solid var(--ink);flex-shrink:0;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;transition:all .15s;
+  }
+  .checkin li.done .box{background:var(--forest);border-color:var(--forest)}
+  .checkin li.done .box::after{
+    content:"✓";color:var(--paper);font-family:var(--mono);font-size:11px;font-weight:600;line-height:1;
+  }
+  .checkin li.done{text-decoration:line-through;color:var(--ink-soft)}
+  .checkin .rule{
+    margin-top:14px;padding-top:12px;border-top:1px dashed var(--rule);
+    font-family:var(--display);font-style:italic;font-size:12px;color:var(--ink-soft);line-height:1.55;
+    font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+
+  /* ─── §7 The Log · past activities ────────────────────────────────── */
+  .log{margin-top:28px}
+  .log table{width:100%;border-collapse:collapse}
+  .log th,.log td{
+    text-align:left;padding:11px 8px;border-bottom:1px dotted var(--rule-soft);
+    font-family:var(--mono);font-size:12px;vertical-align:baseline;
+  }
+  .log th{
+    font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);
+    border-bottom:1px solid var(--ink);font-weight:500;
+  }
+  .log td.day{
+    font-family:var(--display);font-style:italic;font-weight:400;color:var(--ink-soft);
+    font-size:13px;font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .log td.name{font-weight:500}
+  .log td.name em{
+    display:block;font-family:var(--display);font-style:italic;font-size:11px;
+    color:var(--ink-soft);font-weight:400;margin-top:1px;
+    font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .log td .pace{color:var(--ink-soft)}
+  .log td.zones{font-size:10px;letter-spacing:.04em}
+  .log td.zones .z{display:inline-block;padding:1px 5px;border:1px solid var(--rule-soft);margin-right:3px}
+  .log td.zones .z.dom{border-color:var(--ink);color:var(--ink);font-weight:600}
+
+  /* ─── Footer ──────────────────────────────────────────────────────── */
+  .colophon{
+    margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;
+    font-family:var(--display);font-style:italic;font-size:12px;color:var(--ink-soft);line-height:1.6;
+    font-variation-settings:"opsz" 14,"SOFT" 100;
+  }
+  .colophon strong{
+    font-family:var(--mono);font-style:normal;font-weight:600;
+    font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+    display:block;margin-bottom:6px;
+  }
+
+  /* ─── Stagger reveal on first paint ───────────────────────────────── */
+  @keyframes ink-rise{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .sheet > *{animation:ink-rise .65s cubic-bezier(.2,.7,.2,1) both}
+  .sheet > .sect:nth-child(1){animation-delay:0s}
+  .sheet > .sect:nth-child(2){animation-delay:.08s}
+  .sheet > .sect:nth-child(3){animation-delay:.16s}
+  .sheet > .sect:nth-child(4){animation-delay:.24s}
+  .sheet > .sect:nth-child(5){animation-delay:.32s}
+  .sheet > .sect:nth-child(6){animation-delay:.40s}
+  .sheet > .sect:nth-child(7){animation-delay:.48s}
+  .sheet > .colophon{animation-delay:.56s}
+
+  /* Mobile */
+  @media (max-width:880px){
+    .sheet{padding:24px 20px 60px}
+    .masthead{grid-template-columns:1fr;gap:18px;align-items:start}
+    .stamp{text-align:left}
+    .stamp .sync{justify-content:flex-start}
+    .brand{font-size:38px}
+    .today{grid-template-columns:1fr;gap:24px}
+    .week-strip{grid-template-columns:1fr;border:none}
+    .day{border:1px solid var(--rule-soft);border-bottom:none;min-height:auto}
+    .day:last-child{border-bottom:1px solid var(--rule-soft)}
+    .build-stats{grid-template-columns:1fr 1fr}
+    .body-grid{grid-template-columns:1fr 1fr}
+    .elev-meta{grid-template-columns:1fr 1fr}
+    .provisions{grid-template-columns:1fr;gap:32px}
+    .colophon{grid-template-columns:1fr}
+    .sect-head{grid-template-columns:auto 1fr;gap:14px}
+    .sect-meta{display:none}
+    .sect-title{font-size:24px}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <!-- ─── Masthead ─────────────────────────────────────────────────── -->
+  <header class="masthead">
+    <div>
+      <div class="brand">Two Oceans<span class="amp">·</span><em>A Log of Passage</em></div>
+      <div class="imprint">
+        Porsgrunn <span class="dot">●</span> Cape Town
+        <span class="dot">●</span> 56 K
+        <span class="dot">●</span> 03 April 2027
+      </div>
+    </div>
+    <div class="stamp">
+      <div class="vol">VOL. I · WEEK 01 / 48</div>
+      <div class="date">Saturday, 16 May 2026</div>
+      <div class="sync">
+        <span class="chip ok">✓ synced 16:42 · 1 new</span>
+        <button class="refresh" id="refreshBtn" title="pull &amp; refresh">↻</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── §1 Today ─────────────────────────────────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 1</span>
+      <h2 class="sect-title">Today</h2>
+      <span class="sect-meta">Stand-down &nbsp;·&nbsp; Sat 16 May</span>
+    </div>
+    <div class="today">
+
+      <aside class="verdict-stamp" id="verdict">
+        <div class="label">Readiness · 16 May</div>
+        <div class="word">Restrain</div>
+        <div class="sub">
+          RHR 58 (+3 vs baseline) and a 0.0 h sleep reading flagged as
+          almost certainly a watch sync gap — treat as <em>amber</em>,
+          not <em>red</em>.
+        </div>
+      </aside>
+
+      <article class="today-session">
+        <div class="today-kicker">§ 1.a · Prescribed Session</div>
+        <h3 class="today-title">
+          Walk-jog 25 min
+          <small>60 s jog · 120 s walk · run-walk reintroduction</small>
+        </h3>
+        <p class="today-desc">
+          <strong>Total session:</strong> 25 minutes. Pattern: jog 60 seconds,
+          walk 120 seconds, repeat. About 8 cycles.
+        </p>
+        <p class="today-desc">
+          Effort during the jog: you should be able to talk in full sentences.
+          If you're breathing hard, slow the jog or take a longer walk. The goal
+          is consistency, not speed. If anything hurts more than mild discomfort,
+          stop and walk the rest.
+        </p>
+        <div class="today-actions">
+          <button class="btn primary">Mark Done</button>
+          <button class="btn">View on Watch</button>
+        </div>
+      </article>
+
+      <aside class="today-signals">
+        <div class="row"><span class="k">HRV last night</span><span class="v">36 ms</span></div>
+        <div class="row"><span class="k">RHR · vs baseline</span><span class="v warn">58 · +3</span></div>
+        <div class="row"><span class="k">Sleep last night</span><span class="v alert">0.0 h ⚠</span></div>
+        <div class="row"><span class="k">Sleep 7-d avg</span><span class="v">7.3 h</span></div>
+        <div class="row"><span class="k">Stress avg</span><span class="v">28</span></div>
+        <div class="row"><span class="k">Weight</span><span class="v">86.0 kg</span></div>
+        <div class="row"><span class="k">Protein 7-d</span><span class="v good">140 g</span></div>
+        <div class="row"><span class="k">Dry streak</span><span class="v good">14 d</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ─── §2 Coming Week — the user's concern ─────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 2</span>
+      <h2 class="sect-title">The Coming Week</h2>
+      <span class="sect-meta">Plan wk 01 &nbsp;·&nbsp; tgt 2.0 h &nbsp;·&nbsp; 4.7 km · 0.9 h logged</span>
+    </div>
+    <div class="week-strip">
+      <div class="day is-today">
+        <div class="day-head">
+          <span class="day-name">Sat</span>
+          <span class="day-num">16 / 05</span>
+        </div>
+        <span class="day-tag">today</span>
+        <div class="day-glyph">↻</div>
+        <div class="day-session">Walk-jog 25 min</div>
+        <div class="day-purpose">Run-walk reintroduction · 60 s / 120 s</div>
+      </div>
+      <div class="day">
+        <div class="day-head"><span class="day-name">Sun</span><span class="day-num">17</span></div>
+        <span class="day-tag">aerobic</span>
+        <div class="day-glyph">⤳</div>
+        <div class="day-session">Walk 30–45 min</div>
+        <div class="day-purpose">Aerobic walk or hike</div>
+      </div>
+      <div class="day">
+        <div class="day-head"><span class="day-name">Mon</span><span class="day-num">18</span></div>
+        <span class="day-tag">aerobic</span>
+        <div class="day-glyph">⤳</div>
+        <div class="day-session">Walk 25–35 min</div>
+        <div class="day-purpose">Aerobic base</div>
+      </div>
+      <div class="day">
+        <div class="day-head"><span class="day-name">Tue</span><span class="day-num">19</span></div>
+        <span class="day-tag">walk-jog</span>
+        <div class="day-glyph">↻</div>
+        <div class="day-session">Walk-jog 25 min</div>
+        <div class="day-purpose">45 s jog · 75 s walk</div>
+      </div>
+      <div class="day rest">
+        <div class="day-head"><span class="day-name">Wed</span><span class="day-num">20</span></div>
+        <span class="day-tag">rest</span>
+        <div class="day-glyph">∅</div>
+        <div class="day-session">Rest</div>
+        <div class="day-purpose">Sleep · eat · hydrate</div>
+      </div>
+      <div class="day">
+        <div class="day-head"><span class="day-name">Thu</span><span class="day-num">21</span></div>
+        <span class="day-tag">walk-jog</span>
+        <div class="day-glyph">↻</div>
+        <div class="day-session">Walk-jog 20 min</div>
+        <div class="day-purpose">30 s jog · 90 s walk</div>
+      </div>
+      <div class="day rest">
+        <div class="day-head"><span class="day-name">Fri</span><span class="day-num">22</span></div>
+        <span class="day-tag">rest</span>
+        <div class="day-glyph">∅</div>
+        <div class="day-session">Rest</div>
+        <div class="day-purpose">Trainer · gym membership due</div>
+      </div>
+    </div>
+    <p class="marginnote" style="margin-top:18px;max-width:64ch">
+      The phase 1 reconditioning block reads as walking, with run-walk seeds. Most of
+      the volume is feet on ground, not minutes spent breathing hard — boredom is the
+      method, not a side-effect <span style="color:var(--oxide)">(§ principles · 9)</span>.
+    </p>
+  </section>
+
+  <!-- ─── §3 The Build · journey ───────────────────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 3</span>
+      <h2 class="sect-title">The Build</h2>
+      <span class="sect-meta">PLAN_START &nbsp;11 May 2026 &nbsp;→&nbsp; race &nbsp;03 Apr 2027</span>
+    </div>
+
+    <div class="build">
+      <div class="build-canvas" id="buildCanvas">
+        <svg viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true">
+          <!-- volume area — full-shape outline -->
+          <path id="volFill" fill="rgba(200,54,45,0.06)" stroke="none"></path>
+          <path id="volOutline" fill="none" stroke="rgba(28,31,42,.30)" stroke-width="1"
+                stroke-dasharray="2 3"></path>
+          <path id="volDone" fill="none" stroke="var(--oxide)" stroke-width="1.6"></path>
+        </svg>
+
+        <div class="baseline"></div>
+
+        <!-- ticks + labels rendered by JS -->
+      </div>
+
+      <div class="build-legend">
+        <span><span class="swatch" style="background:var(--oxide)"></span>Run</span>
+        <span><span class="swatch" style="background:var(--oxide);box-shadow:0 0 0 1.5px var(--paper-glow)"></span>Long run</span>
+        <span><span class="swatch" style="background:var(--ink-soft)"></span>Walk</span>
+        <span><span class="swatch" style="background:var(--ochre)"></span>Gym</span>
+        <span><span class="swatch" style="background:var(--forest)"></span>Bike</span>
+        <span style="margin-left:auto">hover any dot — date · session · km · duration</span>
+      </div>
+
+      <div class="build-stats">
+        <div class="build-stat">
+          <div class="k">Sessions logged</div>
+          <div class="v">2<sup>this block</sup></div>
+          <div class="delta">+1 today (running, 3.36 km)</div>
+        </div>
+        <div class="build-stat">
+          <div class="k">Total km</div>
+          <div class="v">4.7<sup>km</sup></div>
+          <div class="delta up">on plan for week 1</div>
+        </div>
+        <div class="build-stat">
+          <div class="k">Days to A-race</div>
+          <div class="v">322<sup>days</sup></div>
+          <div class="delta">46 wks remaining</div>
+        </div>
+        <div class="build-stat">
+          <div class="k">Weight → goal</div>
+          <div class="v">86.0<sup>kg</sup></div>
+          <div class="delta down">−11 to go (75 kg race weight)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── §4 The Body · vitals ─────────────────────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 4</span>
+      <h2 class="sect-title">The Body</h2>
+      <span class="sect-meta">Readings · last 14 d</span>
+    </div>
+
+    <div class="body-grid">
+
+      <div class="vital">
+        <div class="k">HRV <em>last night</em></div>
+        <div class="v">36<sup>ms</sup></div>
+        <div class="status">Balanced · within band</div>
+        <div class="spark">
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+            <path d="M0,18 L7,15 L14,17 L21,12 L28,14 L35,11 L42,16 L49,13 L56,15 L63,12 L70,14 L77,11 L84,13 L91,15 L100,12"
+                  stroke="var(--ink)" stroke-width="1.2" fill="none"/>
+            <circle cx="100" cy="12" r="2.2" fill="var(--oxide)"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="vital">
+        <div class="k">RHR <em>resting</em></div>
+        <div class="v">58<sup>bpm</sup></div>
+        <div class="status warn">+3 vs baseline · watch</div>
+        <div class="spark">
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+            <path d="M0,18 L7,18 L14,17 L21,18 L28,17 L35,18 L42,17 L49,18 L56,17 L63,16 L70,15 L77,14 L84,13 L91,12 L100,11"
+                  stroke="var(--ink)" stroke-width="1.2" fill="none"/>
+            <circle cx="100" cy="11" r="2.2" fill="var(--oxide)"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="vital">
+        <div class="k">Sleep <em>last night</em></div>
+        <div class="v">0.0<sup>h</sup></div>
+        <div class="status alert">⚠ Sync gap · 7-d avg 7.3 h</div>
+        <div class="spark">
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+            <g fill="var(--ink)">
+              <rect x="2" y="9" width="5" height="18"/><rect x="10" y="11" width="5" height="16"/>
+              <rect x="18" y="8" width="5" height="19"/><rect x="26" y="12" width="5" height="15"/>
+              <rect x="34" y="9" width="5" height="18"/><rect x="42" y="10" width="5" height="17"/>
+              <rect x="50" y="11" width="5" height="16"/><rect x="58" y="8" width="5" height="19"/>
+              <rect x="66" y="10" width="5" height="17"/><rect x="74" y="9" width="5" height="18"/>
+              <rect x="82" y="11" width="5" height="16"/><rect x="90" y="13" width="5" height="14"/>
+            </g>
+            <rect x="98" y="27" width="5" height="0.5" fill="var(--oxide)"/>
+            <line x1="0" y1="27" x2="100" y2="27" stroke="var(--rule)" stroke-width=".3"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="vital">
+        <div class="k">Weight <em>vs 75 kg goal</em></div>
+        <div class="v">86.0<sup>kg</sup></div>
+        <div class="status">+2.4 kg / 113 days · trend flat</div>
+        <div class="spark">
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none">
+            <path d="M0,15 L10,15 L20,14 L30,15 L40,14 L50,15 L60,15 L70,14 L80,15 L90,15 L100,14"
+                  stroke="var(--ink)" stroke-width="1.2" fill="none"/>
+            <line x1="0" y1="20" x2="100" y2="20" stroke="var(--forest)" stroke-width=".5" stroke-dasharray="2 3"/>
+            <text x="100" y="23" text-anchor="end" font-family="IBM Plex Mono" font-size="6"
+                  fill="var(--forest)">goal 75</text>
+            <circle cx="100" cy="14" r="2.2" fill="var(--oxide)"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── §5 The Path · Two Oceans elevation ──────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 5</span>
+      <h2 class="sect-title">The Path</h2>
+      <span class="sect-meta">Two Oceans Ultra · 56 K · official course</span>
+    </div>
+    <div class="path">
+      <figure class="elev-frame">
+        <svg class="elev-svg" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-label="Two Oceans 56K elevation profile">
+          <!-- horizontal grid -->
+          <g stroke="rgba(155,148,132,.35)" stroke-width=".4">
+            <line x1="0" y1="200" x2="1000" y2="200"/>
+            <line x1="0" y1="160" x2="1000" y2="160"/>
+            <line x1="0" y1="120" x2="1000" y2="120"/>
+            <line x1="0" y1="80"  x2="1000" y2="80"/>
+            <line x1="0" y1="40"  x2="1000" y2="40"/>
+          </g>
+          <!-- elevation profile (stylized: Chapmans + Constantia Nek) -->
+          <path d="M0,200 L40,198 L80,190 L120,180 L160,160 L200,135 L240,115 L280,105 L320,115 L360,135
+                   L400,160 L440,180 L480,195 L520,200 L560,198 L600,190 L640,170 L680,140 L720,100
+                   L760,55 L780,35 L800,55 L840,95 L880,140 L920,175 L960,195 L1000,200 L1000,220 L0,220 Z"
+                fill="rgba(28,31,42,.10)" stroke="none"/>
+          <path d="M0,200 L40,198 L80,190 L120,180 L160,160 L200,135 L240,115 L280,105 L320,115 L360,135
+                   L400,160 L440,180 L480,195 L520,200 L560,198 L600,190 L640,170 L680,140 L720,100
+                   L760,55 L780,35 L800,55 L840,95 L880,140 L920,175 L960,195 L1000,200"
+                fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+
+          <!-- summit markers -->
+          <line x1="240" y1="115" x2="240" y2="20" stroke="var(--rule)" stroke-width=".5" stroke-dasharray="2 3"/>
+          <line x1="780" y1="35"  x2="780" y2="10" stroke="var(--oxide)" stroke-width=".6" stroke-dasharray="2 3"/>
+          <circle cx="240" cy="115" r="3" fill="var(--paper-glow)" stroke="var(--ink)" stroke-width="1.4"/>
+          <circle cx="780" cy="35"  r="4" fill="var(--oxide)" stroke="var(--paper-glow)" stroke-width="1.5"/>
+
+          <text x="240" y="14" text-anchor="middle"
+                font-family="Fraunces" font-style="italic" font-size="13"
+                font-variation-settings="'opsz' 14, 'SOFT' 100"
+                fill="var(--ink)">Chapmans Peak</text>
+          <text x="240" y="28" text-anchor="middle"
+                font-family="IBM Plex Mono" font-size="9" letter-spacing="1.2"
+                fill="var(--ink-soft)">15 KM · 160 M</text>
+
+          <text x="780" y="6" text-anchor="middle"
+                font-family="Fraunces" font-style="italic" font-size="14"
+                font-variation-settings="'opsz' 14, 'SOFT' 100, 'WONK' 1"
+                fill="var(--oxide)" font-weight="600">Constantia Nek</text>
+          <text x="780" y="20" text-anchor="middle"
+                font-family="IBM Plex Mono" font-size="9" letter-spacing="1.2"
+                fill="var(--oxide)">42 KM · 350 M · WALK WITH PRIDE</text>
+
+          <!-- start / finish flags -->
+          <line x1="0" y1="200" x2="0" y2="184" stroke="var(--ink)" stroke-width="1.5"/>
+          <rect x="0" y="184" width="14" height="8" fill="var(--ink)"/>
+          <text x="3" y="215" font-family="IBM Plex Mono" font-size="9" letter-spacing="1.5"
+                fill="var(--ink-soft)">START · MUIZENBERG</text>
+          <line x1="1000" y1="200" x2="1000" y2="184" stroke="var(--ink)" stroke-width="1.5"/>
+          <rect x="986" y="184" width="14" height="8" fill="var(--ink)"/>
+          <text x="997" y="215" text-anchor="end" font-family="IBM Plex Mono" font-size="9" letter-spacing="1.5"
+                fill="var(--ink-soft)">FINISH · UCT NEWLANDS</text>
+
+          <!-- km labels along baseline -->
+          <g font-family="IBM Plex Mono" font-size="8" letter-spacing="1" fill="var(--ink-soft)">
+            <text x="200" y="215" text-anchor="middle">10 K</text>
+            <text x="400" y="215" text-anchor="middle">20 K</text>
+            <text x="600" y="215" text-anchor="middle">30 K</text>
+            <text x="800" y="215" text-anchor="middle">40 K</text>
+          </g>
+        </svg>
+
+        <div class="elev-meta">
+          <div class="cell">
+            <div class="k">Distance</div>
+            <div class="v">56.0 km</div>
+          </div>
+          <div class="cell">
+            <div class="k">Cumulative climb</div>
+            <div class="v">≈ 760 m</div>
+          </div>
+          <div class="cell">
+            <div class="k">High point</div>
+            <div class="v">350 m · Constantia</div>
+          </div>
+          <div class="cell">
+            <div class="k">Race day</div>
+            <div class="v">Sat 3 Apr 2027</div>
+          </div>
+        </div>
+      </figure>
+      <p class="marginnote" style="margin-top:14px;max-width:64ch">
+        The race is decided in the 14 km between Chapmans summit and Constantia Nek.
+        Hill insurance — short reps every third week, longer climbs in weeks 41–44 —
+        is for those 14 km, not for general fitness <span style="color:var(--oxide)">(§ principles · hill)</span>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── §6 Provisions · tasks + check-in ────────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 6</span>
+      <h2 class="sect-title">Provisions &amp; Bookkeeping</h2>
+      <span class="sect-meta">Active items · next 30 d</span>
+    </div>
+    <div class="provisions">
+      <ol class="tasks-list">
+        <li class="red">
+          <span class="tnum">i.</span>
+          <span class="tdue">in 6 d · 22 May</span>
+          <span class="tttl">Trainer session — barbell form (squat, RDL, hip thrust)
+            <em>Non-negotiable per plan §gym before Gym A in week 3. NOK 800–1200.</em>
+          </span>
+          <button class="tdone">mark done</button>
+        </li>
+        <li class="red">
+          <span class="tnum">ii.</span>
+          <span class="tdue">in 8 d · 24 May</span>
+          <span class="tttl">Gym membership active (SATS / Family Sports / Stamina)
+            <em>Gym A starts plan week 3 (week of 25 May). Pick one this week.</em>
+          </span>
+          <button class="tdone">mark done</button>
+        </li>
+        <li class="amber">
+          <span class="tnum">iii.</span>
+          <span class="tdue">in 14 d · 30 May</span>
+          <span class="tttl">HRmax field test — 3 × 3 min uphill all-out
+            <em>Sets every zone downstream. Plan week 3.</em>
+          </span>
+          <button class="tdone">mark done</button>
+        </li>
+        <li class="amber">
+          <span class="tnum">iv.</span>
+          <span class="tdue">in 15 d · 31 May</span>
+          <span class="tttl">Override Garmin HR zones to %HRR after HRmax test
+            <em>Karvonen targets. Structured workouts carry wrong zones otherwise.</em>
+          </span>
+          <button class="tdone">mark done</button>
+        </li>
+        <li class="amber" style="opacity:.55">
+          <span class="tnum">+ 8</span>
+          <span class="tdue">later</span>
+          <span class="tttl">More items beyond 30 days — Oslo registration · sauna access · Sevilla logistics · Cape Town stay
+            <em><a style="color:var(--oxide);border-bottom:1px solid;text-decoration:none">show all →</a></em>
+          </span>
+          <span></span>
+        </li>
+      </ol>
+
+      <aside class="checkin">
+        <h3>Week of 11 May · fill Sunday evening</h3>
+        <ul id="checkin">
+          <li><span class="box"></span><span>Slept 7+ hours per night</span></li>
+          <li><span class="box"></span><span>Knee ≥ last Sunday</span></li>
+          <li><span class="box"></span><span>Saturday long run felt like I could do more</span></li>
+          <li><span class="box"></span><span>Hit both gym sessions</span></li>
+          <li><span class="box"></span><span>Sub-threshold felt controlled (not crushing)</span></li>
+        </ul>
+        <div class="rule">
+          Rule · three or more yes → continue. Two or fewer → next week is
+          a down-week. No negotiation.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ─── §7 The Log · past activities ────────────────────────────── -->
+  <section class="sect">
+    <div class="sect-head">
+      <span class="sect-num">§ 7</span>
+      <h2 class="sect-title">The Log</h2>
+      <span class="sect-meta">Synced from Garmin · last 14 d</span>
+    </div>
+    <div class="log">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:120px">Day</th>
+            <th style="width:auto">Session</th>
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Pace</th>
+            <th>Avg / Max HR</th>
+            <th style="width:280px">Zones (% time)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="day">Sat &nbsp;16 May</td>
+            <td class="name">Porsgrunn Running <em>aerobic walk-jog · 4 laps</em></td>
+            <td>3.36 km</td>
+            <td>31:57</td>
+            <td>9:31<span class="pace">/km</span></td>
+            <td>121 · 156</td>
+            <td class="zones">
+              <span class="z dom">Z1 48%</span><span class="z">Z2 27%</span><span class="z">Z3 23%</span><span class="z">Z4 3%</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="day">Thu &nbsp;14 May</td>
+            <td class="name">Porsgrunn Walking <em>recovery</em></td>
+            <td>1.35 km</td>
+            <td>19:14</td>
+            <td>14:15<span class="pace">/km</span></td>
+            <td>99 · 123</td>
+            <td class="zones">
+              <span class="z dom">Z1 72%</span><span class="z">Z2 23%</span><span class="z">Z3 5%</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── Colophon ─────────────────────────────────────────────────── -->
+  <footer class="colophon">
+    <div>
+      <strong>The plan</strong>
+      Norwegian Singles Approach (NSA), 48 weeks, peaking 03 Apr 2027.
+      Walking + run-walk through week 8; sub-threshold introduction week 9;
+      marathon build to Sevilla; recovery + ultra-specific bridge;
+      hill insurance every third week through the build.
+    </div>
+    <div>
+      <strong>The principle</strong>
+      Boring is the goal. The hard sessions show up as more reps, not
+      faster reps. If you can't recover, you can't repeat. Sub-threshold
+      is a ceiling, not a target.
+    </div>
+    <div>
+      <strong>Imprint</strong>
+      Generated Sat 16 May 2026 16:42 from <code>activities/</code> and
+      <code>data/*</code>. Sources: Garmin Connect · plan_lookup.py · checkin.py.
+      Last sync &nbsp;1&nbsp;new&nbsp;activity, 8 daily streams.
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // ─── §3 Build curve ────────────────────────────────────────────────
+  // Realistic weekly hours from plan_lookup.WEEKLY_TOTAL (weeks 1..48)
+  const WK_HOURS = [
+    1.5, 2.0, 2.5, 2.0, 3.0, 3.5, 4.0, 3.5,
+    6.0, 6.5, 7.0, 5.5, 6.5, 7.0, 7.5, 5.75,
+    7.5, 8.0, 8.5, 6.0,
+    8.0, 8.5, 8.5, 6.5, 9.0, 9.0, 9.5, 7.0,
+    10.0, 10.5, 10.5, 7.5,
+    10.0, 10.5, 10.5, 8.0, 11.0, 11.5, 8.0, 0.0,
+    5.5, 8.0, 9.0, 11.0,
+    12.0, 7.5, 5.0, 0.0,
+  ];
+  const PLAN_START = new Date(2026, 4, 11);      // 11 May 2026
+  const RACE_DAY   = new Date(2027, 3, 3);       // 03 Apr 2027
+  const TODAY      = new Date(2026, 4, 16);      // 16 May 2026
+  const total      = (RACE_DAY - PLAN_START) / 86400000;
+
+  // SVG viewBox: 1000 × 160. Baseline y=125 (≈78%). Top y=10.
+  const W = 1000, H = 160, Y_TOP = 10, Y_BASE = 125;
+  const vmax = Math.max(...WK_HOURS), vmin = Math.min(...WK_HOURS);
+  const range = vmax - vmin || 1;
+  function xWeek(w){ return (w - 1) / 47 * W; }
+  function yHours(h){ return Y_BASE - (h - vmin) / range * (Y_BASE - Y_TOP); }
+
+  const pts = WK_HOURS.map((h,i)=>[xWeek(i+1), yHours(h)]);
+  const fullPath = "M " + pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ");
+  const filled   = fullPath + ` L ${W},${Y_BASE} L 0,${Y_BASE} Z`;
+
+  const curWeek = Math.max(1, Math.floor((TODAY - PLAN_START)/86400000/7) + 1);
+  const donePts = pts.filter((_,i)=>i+1 <= curWeek);
+  const donePath = "M " + donePts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ");
+
+  document.getElementById('volFill').setAttribute('d', filled);
+  document.getElementById('volOutline').setAttribute('d', fullPath);
+  document.getElementById('volDone').setAttribute('d', donePath);
+
+  // Race milestones along the timeline
+  const RACES = [
+    {date:new Date(2026,6,12), label:"Parkrun",  small:"12 JUL · 5 K",  kind:"race"},
+    {date:new Date(2026,8,12), label:"Oslo Half",  small:"12 SEP · 21 K",  kind:"race"},
+    {date:new Date(2027,1,14), label:"Sevilla",  small:"14 FEB · 42 K",  kind:"race"},
+    {date:new Date(2027,3,3),  label:"Two Oceans", small:"3 APR · 56 K · A",  kind:"a-race"},
+  ];
+  const canvas = document.getElementById('buildCanvas');
+  RACES.forEach(r=>{
+    const pct = (r.date - PLAN_START)/86400000 / total * 100;
+    const tick = document.createElement('div');
+    tick.className = 'build-tick race';
+    tick.style.left = pct + "%";
+    canvas.appendChild(tick);
+    const lab = document.createElement('div');
+    lab.className = 'build-label';
+    if (r.kind === 'a-race') lab.style.color = 'var(--oxide)';
+    lab.style.left = pct + "%";
+    lab.innerHTML = r.label + "<small>" + r.small + "</small>";
+    canvas.appendChild(lab);
+  });
+  // Today tick + label
+  const todayPct = (TODAY - PLAN_START)/86400000 / total * 100;
+  const tt = document.createElement('div');
+  tt.className = 'build-tick today'; tt.style.left = todayPct + "%";
+  canvas.appendChild(tt);
+  const tl = document.createElement('div');
+  tl.className = 'build-label today'; tl.style.left = todayPct + "%";
+  tl.innerHTML = "today<small>16 MAY · WK 01</small>";
+  canvas.appendChild(tl);
+
+  // Past-session dots (mock — would be loaded from activities/)
+  const SESSIONS = [
+    {date:new Date(2026,4,14), cls:"walk", title:"Thu 14 May · Porsgrunn Walking · 1.4 km · 19 min"},
+    {date:new Date(2026,4,16), cls:"run",  title:"Sat 16 May · Porsgrunn Running · 3.4 km · 32 min"},
+  ];
+  SESSIONS.forEach(s=>{
+    const pct = (s.date - PLAN_START)/86400000 / total * 100;
+    const dot = document.createElement('span');
+    dot.className = 'build-dot ' + s.cls;
+    dot.style.left = pct + "%";
+    dot.style.top  = "78%";
+    dot.title = s.title;
+    canvas.appendChild(dot);
+  });
+
+  // ─── Check-in interaction ──────────────────────────────────────────
+  document.querySelectorAll('#checkin li').forEach(li=>{
+    li.addEventListener('click', ()=>{ li.classList.toggle('done'); });
+  });
+
+  // ─── Mark-done buttons (tasks + today) ─────────────────────────────
+  document.querySelectorAll('.tdone').forEach(b=>{
+    b.addEventListener('click', e=>{
+      const li = e.currentTarget.closest('li');
+      li.style.opacity = 0.4;
+      li.style.textDecoration = 'line-through';
+      e.currentTarget.disabled = true;
+      e.currentTarget.textContent = 'done ✓';
+    });
+  });
+
+  // ─── Sync button feedback ──────────────────────────────────────────
+  const refresh = document.getElementById('refreshBtn');
+  refresh && refresh.addEventListener('click', ()=>{
+    const chip = document.querySelector('.stamp .sync .chip');
+    chip.className = 'chip'; chip.textContent = 'syncing…';
+    refresh.style.opacity = .5; refresh.disabled = true;
+    setTimeout(()=>{
+      chip.className = 'chip ok';
+      const t = new Date();
+      chip.textContent = `✓ synced ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')} · no new`;
+      refresh.style.opacity = 1; refresh.disabled = false;
+    }, 1400);
+  });
+</script>
+</body>
+</html>
