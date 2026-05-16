@@ -9,6 +9,8 @@ from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from plan_lookup import WEEKDAYS, prescription_for
+
 ROOT = Path(__file__).parent
 ACTIVITIES_DIR = ROOT / "activities"
 DASHBOARD = ROOT / "dashboard.md"
@@ -91,6 +93,15 @@ def fmt_pace(seconds_per_km: float) -> str:
     return f"{m}:{s:02d}/km"
 
 
+def latest_activity_file_mtime() -> datetime | None:
+    if not ACTIVITIES_DIR.exists():
+        return None
+    files = list(ACTIVITIES_DIR.glob("*.md"))
+    if not files:
+        return None
+    return datetime.fromtimestamp(max(f.stat().st_mtime for f in files))
+
+
 def generate() -> str:
     acts = load_activities()
     today = date.today()
@@ -108,6 +119,32 @@ def generate() -> str:
     lines.append("")
     lines.append(f"Plan week 1 starts: **{PLAN_START}** · Today: **{today}** · "
                  f"Current plan week: **{plan_week_for(today)}**")
+    lines.append("")
+
+    # Sync freshness — so it's obvious whether the latest run made it in.
+    lines.append("## Sync status")
+    lines.append("")
+    last_mtime = latest_activity_file_mtime()
+    if acts:
+        latest = max(acts, key=lambda a: a["date"])
+        lines.append(
+            f"- Activities synced: **{len(acts)}** · "
+            f"latest: **{latest['date']}** — {latest['name']} "
+            f"({latest['distance_km']:.2f} km, {fmt_h(latest['duration_s'])})"
+        )
+    else:
+        lines.append("- _No activities synced yet._")
+    if last_mtime:
+        delta = datetime.now() - last_mtime
+        if delta < timedelta(minutes=1):
+            ago = "just now"
+        elif delta < timedelta(hours=1):
+            ago = f"{int(delta.total_seconds() // 60)} min ago"
+        elif delta < timedelta(days=1):
+            ago = f"{int(delta.total_seconds() // 3600)}h ago"
+        else:
+            ago = f"{delta.days}d ago"
+        lines.append(f"- Last sync wrote a file **{ago}** ({last_mtime.strftime('%Y-%m-%d %H:%M')})")
     lines.append("")
 
     # Current week
@@ -136,6 +173,23 @@ def generate() -> str:
             )
     else:
         lines.append("_No activities yet this week._")
+    lines.append("")
+
+    # Coming up — next 7 days from the plan, so it's obvious what's prescribed
+    lines.append("## Coming up — next 7 days")
+    lines.append("")
+    lines.append("| Day | Date | Session | Purpose |")
+    lines.append("|---|---|---|---|")
+    for offset in range(7):
+        d = today + timedelta(days=offset)
+        p = prescription_for(d)
+        if not (1 <= p.plan_week <= 48):
+            continue
+        marker = " ←" if offset == 0 else ""
+        weekday = WEEKDAYS[d.weekday()]
+        lines.append(
+            f"| {weekday} {d.strftime('%d')}{marker} | {d} | {p.title} | {p.purpose} |"
+        )
     lines.append("")
 
     # Last 8 weeks
