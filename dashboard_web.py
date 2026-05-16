@@ -854,43 +854,54 @@ PAGE = Template(r"""<!doctype html>
       .span-2, .span-3 { grid-column: span 1; }
     }
 
-    /* Section header */
+    /* Section header — Fraunces editorial titles, strong dividers */
     .section {
       position: relative;
       padding-top: 4px;
     }
     .section-head {
-      display: flex; align-items: baseline; gap: 14px;
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--ink);
     }
     .roman {
-      font-family: 'Fraunces', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-variation-settings: "opsz" 12;
-      font-weight: 500;
-      font-size: 13px;
-      letter-spacing: 0.05em;
+      font-variation-settings: "opsz" 60, "SOFT" 100;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: -.005em;
       color: var(--oxide);
-      min-width: 28px;
+      line-height: 1;
+      min-width: 36px;
     }
     h2.label {
       margin: 0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.05;
+      letter-spacing: -.005em;
       color: var(--ink);
+      font-variation-settings: "opsz" 60, "SOFT" 30;
     }
     .section-meta {
       margin-left: auto;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
+      font-size: 9px;
+      letter-spacing: 0.18em;
       color: var(--ink-soft);
       text-transform: uppercase;
+      text-align: right;
+    }
+    @media (max-width: 720px) {
+      .grid { gap: 36px; }
+      .section { padding-top: 0; }
+      .section-head { gap: 12px; margin-bottom: 14px; padding-bottom: 8px; }
+      .roman { font-size: 20px; min-width: 30px; }
+      h2.label { font-size: 20px; line-height: 1.1; }
+      .section-meta { display: none; }
     }
 
     /* Today's prescription — the field card */
@@ -1018,6 +1029,14 @@ PAGE = Template(r"""<!doctype html>
       white-space: nowrap;
     }
     .journey-label.today { color: var(--oxide); font-weight: 500; }
+    @media (max-width: 720px) {
+      .journey-label { font-size: 8px; letter-spacing: .08em; }
+      /* Right-align the rightmost label so 'CAPE TOWN' can't run off the edge */
+      .journey-label:last-of-type { transform: translateX(-100%); padding-right: 2px; }
+      /* Hide intermediate intermediate-spaced labels at very narrow widths
+         to break the SEVILLA/CAPE-TOWN collision */
+      .journey-curve-labels .hi { display: none; }
+    }
 
     /* Past-session dots: trail of completed activities along the expedition line */
     .session-dot {
@@ -1176,8 +1195,9 @@ PAGE = Template(r"""<!doctype html>
     @media (max-width: 980px) {
       .milestones { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 540px) {
-      .milestones { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      /* Compact 4-chip row on phones — races shouldn't dominate the fold */
+      .milestones { grid-template-columns: repeat(4, 1fr); margin: 0 0 22px; }
     }
     .milestone {
       padding: 16px 18px 14px;
@@ -1198,9 +1218,25 @@ PAGE = Template(r"""<!doctype html>
     @media (max-width: 980px) {
       .milestone:nth-child(2n) { border-right: none; }
     }
-    @media (max-width: 540px) {
-      .milestone { border-right: none; border-bottom: 1px solid var(--rule); }
-      .milestone:last-child { border-bottom: none; }
+    @media (max-width: 720px) {
+      .milestone {
+        padding: 9px 6px 10px;
+        grid-template-areas: "rank" "name" "countdown";
+        grid-template-columns: 1fr;
+        gap: 1px;
+        text-align: center;
+        border-right: 1px solid var(--rule);
+        border-bottom: none;
+      }
+      .milestone:nth-child(2n) { border-right: 1px solid var(--rule); }
+      .milestone:last-child { border-right: none; }
+      .milestone .m-when { display: none; }
+      .milestone .m-name {
+        font-size: 11.5px; line-height: 1.1; letter-spacing: -.005em;
+      }
+      .milestone .m-rank { font-size: 11px; }
+      .milestone .m-countdown { font-size: 13px; margin-top: 1px; }
+      .milestone .m-countdown small { font-size: 9px; letter-spacing: .12em; }
     }
     .milestone.done {
       color: var(--ink-soft);
@@ -1602,10 +1638,18 @@ PAGE = Template(r"""<!doctype html>
       max-width: 60ch; white-space: pre-wrap; margin-bottom: 6px;
     }
     @media (max-width: 720px) {
-      .week-row { grid-template-columns: 48px 1fr auto; gap: 10px; padding: 9px 0 9px 12px; }
+      .coming-week-head { grid-template-columns: auto 1fr; }
+      .coming-week-head h2 { font-size: 22px; }
+      .coming-week-head .meta {
+        grid-column: 1 / -1; margin-top: 2px; line-height: 1.5;
+      }
+      .week-row { grid-template-columns: 52px 1fr auto; gap: 10px; padding: 9px 0 9px 12px; }
+      .week-row .wr-day strong { font-size: 15px; }
+      .week-row .wr-day small { white-space: nowrap; }
       .week-row .wr-session em { display: block; margin-left: 0; margin-top: 2px; }
       .week-row .wr-tag { margin-left: 0; margin-top: 4px; display: inline-block; }
-      .week-row .wr-expand { padding-left: 60px; }
+      .week-row .wr-expand { padding-left: 56px; }
+      .week-row .wr-toggle { font-size: 9px; letter-spacing: .12em; }
     }
   </style>
 </head>
@@ -2041,7 +2085,7 @@ async def index():
         is_rest = title.lower().startswith("rest")
         coming_days.append({
             "weekday": d.strftime("%a"),
-            "daynum": d.strftime("%d / %m"),
+            "daynum": d.strftime("%d/%m"),
             "is_today": offset == 0,
             "is_rest": is_rest,
             "title": title,
@@ -2804,6 +2848,12 @@ _TASK_ROW_CSS = """
     .tasks-list .due { font-size: 0.78rem; }
   }
   .tasks-list li:first-child { border-top: 0; }
+  .tasks-list .tasks-more {
+    display: block; grid-template-columns: none; grid-template-areas: none;
+    padding-top: 0.5rem; border-top: 1px solid #9C9484;
+    color: #5A5E6B; font-size: 0.78rem;
+    letter-spacing: .04em;
+  }
   .tasks-list .glyph { color: #5A5E6B; }
   .tasks-list .due { font-variant-numeric: tabular-nums; color: #5A5E6B; font-size: 0.82rem; }
   .tasks-list .title { font-weight: 500; }
@@ -2876,8 +2926,7 @@ def _render_tasks(show_done: bool = False, show_all: bool = False) -> str:
     rows = "".join(row_html(t) for t in visible_open)
     if hidden_count and not show_all:
         rows += (
-            f'<li style="border-top:1px solid #9C9484;padding-top:0.5rem;'
-            f'color:#5A5E6B;font-size:0.78rem;">'
+            f'<li class="tasks-more">'
             f'+ {hidden_count} more (due &gt; 30d)</li>'
         )
     if show_done and done_ts:
