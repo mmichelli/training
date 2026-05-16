@@ -8,7 +8,7 @@ Open http://localhost:8765.
 from __future__ import annotations
 
 import json
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -1456,7 +1456,8 @@ PAGE = Template(r"""<!doctype html>
                   hx-swap="innerHTML"
                   hx-indicator="this"
                   hx-disabled-elt="this"
-                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh')">
+                  hx-on::before-request="document.getElementById('sync-result').textContent='syncing…'"
+                  hx-on::after-request="htmx.trigger('#today','refresh'); htmx.trigger('#readiness','refresh'); htmx.trigger('#trend-body','refresh'); htmx.trigger('#weight','refresh'); htmx.trigger('#volume','refresh'); htmx.trigger('#checkin','refresh'); htmx.trigger('#log','refresh'); htmx.trigger('#tasks','refresh')">
             <span>↻</span>
           </button>
         </div>
@@ -1865,12 +1866,46 @@ _AUTH_PROMPT = (
 )
 
 
+def _latest_activity_summary() -> str:
+    """Return 'DD Mon HH:MM · <name>' for the most recent synced activity, or ''."""
+    act_dir = ROOT / "activities"
+    if not act_dir.exists():
+        return ""
+    latest_start = ""
+    latest_name = ""
+    for p in act_dir.glob("*.md"):
+        try:
+            head = p.read_text().split("---", 2)
+            if len(head) < 3:
+                continue
+            fm = {}
+            for line in head[1].strip().splitlines():
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    fm[k.strip()] = v.strip().strip('"')
+            start = fm.get("start", "")
+            if start and start > latest_start:
+                latest_start = start
+                latest_name = fm.get("name", "")
+        except Exception:
+            continue
+    if not latest_start:
+        return ""
+    try:
+        dt = datetime.strptime(latest_start[:19], "%Y-%m-%dT%H:%M:%S")
+        return f"{dt.strftime('%d %b %H:%M')} · {latest_name}".strip(" ·")
+    except ValueError:
+        return latest_name
+
+
 def _render_sync_chip() -> str:
     last_ok = _SYNC_STATE["last_at"]
     last_status = _SYNC_STATE["last_status"]
     last_err = _SYNC_STATE.get("last_error", "")
     if last_status == "ok":
-        return f'<span class="sync-result ok">last sync {last_ok}</span>'
+        latest = _latest_activity_summary()
+        suffix = f" · latest {latest}" if latest else ""
+        return f'<span class="sync-result ok">✓ synced {last_ok}{suffix}</span>'
     if last_status == "error":
         # Auth-flavored errors (401/Unauthorized/no token) → offer re-authorize
         looks_like_auth = any(
@@ -2397,7 +2432,7 @@ _TASK_ROW_CSS = """
 """
 
 
-def _render_tasks(show_done: bool = False) -> str:
+def _render_tasks(show_done: bool = False, show_all: bool = False) -> str:
     from datetime import date as _date
     today = _date.today()
     all_tasks = _tasks.load()
@@ -2405,6 +2440,15 @@ def _render_tasks(show_done: bool = False) -> str:
     done_ts = [t for t in all_tasks if t.done]
     open_ts.sort(key=lambda t: (t.due is None, t.due or _date.max))
     done_ts.sort(key=lambda t: t.done_on or _date.min, reverse=True)
+
+    # Default view: only the next 30 days of work (overdue/red/amber). Far-future
+    # logistics live behind "show all" so the pane isn't dominated by 2027 tasks.
+    if show_all:
+        visible_open = open_ts
+        hidden_count = 0
+    else:
+        visible_open = [t for t in open_ts if t.urgency(today) in {"overdue", "red", "amber"}]
+        hidden_count = len(open_ts) - len(visible_open)
 
     overdue = sum(1 for t in open_ts if t.urgency(today) == "overdue")
     red = sum(1 for t in open_ts if t.urgency(today) == "red")
@@ -2437,29 +2481,43 @@ def _render_tasks(show_done: bool = False) -> str:
             f'</li>'
         )
 
-    rows = "".join(row_html(t) for t in open_ts)
+    rows = "".join(row_html(t) for t in visible_open)
+    if hidden_count and not show_all:
+        rows += (
+            f'<li style="border-top:1px solid #9C9484;padding-top:0.5rem;'
+            f'color:#5A5E6B;font-size:0.78rem;">'
+            f'+ {hidden_count} more (due &gt; 30d)</li>'
+        )
     if show_done and done_ts:
         rows += '<li style="border-top:1px solid #9C9484;padding-top:0.5rem;color:#5A5E6B;font-size:0.78rem;">— done —</li>'
         rows += "".join(row_html(t) for t in done_ts)
 
-    toggle_show = (
-        f'<a hx-get="/api/tasks?show_done=0" hx-target="#tasks" hx-swap="innerHTML" '
-        f'style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;">hide done</a>'
+    link_style = 'cursor:pointer;color:#5A5E6B;font-size:0.78rem;'
+    toggle_all = (
+        f'<a hx-get="/api/tasks?show_all=0&show_done={int(show_done)}" '
+        f'hx-target="#tasks" hx-swap="innerHTML" style="{link_style}">collapse future</a>'
+        if show_all else
+        f'<a hx-get="/api/tasks?show_all=1&show_done={int(show_done)}" '
+        f'hx-target="#tasks" hx-swap="innerHTML" style="{link_style}">show all</a>'
+    )
+    toggle_done = (
+        f'<a hx-get="/api/tasks?show_done=0&show_all={int(show_all)}" '
+        f'hx-target="#tasks" hx-swap="innerHTML" style="{link_style}">hide done</a>'
         if show_done else
-        f'<a hx-get="/api/tasks?show_done=1" hx-target="#tasks" hx-swap="innerHTML" '
-        f'style="cursor:pointer;color:#5A5E6B;font-size:0.78rem;">show done</a>'
+        f'<a hx-get="/api/tasks?show_done=1&show_all={int(show_all)}" '
+        f'hx-target="#tasks" hx-swap="innerHTML" style="{link_style}">show done</a>'
     )
 
     return (
         f'{_TASK_ROW_CSS}'
-        f'<div class="tasks-counts">{counts} · {toggle_show}</div>'
+        f'<div class="tasks-counts">{counts} · {toggle_all} · {toggle_done}</div>'
         f'<ul class="tasks-list">{rows}</ul>'
     )
 
 
 @app.get("/api/tasks", response_class=HTMLResponse)
-async def api_tasks(show_done: int = 0):
-    return _render_tasks(show_done=bool(show_done))
+async def api_tasks(show_done: int = 0, show_all: int = 0):
+    return _render_tasks(show_done=bool(show_done), show_all=bool(show_all))
 
 
 @app.post("/api/tasks/{task_id}/toggle", response_class=HTMLResponse)
