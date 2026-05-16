@@ -37,7 +37,18 @@ def fmt_dur(s: float | None) -> str:
     return f"{h}:{m:02d}:{s:02d}" if h else f"{m}:{s:02d}"
 
 
-def activity_to_md(a: dict) -> tuple[str, str]:
+def fmt_pace(seconds_per_km: float | None) -> str:
+    if not seconds_per_km or seconds_per_km <= 0:
+        return "—"
+    m, s = divmod(int(round(seconds_per_km)), 60)
+    return f"{m}:{s:02d}/km"
+
+
+def activity_to_md(
+    a: dict,
+    zones: list[dict] | None = None,
+    splits: dict | None = None,
+) -> tuple[str, str]:
     aid = a["activityId"]
     start = a.get("startTimeLocal", "")[:19].replace(" ", "T")
     ymd = start[:10] if start else "unknown"
@@ -50,7 +61,8 @@ def activity_to_md(a: dict) -> tuple[str, str]:
     avg_hr = a.get("averageHR")
     max_hr = a.get("maxHR")
     fname = f"{ymd}-{slugify(atype)}-{aid}.md"
-    body = "\n".join([
+
+    fm_lines = [
         "---",
         f"activity_id: {aid}",
         f"date: {ymd}",
@@ -69,7 +81,14 @@ def activity_to_md(a: dict) -> tuple[str, str]:
         f"avg_running_cadence: {a.get('averageRunningCadenceInStepsPerMinute') or ''}",
         f"max_running_cadence: {a.get('maxRunningCadenceInStepsPerMinute') or ''}",
         f"vo2max: {a.get('vO2MaxValue') or ''}",
-        "---",
+    ]
+    if zones:
+        z_by_n = {int(z["zoneNumber"]): int(z.get("secsInZone") or 0) for z in zones}
+        for n in range(1, 6):
+            fm_lines.append(f"hr_z{n}_s: {z_by_n.get(n, 0)}")
+    fm_lines.append("---")
+
+    body_lines = [
         "",
         f"# {name}",
         "",
@@ -81,6 +100,48 @@ def activity_to_md(a: dict) -> tuple[str, str]:
         f"- **Elevation gain**: {a.get('elevationGain') or '—'} m",
         f"- **Calories**: {a.get('calories') or '—'}",
         f"- **Avg cadence**: {a.get('averageRunningCadenceInStepsPerMinute') or '—'} spm",
+    ]
+
+    if zones:
+        total = sum(int(z.get("secsInZone") or 0) for z in zones) or 1
+        body_lines += [
+            "",
+            "## Heart rate zones",
+            "",
+            "| Zone | Boundary | Time | % |",
+            "|---|---|---|---|",
+        ]
+        for z in sorted(zones, key=lambda x: x["zoneNumber"]):
+            s = int(z.get("secsInZone") or 0)
+            pct = s / total * 100
+            body_lines.append(
+                f"| Z{z['zoneNumber']} | ≥{int(z.get('zoneLowBoundary') or 0)} bpm | "
+                f"{fmt_dur(s)} | {pct:.0f}% |"
+            )
+
+    if splits and splits.get("lapDTOs"):
+        body_lines += [
+            "",
+            "## Laps",
+            "",
+            "| # | Dist | Time | Pace | Avg HR | Max HR | Elev +/- |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for lap in splits["lapDTOs"]:
+            ldist = (lap.get("distance") or 0) / 1000
+            ldur = lap.get("movingDuration") or lap.get("duration") or 0
+            lpace = (ldur / ldist) if ldist else 0
+            egain = lap.get("elevationGain") or 0
+            eloss = lap.get("elevationLoss") or 0
+            body_lines.append(
+                f"| {lap.get('lapIndex', '?')} | {ldist:.2f} km | "
+                f"{fmt_dur(ldur)} | {fmt_pace(lpace)} | "
+                f"{int(lap.get('averageHR') or 0) or '—'} | "
+                f"{int(lap.get('maxHR') or 0) or '—'} | "
+                f"+{egain:.0f} / -{eloss:.0f} m |"
+            )
+
+    body_lines += [
         "",
         "## Notes",
         "",
@@ -88,8 +149,8 @@ def activity_to_md(a: dict) -> tuple[str, str]:
         "<!-- knee: -->",
         "<!-- sub-threshold controlled? -->",
         "",
-    ])
-    return fname, body
+    ]
+    return fname, "\n".join(fm_lines + body_lines)
 
 
 def daterange(days: int) -> list[date]:
@@ -143,9 +204,19 @@ def ingest_activities(g: Garmin, days: int, force: bool) -> int:
         start += 50
     written = 0
     for a in all_a:
-        fname, content = activity_to_md(a)
+        aid = a["activityId"]
+        fname, _ = activity_to_md(a)
         p = ACTIVITIES / fname
+        # Idempotency: if the file already carries enriched zone data, leave it
+        # alone — saves two API calls per known activity on repeat syncs.
         if p.exists() and not force:
+            head = p.read_text(errors="ignore")[:1500]
+            if "hr_z1_s:" in head:
+                continue
+        zones = g.activity_zones(aid)
+        splits = g.activity_splits(aid)
+        _, content = activity_to_md(a, zones=zones, splits=splits)
+        if p.exists():
             existing = p.read_text()
             if "## Notes" in existing:
                 user_notes = existing.split("## Notes", 1)[1]

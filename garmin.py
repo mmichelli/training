@@ -85,6 +85,12 @@ class Garmin:
     def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
         return self.get(f"/weight-service/weight/range/{start_ymd}/{end_ymd}")
 
+    def activity_zones(self, activity_id: int) -> list[dict] | None:
+        return self.get(f"/activity-service/activity/{activity_id}/hrTimeInZones")
+
+    def activity_splits(self, activity_id: int) -> dict | None:
+        return self.get(f"/activity-service/activity/{activity_id}/splits")
+
 
 if __name__ == "__main__":
     g = Garmin()
