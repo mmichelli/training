@@ -190,50 +190,67 @@
   .today-signals .v.alert{color:var(--oxide)}
   .today-signals .v.good{color:var(--forest)}
 
-  /* ─── §2 Coming Week (the user's headline concern) ────────────────── */
-  .week-strip{
-    margin-top:28px;display:grid;grid-template-columns:repeat(7,1fr);
-    gap:0;border:1px solid var(--ink);background:var(--paper-glow);
+  /* ─── §2 Coming Week — compact, clickable list ─────────────────────── */
+  .week-list{margin-top:24px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  .week-row{
+    display:grid;grid-template-columns:64px 1fr auto;align-items:center;
+    gap:18px;padding:11px 4px 11px 16px;
+    border-bottom:1px dotted var(--rule-soft);
+    cursor:pointer;position:relative;
+    transition:background .12s;
   }
-  .day{
-    padding:14px 12px 16px;border-right:1px solid var(--rule-soft);
-    position:relative;min-height:170px;display:flex;flex-direction:column;
+  .week-row:last-child{border-bottom:none}
+  .week-row:hover{background:rgba(28,31,42,.025)}
+  .week-row.is-today{background:var(--oxide-glow)}
+  .week-row.is-today::before{
+    content:"";position:absolute;left:-2px;top:50%;width:6px;height:6px;border-radius:50%;
+    background:var(--oxide);transform:translateY(-50%);
+    box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--oxide);
   }
-  .day:last-child{border-right:none}
-  .day.is-today{background:var(--oxide-glow)}
-  .day.is-today::after{
-    content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--oxide);
+  .week-row.rest{
+    background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(155,148,132,.06) 6px 7px);
   }
-  .day.rest{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(155,148,132,.08) 6px 7px)}
-  .day-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-  .day-name{
-    font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink);
-    font-variation-settings:"opsz" 30,"SOFT" 100;line-height:1;
+  .week-row.is-done{opacity:.55}
+  .week-row .wr-day{display:flex;flex-direction:column;line-height:1}
+  .week-row .wr-day strong{
+    font-family:var(--display);font-style:italic;font-weight:400;font-size:17px;color:var(--ink);
+    font-variation-settings:"opsz" 30,"SOFT" 100;
   }
-  .day-num{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.08em}
-  .day.is-today .day-num{color:var(--oxide);font-weight:600}
-  .day-glyph{
-    font-family:var(--display);font-size:22px;color:var(--ochre);line-height:1;margin-bottom:8px;
-    font-variation-settings:"opsz" 30,"SOFT" 30,"WONK" 1;
+  .week-row .wr-day small{
+    font-family:var(--mono);font-size:10px;letter-spacing:.10em;color:var(--ink-soft);
+    margin-top:3px;
   }
-  .day.rest .day-glyph{color:var(--ink-soft)}
-  .day-session{
-    font-family:var(--display);font-size:15px;line-height:1.25;font-weight:400;
-    color:var(--ink);font-variation-settings:"opsz" 30,"SOFT" 30;
-    margin-bottom:8px;
+  .week-row.is-today .wr-day small{color:var(--oxide);font-weight:600}
+  .week-row .wr-session{font-size:13px;line-height:1.35;color:var(--ink)}
+  .week-row .wr-session strong{
+    font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:-.005em;
+    font-variation-settings:"opsz" 30,"SOFT" 30;
   }
-  .day-purpose{
-    font-family:var(--display);font-style:italic;font-size:11px;color:var(--ink-soft);
-    line-height:1.4;font-variation-settings:"opsz" 14,"SOFT" 100;
-    margin-top:auto;
+  .week-row .wr-session em{
+    font-family:var(--display);font-style:italic;font-size:12px;color:var(--ink-soft);
+    font-variation-settings:"opsz" 14,"SOFT" 100;margin-left:8px;
   }
-  .day-tag{
-    align-self:flex-start;
+  .week-row .wr-tag{
+    align-self:center;justify-self:start;
     font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
-    padding:2px 6px;border:1px solid var(--rule);
-    margin-bottom:8px;
+    padding:1px 6px;border:1px solid var(--rule-soft);margin-left:6px;
   }
-  .day.is-today .day-tag{color:var(--oxide);border-color:var(--oxide)}
+  .week-row.is-today .wr-tag{color:var(--oxide);border-color:var(--oxide)}
+  .week-row .wr-toggle{
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);user-select:none;
+  }
+  .week-row .wr-toggle::after{content:" ▾";transition:transform .15s;display:inline-block}
+  .week-row.open .wr-toggle::after{transform:rotate(180deg)}
+  .week-row .wr-expand{
+    grid-column:1 / -1;display:none;padding:6px 12px 14px 80px;
+    border-top:1px dashed var(--rule-soft);margin-top:10px;
+  }
+  .week-row.open .wr-expand{display:block}
+  .week-row .wr-expand p{
+    font-size:13px;line-height:1.6;color:var(--ink);max-width:60ch;margin-bottom:10px;
+  }
+  .week-row .wr-expand .wr-actions{display:flex;gap:10px;margin-top:10px}
 
   /* ─── §3 The Build · journey curve ────────────────────────────────── */
   .build{position:relative;margin-top:36px;padding:36px 36px 60px 16px}
@@ -484,9 +501,10 @@
     .stamp .sync{justify-content:flex-start}
     .brand{font-size:38px}
     .today{grid-template-columns:1fr;gap:24px}
-    .week-strip{grid-template-columns:1fr;border:none}
-    .day{border:1px solid var(--rule-soft);border-bottom:none;min-height:auto}
-    .day:last-child{border-bottom:1px solid var(--rule-soft)}
+    .week-row{grid-template-columns:48px 1fr auto;gap:10px;padding:9px 0 9px 12px}
+    .week-row .wr-session em{display:block;margin-left:0;margin-top:2px}
+    .week-row .wr-tag{margin-left:0;margin-top:4px;display:inline-block}
+    .week-row .wr-expand{padding-left:60px}
     .build-stats{grid-template-columns:1fr 1fr}
     .body-grid{grid-template-columns:1fr 1fr}
     .elev-meta{grid-template-columns:1fr 1fr}
@@ -583,59 +601,105 @@
       <h2 class="sect-title">The Coming Week</h2>
       <span class="sect-meta">Plan wk 01 &nbsp;·&nbsp; tgt 2.0 h &nbsp;·&nbsp; 4.7 km · 0.9 h logged</span>
     </div>
-    <div class="week-strip">
-      <div class="day is-today">
-        <div class="day-head">
-          <span class="day-name">Sat</span>
-          <span class="day-num">16 / 05</span>
+    <div class="week-list">
+
+      <article class="week-row is-today">
+        <div class="wr-day"><strong>Sat</strong><small>16 / 05</small></div>
+        <div class="wr-session">
+          <strong>Walk-jog 25 min</strong><em>60 s jog · 120 s walk · ≈ 8 cycles</em>
+          <span class="wr-tag">today</span>
         </div>
-        <span class="day-tag">today</span>
-        <div class="day-glyph">↻</div>
-        <div class="day-session">Walk-jog 25 min</div>
-        <div class="day-purpose">Run-walk reintroduction · 60 s / 120 s</div>
-      </div>
-      <div class="day">
-        <div class="day-head"><span class="day-name">Sun</span><span class="day-num">17</span></div>
-        <span class="day-tag">aerobic</span>
-        <div class="day-glyph">⤳</div>
-        <div class="day-session">Walk 30–45 min</div>
-        <div class="day-purpose">Aerobic walk or hike</div>
-      </div>
-      <div class="day">
-        <div class="day-head"><span class="day-name">Mon</span><span class="day-num">18</span></div>
-        <span class="day-tag">aerobic</span>
-        <div class="day-glyph">⤳</div>
-        <div class="day-session">Walk 25–35 min</div>
-        <div class="day-purpose">Aerobic base</div>
-      </div>
-      <div class="day">
-        <div class="day-head"><span class="day-name">Tue</span><span class="day-num">19</span></div>
-        <span class="day-tag">walk-jog</span>
-        <div class="day-glyph">↻</div>
-        <div class="day-session">Walk-jog 25 min</div>
-        <div class="day-purpose">45 s jog · 75 s walk</div>
-      </div>
-      <div class="day rest">
-        <div class="day-head"><span class="day-name">Wed</span><span class="day-num">20</span></div>
-        <span class="day-tag">rest</span>
-        <div class="day-glyph">∅</div>
-        <div class="day-session">Rest</div>
-        <div class="day-purpose">Sleep · eat · hydrate</div>
-      </div>
-      <div class="day">
-        <div class="day-head"><span class="day-name">Thu</span><span class="day-num">21</span></div>
-        <span class="day-tag">walk-jog</span>
-        <div class="day-glyph">↻</div>
-        <div class="day-session">Walk-jog 20 min</div>
-        <div class="day-purpose">30 s jog · 90 s walk</div>
-      </div>
-      <div class="day rest">
-        <div class="day-head"><span class="day-name">Fri</span><span class="day-num">22</span></div>
-        <span class="day-tag">rest</span>
-        <div class="day-glyph">∅</div>
-        <div class="day-session">Rest</div>
-        <div class="day-purpose">Trainer · gym membership due</div>
-      </div>
+        <div class="wr-toggle">tap</div>
+        <div class="wr-expand">
+          <p>
+            <strong>Total session:</strong> 25 minutes. Pattern: jog 60 s, walk 120 s, repeat.
+            Effort during the jog: you should be able to talk in full sentences. If you're
+            breathing hard, slow the jog or take a longer walk. The goal is consistency,
+            not speed. If anything hurts more than mild discomfort, stop and walk the rest.
+          </p>
+          <div class="wr-actions">
+            <button class="btn primary">Mark Done</button>
+            <button class="btn">View on Watch</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="week-row">
+        <div class="wr-day"><strong>Sun</strong><small>17 / 05</small></div>
+        <div class="wr-session">
+          <strong>Walk 30–45 min</strong><em>aerobic walk or hike</em>
+          <span class="wr-tag">aerobic</span>
+        </div>
+        <div class="wr-toggle">open</div>
+        <div class="wr-expand">
+          <p>Just walk. Brisk pace if you feel good, easy stroll if not. 30–45 min total.
+            No jogging required. If your knee feels off, cut it short — there is no penalty.</p>
+        </div>
+      </article>
+
+      <article class="week-row">
+        <div class="wr-day"><strong>Mon</strong><small>18 / 05</small></div>
+        <div class="wr-session">
+          <strong>Walk 25–35 min</strong><em>aerobic base</em>
+          <span class="wr-tag">aerobic</span>
+        </div>
+        <div class="wr-toggle">open</div>
+        <div class="wr-expand">
+          <p>Brisk-pace walk on a flat-ish route. The point is feet on ground, not heart rate.</p>
+        </div>
+      </article>
+
+      <article class="week-row">
+        <div class="wr-day"><strong>Tue</strong><small>19 / 05</small></div>
+        <div class="wr-session">
+          <strong>Walk-jog 25 min</strong><em>45 s jog · 75 s walk · slightly higher density</em>
+          <span class="wr-tag">walk-jog</span>
+        </div>
+        <div class="wr-toggle">open</div>
+        <div class="wr-expand">
+          <p>Same protocol as Saturday but with a shorter walk-recovery — the jog density
+            ticks up to 45 / 75 (about 12 cycles). Effort still conversational.</p>
+        </div>
+      </article>
+
+      <article class="week-row rest">
+        <div class="wr-day"><strong>Wed</strong><small>20 / 05</small></div>
+        <div class="wr-session">
+          <strong>Rest</strong><em>sleep · eat · hydrate</em>
+          <span class="wr-tag">rest</span>
+        </div>
+        <div class="wr-toggle">—</div>
+        <div class="wr-expand">
+          <p>No training. A 15-minute walk to loosen up is fine, but optional. Sleep, eat, hydrate.</p>
+        </div>
+      </article>
+
+      <article class="week-row">
+        <div class="wr-day"><strong>Thu</strong><small>21 / 05</small></div>
+        <div class="wr-session">
+          <strong>Walk-jog 20 min</strong><em>30 s jog · 90 s walk · short and easy</em>
+          <span class="wr-tag">walk-jog</span>
+        </div>
+        <div class="wr-toggle">open</div>
+        <div class="wr-expand">
+          <p>Shorter session to keep the legs moving without accumulating fatigue before Saturday.
+            Less density, more walk.</p>
+        </div>
+      </article>
+
+      <article class="week-row rest">
+        <div class="wr-day"><strong>Fri</strong><small>22 / 05</small></div>
+        <div class="wr-session">
+          <strong>Rest</strong><em>trainer session · gym membership due today</em>
+          <span class="wr-tag">rest</span>
+        </div>
+        <div class="wr-toggle">—</div>
+        <div class="wr-expand">
+          <p>Trainer session on barbell form (squat, RDL, hip thrust) is the only blocker
+            for next week's Gym A introduction. Book today if not already.</p>
+        </div>
+      </article>
+
     </div>
     <p class="marginnote" style="margin-top:18px;max-width:64ch">
       The phase 1 reconditioning block reads as walking, with run-walk seeds. Most of
@@ -1094,6 +1158,14 @@
     dot.style.top  = "78%";
     dot.title = s.title;
     canvas.appendChild(dot);
+  });
+
+  // ─── Coming Week: row click to expand ──────────────────────────────
+  document.querySelectorAll('.week-row').forEach(row=>{
+    row.addEventListener('click', e=>{
+      if (e.target.closest('button')) return;
+      row.classList.toggle('open');
+    });
   });
 
   // ─── Check-in interaction ──────────────────────────────────────────
