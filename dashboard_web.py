@@ -1461,6 +1461,94 @@ PAGE = Template(r"""<!doctype html>
     @media (max-width: 720px) {
       footer.coords { flex-direction: column; gap: 12px; text-align: center; }
     }
+
+    /* ─── §2 Coming Week — compact, clickable session list ──────────── */
+    .coming-week { margin: 28px 0 8px; }
+    .coming-week-head {
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: end; gap: 18px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .coming-week-head .roman { color: var(--oxide); font-style: italic; font-size: 22px; }
+    .coming-week-head h2 {
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 400; font-size: 26px; line-height: 1; letter-spacing: -.01em;
+    }
+    .coming-week-head .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .week-list { border-bottom: 1px solid var(--ink); margin-top: 6px; }
+    .week-row {
+      display: grid; grid-template-columns: 64px 1fr auto; align-items: center;
+      gap: 18px; padding: 11px 4px 11px 16px;
+      border-bottom: 1px dotted var(--rule);
+      cursor: pointer; position: relative;
+      transition: background 120ms ease;
+    }
+    .week-row:last-child { border-bottom: none; }
+    .week-row:hover { background: rgba(28,31,42,.025); }
+    .week-row.is-today { background: rgba(200,54,45,.05); }
+    .week-row.is-today::before {
+      content: ""; position: absolute; left: -2px; top: 50%;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--oxide); transform: translateY(-50%);
+      box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--oxide);
+    }
+    .week-row.rest {
+      background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(155,148,132,.06) 6px 7px);
+    }
+    .week-row .wr-day { display: flex; flex-direction: column; line-height: 1; }
+    .week-row .wr-day strong {
+      font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: 17px; color: var(--ink);
+    }
+    .week-row .wr-day small {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: .10em; color: var(--ink-soft); margin-top: 3px;
+    }
+    .week-row.is-today .wr-day small { color: var(--oxide); font-weight: 600; }
+    .week-row .wr-session { font-size: 13px; line-height: 1.35; color: var(--ink); }
+    .week-row .wr-session strong {
+      font-family: 'Newsreader', Georgia, serif; font-weight: 500;
+      font-size: 15px; letter-spacing: -.005em;
+    }
+    .week-row .wr-session em {
+      font-family: 'Newsreader', Georgia, serif; font-style: italic;
+      font-size: 12px; color: var(--ink-soft); margin-left: 8px;
+    }
+    .week-row .wr-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft);
+      padding: 1px 6px; border: 1px solid var(--rule); margin-left: 6px;
+    }
+    .week-row.is-today .wr-tag { color: var(--oxide); border-color: var(--oxide); }
+    .week-row .wr-toggle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft);
+      user-select: none;
+    }
+    .week-row .wr-toggle::after {
+      content: " ▾"; transition: transform 150ms ease; display: inline-block;
+    }
+    .week-row.open .wr-toggle::after { transform: rotate(180deg); }
+    .week-row .wr-expand {
+      grid-column: 1 / -1; display: none;
+      padding: 6px 12px 14px 80px;
+      border-top: 1px dashed var(--rule);
+      margin-top: 10px;
+    }
+    .week-row.open .wr-expand { display: block; }
+    .week-row .wr-expand p {
+      font-size: 13px; line-height: 1.6; color: var(--ink);
+      max-width: 60ch; white-space: pre-wrap; margin-bottom: 6px;
+    }
+    @media (max-width: 720px) {
+      .week-row { grid-template-columns: 48px 1fr auto; gap: 10px; padding: 9px 0 9px 12px; }
+      .week-row .wr-session em { display: block; margin-left: 0; margin-top: 2px; }
+      .week-row .wr-tag { margin-left: 0; margin-top: 4px; display: inline-block; }
+      .week-row .wr-expand { padding-left: 60px; }
+    }
   </style>
 </head>
 <body>
@@ -1532,6 +1620,34 @@ PAGE = Template(r"""<!doctype html>
     </nav>
 
     <div id="calibration" hx-get="/api/calibration" hx-trigger="load"></div>
+
+    <section class="coming-week">
+      <div class="coming-week-head">
+        <span class="roman">§ 2</span>
+        <h2>The Coming Week</h2>
+        <span class="meta">wk {{ plan_week }} · tgt {{ target_h }} h · {{ week_actual_h }} h logged</span>
+      </div>
+      <div class="week-list">
+        {% for d in coming_days %}
+        <article class="week-row {% if d.is_today %}is-today{% endif %} {% if d.is_rest %}rest{% endif %}"
+                 onclick="if(!event.target.closest('button,a')) this.classList.toggle('open')">
+          <div class="wr-day">
+            <strong>{{ d.weekday }}</strong><small>{{ d.daynum }}</small>
+          </div>
+          <div class="wr-session">
+            <strong>{{ d.title }}</strong>
+            {% if d.purpose %}<em>{{ d.purpose|lower }}</em>{% endif %}
+            {% if d.is_today %}<span class="wr-tag">today</span>{% endif %}
+            {% if d.is_rest and not d.is_today %}<span class="wr-tag">rest</span>{% endif %}
+          </div>
+          <div class="wr-toggle">{% if d.is_rest and not d.description %}—{% else %}open{% endif %}</div>
+          <div class="wr-expand">
+            <p>{{ d.description }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
 
     <div class="grid">
       <section class="section span-2">
@@ -1870,6 +1986,47 @@ async def index():
 
     session_dots = _load_session_dots(journey_start, journey_total)
 
+    # §2 Coming Week — today + next 6 days from plan_lookup
+    coming_days = []
+    for offset in range(7):
+        d = today + timedelta(days=offset)
+        pr = prescription_for(d)
+        title = pr.title
+        is_rest = title.lower().startswith("rest")
+        coming_days.append({
+            "weekday": d.strftime("%a"),
+            "daynum": d.strftime("%d / %m"),
+            "is_today": offset == 0,
+            "is_rest": is_rest,
+            "title": title,
+            "purpose": pr.purpose if pr.purpose and pr.purpose.lower() != "recovery" else "",
+            "description": pr.description,
+        })
+
+    # Hours logged in the current Mon–Sun week (for the "X h logged" meta line)
+    week_actual_s = 0.0
+    act_dir = ROOT / "activities"
+    if act_dir.exists():
+        wk_start = today - timedelta(days=today.weekday())
+        for ap in act_dir.glob("*.md"):
+            try:
+                head = ap.read_text(errors="ignore").split("---", 2)
+                if len(head) < 3:
+                    continue
+                fm: dict[str, str] = {}
+                for line in head[1].strip().splitlines():
+                    if ":" in line:
+                        k, v = line.split(":", 1)
+                        fm[k.strip()] = v.strip().strip('"')
+                if not fm.get("date"):
+                    continue
+                ad = datetime.strptime(fm["date"], "%Y-%m-%d").date()
+                if wk_start <= ad <= today:
+                    week_actual_s += int(fm.get("duration_s") or 0)
+            except Exception:
+                continue
+    week_actual_h = f"{week_actual_s / 3600:.1f}"
+
     return PAGE.render(
         today_long=today.strftime("%A %d %b %Y").lower(),
         plan_week=p.plan_week,
@@ -1879,6 +2036,8 @@ async def index():
         journey_pct=journey_pct,
         journey_markers=journey_markers,
         session_dots=session_dots,
+        coming_days=coming_days,
+        week_actual_h=week_actual_h,
         volume_path_filled=filled_path,
         volume_path_outline=full_path,
         volume_path_done=done_path,
