@@ -2039,6 +2039,12 @@ def _auth_modal(inner_html: str) -> str:
 """
 
 
+@app.get("/preview", response_class=HTMLResponse)
+async def preview():
+    """Serve the redesign sketch verbatim — static file, no data wiring."""
+    return (ROOT / "dashboard_redesign.html").read_text()
+
+
 @app.get("/api/garmin-auth", response_class=HTMLResponse)
 async def api_garmin_auth():
     """Render the one-time OAuth bootstrap helper as a modal."""

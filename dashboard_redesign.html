@@ -236,7 +236,7 @@
   .day.is-today .day-tag{color:var(--oxide);border-color:var(--oxide)}
 
   /* ─── §3 The Build · journey curve ────────────────────────────────── */
-  .build{position:relative;margin-top:36px;padding:36px 0 60px}
+  .build{position:relative;margin-top:36px;padding:36px 36px 60px 16px}
   .build-canvas{
     position:relative;height:160px;background:
       linear-gradient(to bottom,transparent 0 78%,rgba(155,148,132,.12) 78% 78.5%,transparent 78.5%);
@@ -257,6 +257,7 @@
     white-space:nowrap;font-variation-settings:"opsz" 14,"SOFT" 100;
     text-align:center;line-height:1.2;
   }
+  .build-label.race-last{transform:translateX(-100%);text-align:right;padding-right:4px}
   .build-label small{
     display:block;font-family:var(--mono);font-style:normal;font-size:9px;letter-spacing:.16em;
     text-transform:uppercase;color:var(--ink-soft);margin-top:2px;
@@ -294,9 +295,11 @@
   .build-stat .v{
     font-family:var(--display);font-weight:400;font-size:38px;line-height:1.05;margin-top:6px;
     font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;letter-spacing:-.02em;
+    white-space:nowrap;
   }
   .build-stat .v sup{font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;
-    margin-left:4px;letter-spacing:.05em}
+    margin-left:6px;letter-spacing:.05em;
+    display:inline-block;vertical-align:baseline;top:0;white-space:nowrap;}
   .build-stat .delta{font-size:10px;letter-spacing:.14em;color:var(--ink-soft);margin-top:4px}
   .build-stat .delta.up{color:var(--forest)}
   .build-stat .delta.down{color:var(--oxide)}
@@ -318,9 +321,11 @@
   .vital .v{
     font-family:var(--display);font-weight:400;font-size:48px;line-height:1;margin-top:10px;
     font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;letter-spacing:-.02em;
+    white-space:nowrap;
   }
   .vital .v sup{font-family:var(--mono);font-size:11px;color:var(--ink-soft);
-    font-weight:400;letter-spacing:.04em;margin-left:4px}
+    font-weight:400;letter-spacing:.04em;margin-left:6px;
+    display:inline-block;vertical-align:baseline;top:0;white-space:nowrap;}
   .vital .status{
     font-family:var(--display);font-style:italic;font-size:14px;margin-top:8px;
     font-variation-settings:"opsz" 30,"SOFT" 100;
@@ -416,16 +421,18 @@
   }
 
   /* ─── §7 The Log · past activities ────────────────────────────────── */
-  .log{margin-top:28px}
-  .log table{width:100%;border-collapse:collapse}
+  .log{margin-top:28px;overflow-x:auto}
+  .log table{width:100%;border-collapse:collapse;min-width:760px}
   .log th,.log td{
     text-align:left;padding:11px 8px;border-bottom:1px dotted var(--rule-soft);
     font-family:var(--mono);font-size:12px;vertical-align:baseline;
+    white-space:nowrap;
   }
   .log th{
     font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);
     border-bottom:1px solid var(--ink);font-weight:500;
   }
+  .log td.name{white-space:normal}
   .log td.day{
     font-family:var(--display);font-style:italic;font-weight:400;color:var(--ink-soft);
     font-size:13px;font-variation-settings:"opsz" 14,"SOFT" 100;
@@ -488,6 +495,8 @@
     .sect-head{grid-template-columns:auto 1fr;gap:14px}
     .sect-meta{display:none}
     .sect-title{font-size:24px}
+    .build-label small{display:none}
+    .build-stat .v{font-size:30px}
   }
 </style>
 </head>
@@ -948,7 +957,7 @@
             <th>Distance</th>
             <th>Time</th>
             <th>Pace</th>
-            <th>Avg / Max HR</th>
+            <th>HR avg · max</th>
             <th style="width:280px">Zones (% time)</th>
           </tr>
         </thead>
@@ -1050,14 +1059,14 @@
     {date:new Date(2027,3,3),  label:"Two Oceans", small:"3 APR · 56 K · A",  kind:"a-race"},
   ];
   const canvas = document.getElementById('buildCanvas');
-  RACES.forEach(r=>{
+  RACES.forEach((r,i)=>{
     const pct = (r.date - PLAN_START)/86400000 / total * 100;
     const tick = document.createElement('div');
     tick.className = 'build-tick race';
     tick.style.left = pct + "%";
     canvas.appendChild(tick);
     const lab = document.createElement('div');
-    lab.className = 'build-label';
+    lab.className = 'build-label' + (pct > 88 ? ' race-last' : '');
     if (r.kind === 'a-race') lab.style.color = 'var(--oxide)';
     lab.style.left = pct + "%";
     lab.innerHTML = r.label + "<small>" + r.small + "</small>";
