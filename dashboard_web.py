@@ -698,7 +698,7 @@ PAGE = Template(r"""<!doctype html>
       align-items: end;
       gap: 8px 24px;
       padding-bottom: 0;
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
     .brand {
       font-family: 'Fraunces', serif;
@@ -1003,7 +1003,7 @@ PAGE = Template(r"""<!doctype html>
     /* Past-session dots: their own trail strip, above the ramp curve. */
     .session-trail {
       display: flex; align-items: center; gap: 12px;
-      margin: 12px 0 8px;
+      margin: 6px 0 8px;
     }
     .session-trail-label {
       font-family: 'IBM Plex Mono', monospace;
