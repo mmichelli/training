@@ -133,16 +133,6 @@ def load_alcohol() -> pd.DataFrame:
     return df
 
 
-def save_alcohol(d: date, units: float) -> None:
-    out = DATA / "alcohol"
-    out.mkdir(parents=True, exist_ok=True)
-    from datetime import datetime as _dt
-    (out / f"{d.isoformat()}.json").write_text(json.dumps({
-        "units": round(max(0.0, units), 2),
-        "logged_at": _dt.now().isoformat(timespec="seconds"),
-    }, indent=2))
-
-
 def alcohol_hrv_insight() -> str:
     """Short text comparing HRV on drinking days vs dry days over last 30d."""
     alc = load_alcohol()
@@ -1916,7 +1906,7 @@ PAGE = Template(r"""<!doctype html>
       <section class="section span-3 data-card">
         <div class="section-head">
           <span class="roman">II<sup>d</sup>.</span>
-          <h2 class="label">Today's log · protein · alcohol · knee</h2>
+          <h2 class="label">Today's log · protein · knee</h2>
           <span class="section-meta">field journal · stamp daily</span>
         </div>
         <div id="log" hx-get="/api/log" hx-trigger="load,refresh" hx-swap="innerHTML"></div>
@@ -2823,31 +2813,9 @@ ALCOHOL_PARTIAL = Template("""
 <div class="stat-row">
   <span class="big">{{ last_units }}</span>
   <span class="unit">units · {{ last_label }}</span>
-  <a hx-get="/api/alcohol?edit=1" hx-target="#alcohol" hx-swap="innerHTML"
-     style="margin-left:auto;color:var(--oxide);border-bottom:1px solid var(--oxide);cursor:pointer;font-size:12px">log</a>
+  <span style="margin-left:auto;color:var(--ink-soft);font-size:10px;letter-spacing:.14em;text-transform:uppercase">via Garmin</span>
 </div>
 {% if insight %}<div style="color:var(--ink-soft);font-size:12px;margin-top:2px">{{ insight }}</div>{% endif %}
-{{ chart|safe }}
-""")
-
-
-ALCOHOL_FORM_PARTIAL = Template("""
-<form class="alcohol-form" hx-post="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML">
-  <div style="display:flex;gap:8px;align-items:center;margin:4px 0 10px;flex-wrap:wrap">
-    <input type="text" name="for_date" value="{{ default_date }}"
-           pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" placeholder="DD/MM/YYYY"
-           style="width:110px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"
-           title="DD/MM/YYYY"/>
-    <input type="number" name="units" min="0" step="0.5" value="{{ default_units }}" autofocus
-           style="width:80px;padding:6px 8px;border:1px solid var(--rule);background:var(--paper);font:inherit;color:inherit"/>
-    <span style="color:var(--ink-soft);font-size:12px">units</span>
-    <button type="submit"
-            style="padding:6px 12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:inherit;cursor:pointer">save</button>
-    <a hx-get="/api/alcohol" hx-target="#alcohol" hx-swap="innerHTML"
-       style="color:var(--ink-soft);cursor:pointer;font-size:12px">cancel</a>
-    <span style="color:var(--ink-soft);font-size:12px;flex-basis:100%">1 unit ≈ 1 beer / 1 glass wine / 1 shot</span>
-  </div>
-</form>
 {{ chart|safe }}
 """)
 
@@ -2859,18 +2827,19 @@ def _units_for(df: pd.DataFrame, d: date) -> float:
     return float(m.iloc[0]["units"]) if not m.empty else 0.0
 
 
+def _parse_eu_or_iso(s: str) -> date:
+    s = s.strip()
+    if "/" in s:
+        d, m, y = s.split("/")
+        return date(int(y), int(m), int(d))
+    return date.fromisoformat(s)
+
+
 @app.get("/api/alcohol", response_class=HTMLResponse)
-async def api_alcohol_get(edit: int = 0):
+async def api_alcohol_get():
     df = load_alcohol()
     today = date.today()
     yesterday = today - timedelta(days=1)
-    if edit:
-        return ALCOHOL_FORM_PARTIAL.render(
-            default_date=eu_date(yesterday),
-            today=today.isoformat(),
-            default_units=f"{_units_for(df, yesterday):g}",
-            chart=alcohol_chart(),
-        )
     # Summary view: show most recent logged day (today if logged, else yesterday).
     if not df.empty and (df["date"] == pd.Timestamp(today)).any():
         last_units, last_label = _units_for(df, today), "today"
@@ -2882,20 +2851,6 @@ async def api_alcohol_get(edit: int = 0):
         insight=alcohol_hrv_insight(),
         chart=alcohol_chart(),
     )
-
-
-def _parse_eu_or_iso(s: str) -> date:
-    s = s.strip()
-    if "/" in s:
-        d, m, y = s.split("/")
-        return date(int(y), int(m), int(d))
-    return date.fromisoformat(s)
-
-
-@app.post("/api/alcohol", response_class=HTMLResponse)
-async def api_alcohol_post(units: float = Form(...), for_date: str = Form(...)):
-    save_alcohol(_parse_eu_or_iso(for_date), units)
-    return await api_alcohol_get()
 
 
 @app.get("/api/volume", response_class=HTMLResponse)
@@ -3388,13 +3343,6 @@ LOG_PANEL = Template("""
     </div>
     <div class="log-row">
       <span class="ord">ii.</span>
-      <span class="lbl">alcohol</span>
-      <input class="field" type="number" step="0.5" min="0" name="alcohol"
-             value="{{ alcohol_val }}" />
-      <span class="hint">standard units · {{ alc_insight }}</span>
-    </div>
-    <div class="log-row">
-      <span class="ord">iii.</span>
       <span class="lbl">knee</span>
       <input class="field" type="number" step="1" min="0" max="10" name="knee"
              value="{{ knee_val }}" />
@@ -3479,7 +3427,6 @@ def _render_log(saved: bool = False) -> str:
         stamp_date=today.strftime("%a · %d %b %Y").upper(),
         saved=saved,
         protein_val=latest_or_blank(pdf, "grams"),
-        alcohol_val=latest_or_blank(adf, "units"),
         knee_val=latest_or_blank(kdf, "score"),
         floor_g=f"{floor_g:.0f}",
         roof_g=f"{roof_g:.0f}",
@@ -3502,15 +3449,12 @@ async def api_log():
 @app.post("/api/log", response_class=HTMLResponse)
 async def api_log_post(
     protein: str = Form(""),
-    alcohol: str = Form(""),
     knee: str = Form(""),
     for_date: str = Form(...),
 ):
     d = _parse_eu_or_iso(for_date)
     if protein.strip():
         save_protein(d, float(protein))
-    if alcohol.strip():
-        save_alcohol(d, float(alcohol))
     if knee.strip():
         save_knee(d, float(knee))
     return _render_log(saved=True)

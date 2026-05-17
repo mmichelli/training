@@ -235,6 +235,59 @@ def ingest_activities(g: Garmin, days: int, force: bool) -> tuple[int, int]:
     return written, streams_written
 
 
+def ingest_lifestyle(g: Garmin, days: int, force: bool) -> int:
+    """Pull Garmin's Lifestyle Logging (alcohol, caffeine, ...) → data/alcohol/.
+
+    For now we only extract Alcohol into the existing data/alcohol/*.json
+    schema (units = total drinks across all subtypes), preserving the per-
+    type breakdown alongside for future consumers."""
+    from datetime import datetime as _dt
+    out = DATA / "alcohol"
+    out.mkdir(parents=True, exist_ok=True)
+    written = 0
+    for d in daterange(days):
+        ymd = d.isoformat()
+        f = out / f"{ymd}.json"
+        # Skip if an entry already exists for this date — unless --force.
+        # A previously-saved dashboard entry (no source field) takes precedence
+        # so we don't clobber a manual override with a Garmin "no log" reading.
+        if f.exists() and not force:
+            try:
+                prev = json.loads(f.read_text())
+                if prev.get("source") != "garmin":
+                    continue
+            except Exception:
+                continue
+        r = g.get(f"/gc-api/lifestylelogging-service/dailyLog/{ymd}")
+        if not r:
+            continue
+        alcohol = next(
+            (b for b in (r.get("dailyLogsReport") or []) if b.get("name") == "Alcohol"),
+            None,
+        )
+        if not alcohol:
+            continue
+        by_type: dict[str, int] = {"beer": 0, "wine": 0, "spirit": 0, "other": 0}
+        for sub in (alcohol.get("details") or []):
+            name = (sub.get("subTypeName") or "").lower()
+            amount = int(sub.get("amount") or 0)
+            if name in by_type:
+                by_type[name] = amount
+        units = float(sum(by_type.values()))
+        # Only write if Garmin says the user actually logged something (YES) or
+        # has a non-zero count. Skip blank/no-log days to keep the dataset clean.
+        if alcohol.get("logStatus") != "YES" and units == 0:
+            continue
+        f.write_text(json.dumps({
+            "units": units,
+            "source": "garmin",
+            "synced_at": _dt.now().isoformat(timespec="seconds"),
+            "by_type": by_type,
+        }, indent=2))
+        written += 1
+    return written
+
+
 def ingest_weight(g: Garmin) -> int:
     """Pull all weigh-ins to date as a single file (small dataset)."""
     end = date.today()
@@ -299,6 +352,9 @@ def main() -> int:
     counts = ingest_daily_streams(g, args.days, args.force)
     for k, v in counts.items():
         print(f"{k}: {v} new days")
+
+    n_life = ingest_lifestyle(g, args.days, args.force)
+    print(f"alcohol (lifestyle log): {n_life} days")
     return 0
 
 

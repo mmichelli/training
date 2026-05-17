@@ -1,0 +1,11 @@
+{
+  "units": 1.0,
+  "source": "garmin",
+  "synced_at": "2026-05-17T20:36:55",
+  "by_type": {
+    "beer": 1,
+    "wine": 0,
+    "spirit": 0,
+    "other": 0
+  }
+}

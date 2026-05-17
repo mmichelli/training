@@ -85,6 +85,13 @@ class Garmin:
     def weight(self, start_ymd: str, end_ymd: str) -> dict | None:
         return self.get(f"/weight-service/weight/range/{start_ymd}/{end_ymd}")
 
+    def lifestyle_log(self, ymd: str) -> dict | None:
+        """Garmin's Lifestyle Logging — alcohol, caffeine, light exercise, etc.
+        Returns a dict with `dailyLogsReport` array; each behaviour carries
+        logStatus YES/NO and (for QUANTITY types like Alcohol) a details[]
+        array with subType amounts."""
+        return self.get(f"/lifestylelogging-service/dailyLog/{ymd}")
+
     def activity_zones(self, activity_id: int) -> list[dict] | None:
         return self.get(f"/activity-service/activity/{activity_id}/hrTimeInZones")
 
